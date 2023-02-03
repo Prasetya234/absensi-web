@@ -845,18 +845,18 @@
         <div class="flex justify-center">
           <div class="text-center w-[80%]">
             <h2
-              class="text-[#5A5A5A] text-[26px] font-[400] leading-[38px] mb-[6%]"
+              class="text-[#5A5A5A] text-[26px] font-[400] leading-[38px] mb-[6%] alata"
             >
               Selamat Datang, Layla Syareefa!
             </h2>
             <p
-              class="text-[#5A5A5A] text-[16px] font-[400] leading-[24px] mb-[10%]"
+              class="text-[#5A5A5A] text-[16px] font-[400] leading-[24px] mb-[10%] roboto"
             >
               Selamat Datang di Website Absensi Kelas Bootcamp SMK Bina
               Nusantara
             </p>
             <button class="border bg-[#CC6633] rounded-md py-[10px] px-[48px]">
-              <p class="uppercase text-[#FFFFFF] text-[16px] leading-[24px]">
+              <p class="uppercase text-[#FFFFFF] text-[16px] leading-[24px] alata">
                 Mulai Kegiatan
               </p>
             </button>
@@ -871,4 +871,14 @@ export default {
   name: 'DashboardPage',
 }
 </script>
-<style scoped></style>
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+.alata {
+  font-family: 'Alata', sans-serif;
+}
+.roboto {
+  font-family: 'Roboto', sans-serif;
+}
+</style>

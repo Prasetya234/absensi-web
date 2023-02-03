@@ -3,7 +3,7 @@
     <div class="mx-[5%] flex justify-between">
       <div class="app-name flex items-center">
         <p
-          class="text-[#F7931E] text-[30px] leading-[41px] font-[900] uppercase"
+          class="text-[#F7931E] text-[30px] leading-[41px] font-extrabold uppercase nunito"
         >
           Absensi
         </p>
@@ -28,7 +28,7 @@
                 />
               </svg>
             </span>
-            <span class="text-inherit text-[14px] leading-[20px]">Home</span>
+            <span class="text-inherit text-[14px] leading-[20px] roboto">Home</span>
           </li>
           <li
             class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#828282] fill-[#828282] cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]"
@@ -48,7 +48,7 @@
                 />
               </svg>
             </span>
-            <span class="text-inherit text-[14px] font-[400] leading-[20px]"
+            <span class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
               >Notification</span
             >
           </li>
@@ -76,7 +76,7 @@
                 />
               </svg>
             </span>
-            <span class="text-inherit text-[14px] font-[400] leading-[20px]"
+            <span class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
               >Profil</span
             >
           </li>
@@ -111,7 +111,7 @@
                   d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"
                 /></svg
             ></span>
-            <span class="text-inherit text-[14px] font-[400] leading-[20px]"
+            <span class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
               >Timetable</span
             >
           </li>
@@ -132,7 +132,7 @@
                 />
               </svg>
             </span>
-            <span class="text-inherit text-[14px] font-[400] leading-[20px]"
+            <span class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
               >Others</span
             >
             <div
@@ -140,12 +140,12 @@
             >
               <span class="z-10 p-5 block space-y-3 bg-white menu">
                 <button class="w-full">
-                  <p class="text-[#828282] text-left text-base hover:text-[#CC6633] leading-[22px]">
+                  <p class="text-[#828282] text-left text-base hover:text-[#CC6633] leading-[22px] montserrat">
                     Log Out
                   </p>
                 </button>
                 <button class="w-full">
-                  <p class="text-[#828282] text-left text-base hover:text-[#CC6633] leading-[22px]">
+                  <p class="text-[#828282] text-left text-base hover:text-[#CC6633] leading-[22px] montserrat">
                     Ganti ke Tampilan Talent
                   </p>
                 </button>
@@ -166,6 +166,19 @@ export default {
 }
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@900&display=swap');
+
+.nunito {
+  font-family: 'Nunito', sans-serif;
+}
+.roboto {
+  font-family: 'Roboto', sans-serif;
+}
+.montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
 .menu {
   box-shadow: 0px 0.5px 2px 2px #bebebe;
 }
