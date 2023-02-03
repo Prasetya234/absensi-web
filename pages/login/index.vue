@@ -2,8 +2,8 @@
   <div
     class="all-login flex items-center lg:max-h-screen lg:overflow-y-hidden w-full"
   >
-    <div class="grid grid-cols-1 lg:grid-cols-2 w-full">
-      <div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 w-full">
+      <div class="col-span-2">
         <img
           src="../../components/login.jpg"
           alt="Image Login"
@@ -20,6 +20,7 @@
             name="role"
             class="w-[262px] shadow border rounded-2xl w-full py-2 text-[#CC6633] leading-tight focus:outline-none focus:shadow-outline"
           >
+            <option value="admin">Admin</option>
             <option value="instruktur">Instruktur</option>
             <option value="murid">Murid</option>
           </select>
@@ -114,7 +115,7 @@
       <!-- OPSI 1 -->
 
       <!-- OPSI 2 -->
-      <div class="text-center py-5 lg:py-0 space-y-12 my-auto">
+      <div class="text-center py-5 lg:py-0 space-y-12 my-auto col-span-3">
         <h1 class="text-[#EAA825] text-4xl font-bold">ABSENSI | LOGIN</h1>
         <form class="px-5 lg:px-32 text-left space-y-8">
           <div class="space-y-1">
@@ -124,6 +125,7 @@
               name="role"
               class="shadow border rounded-2xl px-2 w-full py-2 text-[#CC6633] leading-tight focus:outline-none focus:shadow-outline"
             >
+              <option value="admin">Admin</option>
               <option value="instruktur">Instruktur</option>
               <option value="murid">Murid</option>
             </select>
