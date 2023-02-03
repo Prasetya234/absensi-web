@@ -1,6 +1,6 @@
 <template>
   <div class="bg-[#FFFFFF] absolute w-full">
-    <div class="mx-[197px] flex justify-between">
+    <div class="mx-[5%] flex justify-between">
       <div class="app-name flex items-center">
         <p
           class="text-[#F7931E] text-[30px] leading-[41px] font-[900] uppercase"
@@ -11,11 +11,11 @@
       <div class="nav-item">
         <ul class="flex justify-center items-center gap-[16px]">
           <li
-            class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#CC6633] fill-[#CC6633] hover:text-[#CC6633] hover:fill-[#CC6633] border-b-2 border-b-[#CC6633]"
+            class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#CC6633] fill-[#CC6633] cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633] border-b-2 border-b-[#CC6633]"
           >
             <span class=""
               ><svg
-              class=""
+                class=""
                 width="32"
                 height="25.51"
                 viewBox="0 0 32 32"
@@ -31,11 +31,11 @@
             <span class="text-inherit text-[14px] leading-[20px]">Home</span>
           </li>
           <li
-            class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#828282] fill-[#828282] hover:text-[#CC6633] hover:fill-[#CC6633]"
+            class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#828282] fill-[#828282] cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]"
           >
             <span class=""
               ><svg
-              class=""
+                class=""
                 width="26"
                 height="25.51"
                 viewBox="0 0 26 30"
@@ -53,11 +53,11 @@
             >
           </li>
           <li
-            class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#828282] fill-[#828282] hover:text-[#CC6633] hover:fill-[#CC6633]"
+            class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#828282] fill-[#828282] cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]"
           >
             <span class=""
               ><svg
-              class=""
+                class=""
                 width="34"
                 height="25.51"
                 viewBox="0 0 34 34"
@@ -81,60 +81,8 @@
             >
           </li>
           <li
-            class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#828282] fill-[#828282] hover:text-[#CC6633] hover:fill-[#CC6633]"
+            class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#828282] fill-[#828282] cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]"
           >
-            <!-- <span class=""
-              ><svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="bg-[#ffffff]"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11.7497 27.3333H7.49967C5.99678 27.3333 4.55544 26.7363 3.49274 25.6736C2.43003 24.6109 1.83301 23.1696 1.83301 21.6667V8.91667C1.83301 7.41377 2.43003 5.97243 3.49274 4.90973C4.55544 3.84702 5.99678 3.25 7.49967 3.25H23.083C24.5859 3.25 26.0272 3.84702 27.0899 4.90973C28.1527 5.97243 28.7497 7.41377 28.7497 8.91667V13.1667"
-                  stroke="#EAA825"
-                  stroke-width="2.83333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M10.333 1.8335V4.66683"
-                  stroke="#EAA825"
-                  stroke-width="2.83333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M20.25 1.8335V4.66683"
-                  stroke="#EAA825"
-                  stroke-width="2.83333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M1.83301 10.3335H28.7497"
-                  stroke="#EAA825"
-                  stroke-width="2.83333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M25.208 21.1611L23.083 23.2861"
-                  stroke="#EAA825"
-                  stroke-width="2.83333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M23.0833 30.1667C26.9953 30.1667 30.1667 26.9953 30.1667 23.0833C30.1667 19.1713 26.9953 16 23.0833 16C19.1713 16 16 19.1713 16 23.0833C16 26.9953 19.1713 30.1667 23.0833 30.1667Z"
-                  stroke="#EAA825"
-                  stroke-width="2.83333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span> -->
             <span class="relative">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +116,7 @@
             >
           </li>
           <li
-            class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#828282] fill-[#828282] hover:text-[#CC6633] hover:fill-[#CC6633]"
+            class="flex flex-col items-center py-2 w-[80px] space-y-2 text-[#828282] fill-[#828282] cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633] group"
           >
             <span class="flex items-center"
               ><svg
@@ -187,6 +135,25 @@
             <span class="text-inherit text-[14px] font-[400] leading-[20px]"
               >Others</span
             >
+            <div
+              class="hidden group-hover:block absolute top-[90%] right-2 w-[18%]"
+            >
+              <span class="z-10 p-5 block space-y-3 bg-white menu">
+                <button class="w-full">
+                  <p class="text-[#828282] text-left text-base hover:text-[#CC6633] leading-[22px]">
+                    Log Out
+                  </p>
+                </button>
+                <button class="w-full">
+                  <p class="text-[#828282] text-left text-base hover:text-[#CC6633] leading-[22px]">
+                    Ganti ke Tampilan Talent
+                  </p>
+                </button>
+              </span>
+              <div
+                class="w-3 h-3 bg-white rotate-[135deg] relative -top-[6.45rem] left-[57%] arrow"
+              ></div>
+            </div>
           </li>
         </ul>
       </div>
@@ -198,3 +165,11 @@ export default {
   name: 'NavbarComponent',
 }
 </script>
+<style scoped>
+.menu {
+  box-shadow: 0px 0.5px 2px 2px #bebebe;
+}
+.arrow {
+  box-shadow: -2px 2px 2px -1px #bebebe;
+}
+</style>

@@ -843,16 +843,22 @@
           </span>
         </div>
         <div class="flex justify-center">
-          <div class="text-center w-[75%] space-y-5">
-            <h2 class="text-[#5A5A5A] text-[26px] font-[600] leading-[38px]">
+          <div class="text-center w-[80%]">
+            <h2
+              class="text-[#5A5A5A] text-[26px] font-[400] leading-[38px] mb-[6%]"
+            >
               Selamat Datang, Layla Syareefa!
             </h2>
-            <p class="text-[#5A5A5A] text-[16px] font-[400] leading-[24px]">
-              Mulai buat lowongan pekerjaan pertamamu dan temukan talent spesial
-              dari G2Academy
+            <p
+              class="text-[#5A5A5A] text-[16px] font-[400] leading-[24px] mb-[10%]"
+            >
+              Selamat Datang di Website Absensi Kelas Bootcamp SMK Bina
+              Nusantara
             </p>
             <button class="border bg-[#CC6633] rounded-md py-[10px] px-[48px]">
-              <p class="uppercase text-[#FFFFFF] text-[16px] leading-[24px]">Buat Lowongan</p>
+              <p class="uppercase text-[#FFFFFF] text-[16px] leading-[24px]">
+                Mulai Kegiatan
+              </p>
             </button>
           </div>
         </div>
@@ -862,6 +868,7 @@
 </template>
 <script>
 export default {
-  name: 'Dashboard',
+  name: 'DashboardPage',
 }
 </script>
+<style scoped></style>
