@@ -12,12 +12,20 @@
           <p
             class="text-[#CC6633] text-[30px] leading-[41px] font-extrabold uppercase nunito ml-4"
           >
-            {{ moment(date).format('MMMM YYYY')}}
+            {{ moment(date).format('MMMM YYYY') }}
           </p>
         </div>
         <div class="w-64">
-            <p class="text-sm">Lompati Bulan</p>
-            <input type="month" class="block border-2 rounded-sm mt-2 p-1 w-56" :value="`${date.getFullYear()}-${('0' + (date.getMonth() +1)).slice(-2)}`" @change="selectCalender">
+          <p class="text-sm">Looking month</p>
+          <input
+            type="month"
+            class="block border-2 rounded-sm mt-2 p-1 w-56"
+            :value="`${date.getFullYear()}-${(
+              '0' +
+              (date.getMonth() + 1)
+            ).slice(-2)}`"
+            @change="selectCalender"
+          />
         </div>
       </div>
       <table class="w-full text-left table">
@@ -66,7 +74,7 @@ export default {
   }),
   methods: {
     getDataCalender() {
-    this.days = []
+      this.days = [];
       const date = this.date;
       date.setFullYear(
         date.getFullYear(),
@@ -102,14 +110,16 @@ export default {
       }
     },
     selectCalender(e) {
+      this.offset = 0;
       this.date = new Date(e.target.value);
-      this.getDataCalender()  
+      this.getDataCalender();
     },
     changeCalender(type) {
-        this.offset = 0;
-      if (type === 'prev') this.offset--;
-      else this.offset++;
-        this.getDataCalender();
+      if (type === 'prev') this.offset =- 1;
+      else this.offset =+ 1;
+      console.log(this.offset);
+
+      this.getDataCalender();
     },
     moment(date) {
       return moment(date);
