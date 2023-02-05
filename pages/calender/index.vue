@@ -46,9 +46,9 @@
               v-for="(data2, idx2) in data"
               :key="idx2"
               :class="`${
-                idx2 === 0 && data2.date._d.getDate() !== 'last month'
+                idx2 === 0 && data2.date._d.getDate() !== 'last month' && data2.date._d.getDate() !== 'next month'
                   ? 'text-red-500'
-                  : data2.date._d.getDate() === 'last month'
+                  : data2.date._d.getDate() === 'last month' ||  data2.date._d.getDate() === 'next month'
                   ? 'text-gray-400'
                   : ''
               }`"
@@ -108,6 +108,19 @@ export default {
           this.days.push(dayData.slice(i, i + 7));
         }
       }
+      const lastSpace = this.days[this.days.length - 1].length;
+      if (lastSpace >= 7) return;
+      for (let i = lastSpace; i < 7; i++) {
+        this.days[this.days.length - 1].push({
+          date: {
+            _d: {
+              getDate: () => 'next month'
+            }
+          },
+          workhours: 0,
+          overtime: 0
+        });
+      }
     },
     selectCalender(e) {
       this.offset = 0;
@@ -115,8 +128,8 @@ export default {
       this.getDataCalender();
     },
     changeCalender(type) {
-      if (type === 'prev') this.offset =- 1;
-      else this.offset =+ 1;
+      if (type === 'prev') this.offset = -1;
+      else this.offset = +1;
       console.log(this.offset);
 
       this.getDataCalender();
