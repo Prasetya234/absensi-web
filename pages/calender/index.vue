@@ -130,8 +130,6 @@ export default {
     changeCalender(type) {
       if (type === 'prev') this.offset = -1;
       else this.offset = +1;
-      console.log(this.offset);
-
       this.getDataCalender();
     },
     moment(date) {
