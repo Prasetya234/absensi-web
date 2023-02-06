@@ -1,5 +1,5 @@
 export function getToken() {
-  return localStorage.getItem('token') || null;
+  return  "Microservice " + localStorage.getItem('token') || null;
 }
 export function setToken(token) {
   return localStorage.setItem('token', token);

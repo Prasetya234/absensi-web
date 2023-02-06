@@ -7,6 +7,7 @@ export class createConfig {
             baseURL: API_PRODUCTION,
             url: `api/${opts.url}`,
             method: "GET",
+            params: opts.params,
             headers: {
                 ...opts.header,
                 'x-token-value': getToken(),

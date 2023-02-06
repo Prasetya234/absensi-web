@@ -1,5 +1,6 @@
 <template>
   <div class="flex justify-center items-center py-16">
+    <ilustration-loading-spinner v-if="isLoading" />
     <div class="bg-white rounded-md w-11/12 mt-14 p-8 md:w-4/5">
       <div class="flex justify-between items-start mb-6">
         <div class="flex items-center gap-4">
@@ -46,14 +47,23 @@
               v-for="(data2, idx2) in data"
               :key="idx2"
               :class="`${
-                idx2 === 0 && data2.date._d.getDate() !== 'last month' && data2.date._d.getDate() !== 'next month'
+                idx2 === 0 &&
+                data2.date._d.getDate() !== 'last month' &&
+                data2.date._d.getDate() !== 'next month'
                   ? 'text-red-500'
-                  : data2.date._d.getDate() === 'last month' ||  data2.date._d.getDate() === 'next month'
+                  : data2.date._d.getDate() === 'last month' ||
+                    data2.date._d.getDate() === 'next month'
                   ? 'text-gray-400'
                   : ''
               }`"
             >
-              {{ data2.date._d.getDate() }}
+              <span>{{ data2.date._d.getDate() }}</span>
+              <span
+                class="block p-2 bg-[#CC6633] text-white rounded-lg mt-2 cursor-pointer truncate w-32"
+                style="max-width: max-content"
+                v-if="data2.noteplus"
+                >{{ data2.noteplus.name }}</span
+              >
             </td>
           </tr>
         </tbody>
@@ -64,12 +74,15 @@
 
 <script>
 import moment from 'moment';
+import axios from 'axios';
+import { createConfig } from '~/service/api-manager';
 
 export default {
   name: 'CalenderPage',
   data: () => ({
     days: [],
     offset: 0,
+    isLoading: false,
     date: new Date()
   }),
   methods: {
@@ -82,12 +95,12 @@ export default {
           ? date.getMonth() - (this.offset *= -1)
           : date.getMonth() + this.offset
       );
+      this.fetchDataCalender(date);
       let dayData = [];
       let monthDate = moment(date).startOf('month');
       dayData = [...Array(monthDate.daysInMonth())].map((_, i) => ({
         date: monthDate.clone().add(i, 'day'),
-        workhours: 0,
-        overtime: 0
+        noteplus: null
       }));
       const startSpace = dayData[0].date._d.getDay();
       const dataspace = [];
@@ -98,8 +111,7 @@ export default {
               getDate: () => 'last month'
             }
           },
-          workhours: 0,
-          overtime: 0
+          noteplus: null
         });
       }
       dayData = [...dataspace, ...dayData];
@@ -117,8 +129,7 @@ export default {
               getDate: () => 'next month'
             }
           },
-          workhours: 0,
-          overtime: 0
+          noteplus: null
         });
       }
     },
@@ -134,6 +145,38 @@ export default {
     },
     moment(date) {
       return moment(date);
+    },
+    async fetchDataCalender(date = new Date()) {
+      this.isLoading = true;
+      try {
+        const { data: resp } = await axios(
+          new createConfig().getData({
+            url: 'calender',
+            params: {
+              month: date.getMonth() + 1,
+              year: date.getFullYear()
+            }
+          })
+        );
+        this.days.forEach((item) => {
+          item.forEach((items) => {
+            resp.data.forEach((e) => {
+              if (
+                new Date(e.date).getDate() === items.date._d.getDate() &&
+                new Date(e.date).getMonth() === items.date._d.getMonth() &&
+                new Date(e.date).getFullYear() === items.date._d.getFullYear()
+              ) {
+                items.noteplus = e;
+              }
+            });
+          });
+        });
+      } catch {
+      } finally {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1000);
+      }
     }
   },
   mounted() {
