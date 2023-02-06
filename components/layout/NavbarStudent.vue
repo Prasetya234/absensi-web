@@ -126,7 +126,7 @@ export default {
     },
     logout() {
       console.log("runn");
-      this.$toast.show(`Selamat tinggal ${getUsername()}`, {
+      this.$toast.show(`Good bye ${getUsername()}`, {
           position: 'top-center',
           type: 'error',
           duration: 5000,

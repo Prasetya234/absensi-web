@@ -188,7 +188,7 @@ export default {
         );
         loggined(resData)
         this.$router.push('/dashboard');
-        this.$toast.show(`Selamat datang ${resData.data.user?.firstName}`, {
+        this.$toast.show(`Welcome ${resData.data.user?.firstName}`, {
           position: 'top-center',
           type: 'success',
           duration: 5000,
