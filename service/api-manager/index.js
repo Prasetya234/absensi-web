@@ -1,4 +1,4 @@
-import { getToken } from "~/utils";
+import { getToken } from "~/utils/auth";
 const API_PRODUCTION = "https://absensi-server-production.up.railway.app"
 
 export class createConfig {
@@ -75,7 +75,7 @@ export class responseManager {
     constructor() {
         this.manageError = (opts) => {
             return {
-                ...opts.response.data
+                ...opts.response?.data
             }
         }
     }

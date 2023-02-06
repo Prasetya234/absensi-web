@@ -1,20 +1,35 @@
 <template>
   <div :class="`${pattren ? 'bg-[#F5F5F5]' : ''}`">
     <layout-navbar-student v-if="pattren" />
+    <ilustration-loading  v-if="isLoading"/>
     <Nuxt />
   </div>
 </template>
 <script>
-
-const privatePath = [
-    "/login"
-]
+import { isAuthenticated } from '~/utils/auth';
+import publicPath from '~/utils/publicPath';
 
 export default {
   name: 'LayoutDefault',
   computed: {
     pattren() {
-      return privatePath.find((route) => route !== this.$route.path) ;
+      return publicPath.find((route) => route.path !== this.$route.path) ;
+    },
+    isLoading() {
+      return this.$store.getters['loading/getLoading'];
+    }
+  },
+  watch: {
+    $route(to, from) {
+      this.initializeMiddleware(to)
+    }
+  },
+  mounted() {
+    this.initializeMiddleware(this.$route);
+  },
+  methods: {
+    initializeMiddleware(router) {
+      if (!isAuthenticated() && !publicPath.find((route) => route.path === router.path)) this.$router.push('/login');
     }
   }
 };

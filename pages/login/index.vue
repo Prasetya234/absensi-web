@@ -149,8 +149,11 @@
 
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex'
+
 import './style.css';
 import { createConfig, responseManager } from '@/service/api-manager/index';
+import { getToken, loggined } from '~/utils/auth';
 
 export default {
   name: 'LoginPage',
@@ -169,8 +172,10 @@ export default {
     onToggle() {
       this.isOpen = !this.isOpen;
     },
+    ...mapActions('loading', ['showLoading', 'hideLoading']),
     async onLogin(e) {
       e.preventDefault();
+      this.showLoading();
       try {
         const { data: resData } = await axios(
           new createConfig().postDataLogLogin({
@@ -181,6 +186,15 @@ export default {
             }
           })
         );
+        loggined(resData)
+        this.$router.push('/dashboard');
+        this.$toast.show(`Selamat datang ${resData.data.user?.firstName}`, {
+          position: 'top-center',
+          type: 'success',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
       } catch (e) {
         const error = new responseManager().manageError(e);
         this.$toast.show(error?.error || error.message, {
@@ -190,7 +204,14 @@ export default {
           theme: 'bubble',
           singleton: true
         });
+      } finally {
+        this.hideLoading();
       }
+    }
+  },
+  mounted() {
+    if (getToken()) {
+      this.$router.push('/dashboard');
     }
   }
 };

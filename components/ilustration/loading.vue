@@ -1,15 +1,15 @@
 <template>
   <div class="loading">
     <div>
-      <p>G</p>
-      <p>2</p>
-      <p>A</p>
-      <p>C</p>
-      <p>A</p>
-      <p>D</p>
-      <p>E</p>
       <p>M</p>
       <p>Y</p>
+      <p>A</p>
+      <p>B</p>
+      <p>S</p>
+      <p>E</p>
+      <p>N</p>
+      <p>S</p>
+      <p>I</p>
     </div>
   </div>
 </template>
@@ -35,12 +35,12 @@ p {
   display: inline-block;
   text-transform: uppercase;
   text-align: center;
-  font-size: 5em;
+  font-size: 8em;
   font-weight: 600;
   transform: scale(0.5);
   color: #f7931e;
   @media screen and (max-width: 767px) {
-    font-size: 3em;
+    font-size: 5em;
   }
 }
 
