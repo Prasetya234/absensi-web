@@ -19,7 +19,7 @@ $ yarn start
 $ yarn generate
 ```
 # Formation code shortcut prettier
-Windows:  Shift + Alt + F
-Mac:      Shift + Option + F
-Linux:    Ctrl + Shift + I
+ - Windows:  Shift + Alt + F
+ - Mac:      Shift + Option + F
+ - Linux:    Ctrl + Shift + I
 
