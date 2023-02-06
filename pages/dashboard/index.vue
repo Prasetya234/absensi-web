@@ -1,6 +1,4 @@
 <template>
-  <div class="bg-[#F5F5F5] h-screen">
-    <layout-navbar-student />
     <div class="flex justify-center items-center h-full">
       <div class="space-y-5">
         <div class="flex justify-center">
@@ -863,7 +861,6 @@
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 <script>

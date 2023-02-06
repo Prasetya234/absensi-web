@@ -1,6 +1,5 @@
 <template>
-  <div class="bg-[#F5F5F5] h-screen">
-    <layout-navbar-student />
+  <div>
     home page
   </div>
 </template>
