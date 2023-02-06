@@ -5,19 +5,13 @@
     <div class="grid grid-cols-1 lg:grid-cols-5 w-full">
       <div class="col-span-2">
         <img
-          v-if="role === 'admin'"
+          v-if="role === 'admin' || role === 'instructor'"
           src="~assets/img/login.jpg"
           alt="Image Login"
           class="h-auto w-full"
         />
         <img
-          v-if="role === 'instruktur'"
-          src="~assets/img/login.jpg"
-          alt="Image Login"
-          class="h-auto w-full"
-        />
-        <img
-          v-if="role === 'murid'"
+          v-if="role === 'student'"
           src="~assets/img/login-murid.png"
           alt="Image Login"
           class="h-auto w-full"
@@ -28,7 +22,7 @@
           ABSENSI | LOGIN
         </h1>
         <div class="font-isi px-32 text-left">
-          <p class="font-medium">Saya adalah</p>
+          <p class="font-medium">I'am is</p>
           <select
             id="role"
             v-model="role"
@@ -36,8 +30,8 @@
             class="shadow border rounded-2xl px-2 w-full py-2 text-[#CC6633] leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="admin">Admin</option>
-            <option value="instruktur">Instruktur</option>
-            <option value="murid">Murid</option>
+            <option value="instructor">Instructor</option>
+            <option value="student">Student</option>
           </select>
         </div>
         <div>
@@ -45,11 +39,11 @@
             class="w-[364px] bg-[#CC6633] hover:bg-[#F7931E] text-white py-3 rounded"
             @click="onToggle"
           >
-            Masuk sebagai {{ role }}
+            Login as {{ role }}
           </button>
           <modal v-if="isOpen" :onclose="onToggle">
             <h3 class="mb-4 text-2xl font-bold">Login</h3>
-            <form class="px-12 text-left space-y-8">
+            <form class="px-12 text-left space-y-8" @submit="onLogin">
               <div>
                 <fieldset class="w-full space-y-1 text-gray-800">
                   <label for="email-address" class="block text-sm font-medium"
@@ -60,6 +54,7 @@
                       id="email-address"
                       type="text"
                       name="email-address"
+                      v-model="form.email"
                       autocomplete="off"
                       placeholder="Input your email address"
                       class="flex flex-1 px-2 shadow border-2 border-r-0 border-gray-500 bg-white w-full py-2 rounded-l-md text-[#CC6633] leading-tight focus:outline-none focus:shadow-outline"
@@ -82,6 +77,7 @@
                       autocomplete="off"
                       :type="[showPassword ? 'text' : 'password']"
                       name="password"
+                      v-model="form.password"
                       placeholder="Input your password"
                       class="flex flex-1 px-2 shadow border-2 border-r-0 border-gray-500 bg-white w-full py-2 rounded-l-md text-[#CC6633] leading-tight focus:outline-none focus:shadow-outline"
                     />
@@ -152,20 +148,71 @@
 </template>
 
 <script>
-import './style.css'
+import axios from 'axios';
+import { mapActions } from 'vuex'
+
+import './style.css';
+import { createConfig, responseManager } from '@/service/api-manager/index';
+import { getToken, loggined } from '~/utils/auth';
+
 export default {
   name: 'LoginPage',
   data() {
     return {
       isOpen: false,
       showPassword: false,
-      role: 'instruktur',
-    }
+      form: {
+        email: '',
+        password: ''
+      },
+      role: 'student'
+    };
   },
   methods: {
     onToggle() {
-      this.isOpen = !this.isOpen
+      this.isOpen = !this.isOpen;
     },
+    ...mapActions('loading', ['showLoading', 'hideLoading']),
+    async onLogin(e) {
+      e.preventDefault();
+      this.showLoading();
+      try {
+        const { data: resData } = await axios(
+          new createConfig().postDataLogLogin({
+            data: {
+              email: this.form.email,
+              password: this.form.password,
+              type: this.role.toUpperCase()
+            }
+          })
+        );
+        loggined(resData)
+        this.$router.push('/dashboard');
+        this.$toast.show(`Selamat datang ${resData.data.user?.firstName}`, {
+          position: 'top-center',
+          type: 'success',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+      } catch (e) {
+        const error = new responseManager().manageError(e);
+        this.$toast.show(error?.error || error.message, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+      } finally {
+        this.hideLoading();
+      }
+    }
   },
-}
+  mounted() {
+    if (getToken()) {
+      this.$router.push('/dashboard');
+    }
+  }
+};
 </script>

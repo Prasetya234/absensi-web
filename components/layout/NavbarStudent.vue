@@ -84,7 +84,7 @@
               class="hidden group-hover:block absolute top-[90%] right-2 w-[18%]"
             >
               <span class="z-10 p-5 block space-y-3 bg-white menu">
-                <button class="w-full" @click="$router.push('/login')">
+                <button class="w-full" @click="logout">
                   <p
                     class="text-[#828282] text-left text-base hover:text-[#CC6633] leading-[22px] montserrat"
                   >
@@ -110,6 +110,7 @@
   </div>
 </template>
 <script>
+import { getUsername, removeAllStorage } from '~/utils/auth';
 export default {
   name: 'NavbarComponent',
   computed: {
@@ -122,6 +123,18 @@ export default {
       return path === route
         ? 'text-[#CC6633] fill-[#CC6633] border-b-2 border-b-[#CC6633]'
         : 'text-[#828282] fill-[#828282]';
+    },
+    logout() {
+      console.log("runn");
+      this.$toast.show(`Selamat tinggal ${getUsername()}`, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+      removeAllStorage()
+      this.$router.push('/login');
     }
   }
 };
