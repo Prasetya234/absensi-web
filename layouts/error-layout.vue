@@ -7,7 +7,7 @@
           alt="Not Found Image"
           class="w-1/2 mx-auto"
         />
-        <p class="text-lg text-[#58595B] font-semibold">
+        <p class="text-[#58595B] font-semibold">
           Access your {{ role }} information system here
         </p>
         <button
@@ -42,3 +42,10 @@ export default {
   }
 };
 </script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
+.font-error{
+    font-family: 'Montserrat', sans-serif;
+}
+</style>
