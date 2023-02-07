@@ -1,5 +1,6 @@
 import { getToken } from "~/utils/auth";
 const API_PRODUCTION = "https://absensi-server-production.up.railway.app"
+const KEY_TOKEN = "Microservice "
 
 export class createConfig {
     getData = (opts) => {
@@ -10,7 +11,7 @@ export class createConfig {
             params: opts.params,
             headers: {
                 ...opts.header,
-                'x-token-value': getToken(),
+                'x-token-value': KEY_TOKEN + getToken(),
             },
         };
     };
@@ -29,7 +30,7 @@ export class createConfig {
             method: "POST",
             headers: {
                 ...opts.header,
-                'x-token-value': getToken(),
+                'x-token-value': KEY_TOKEN + getToken(),
             },
             data: opts.data,
         };
@@ -41,7 +42,7 @@ export class createConfig {
             method: "PUT",
             headers: {
                 ...opts.header,
-                'x-token-value': getToken(),
+                'x-token-value': KEY_TOKEN + getToken(),
             },
             data: opts.data,
         };
@@ -53,7 +54,7 @@ export class createConfig {
             method: "DELETE",
             headers: {
                 ...opts.header,
-                'x-token-value': getToken(),
+                'x-token-value': KEY_TOKEN + getToken(),
             },
             data: opts.data,
         };
@@ -65,7 +66,7 @@ export class createConfig {
             method: opts.method,
             headers: {
                 ...opts.header,
-                'x-token-value': getToken(),
+                'x-token-value': KEY_TOKEN + getToken(),
             },
             data: opts.data,
         };
