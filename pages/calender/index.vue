@@ -46,7 +46,7 @@
             <td
               v-for="(data2, idx2) in data"
               :key="idx2"
-              :style="`${data2.isDay ? 'background-color: #A9A9A9' : ''}`"
+              :style="`${data2.isDay ? 'background-color: #D3D3D3' : ''}`"
               :class="`${
                 idx2 === 0 &&
                 data2.date._d.getDate() !== 'last month' &&
