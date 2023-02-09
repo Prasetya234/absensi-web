@@ -148,7 +148,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { mapActions } from 'vuex'
 
 import './style.css';
@@ -177,7 +176,7 @@ export default {
       e.preventDefault();
       this.showLoading();
       try {
-        const { data: resData } = await axios(
+        const { data: resData } = await this.$axios(
           new createConfig().postDataLogLogin({
             data: {
               email: this.form.email,
@@ -197,6 +196,7 @@ export default {
         });
       } catch (e) {
         const error = new responseManager().manageError(e);
+        console.log(error);
         this.$toast.show(error?.error || error.message, {
           position: 'top-center',
           type: 'error',

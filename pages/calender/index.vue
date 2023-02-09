@@ -46,6 +46,7 @@
             <td
               v-for="(data2, idx2) in data"
               :key="idx2"
+              :style="`${data2.isDay ? 'background-color: #A9A9A9' : ''}`"
               :class="`${
                 idx2 === 0 &&
                 data2.date._d.getDate() !== 'last month' &&
@@ -74,7 +75,6 @@
 
 <script>
 import moment from 'moment';
-import axios from 'axios';
 import { createConfig } from '~/service/api-manager';
 
 export default {
@@ -100,10 +100,12 @@ export default {
       let monthDate = moment(date).startOf('month');
       dayData = [...Array(monthDate.daysInMonth())].map((_, i) => ({
         date: monthDate.clone().add(i, 'day'),
-        noteplus: null
+        noteplus: null,
+        isDay: false,
       }));
       const startSpace = dayData[0].date._d.getDay();
       const dataspace = [];
+      const dateNow = new Date()
       for (let i = 0; i < startSpace; i++) {
         dataspace.push({
           date: {
@@ -111,7 +113,8 @@ export default {
               getDate: () => 'last month'
             }
           },
-          noteplus: null
+          noteplus: null,
+          isDay: false,
         });
       }
       dayData = [...dataspace, ...dayData];
@@ -129,8 +132,18 @@ export default {
               getDate: () => 'next month'
             }
           },
-          noteplus: null
+          noteplus: null,
+          isDay: false,
         });
+      }
+      if (date.getMonth()  == dateNow.getMonth() && date.getFullYear() == dateNow.getFullYear()) {
+       this.days.forEach(day => {
+          day.forEach(data => {
+            if (data.date._d.getDate() == dateNow.getDate()) {
+              data.isDay = true
+            }
+          })
+        }) 
       }
     },
     selectCalender(e) {
@@ -149,7 +162,7 @@ export default {
     async fetchDataCalender(date = new Date()) {
       this.isLoading = true;
       try {
-        const { data: resp } = await axios(
+        const { data: resp } = await this.$axios(
           new createConfig().getData({
             url: 'calender',
             params: {

@@ -43,6 +43,7 @@
               '/profile',
               route
             )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
+            @click="$router.push('/profile')"
           >
             <span>
               <icons-profile />
