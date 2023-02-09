@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-center items-center h-full">
+    <div class="flex justify-center items-center py-[7.85%]">
       <div class="space-y-5">
         <div class="flex justify-center">
           <span class="h-[225.97px] w-[321.76px]"
