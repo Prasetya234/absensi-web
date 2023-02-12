@@ -6,7 +6,6 @@
   </div>
 </template>
 <script>
-
 import { isAuthenticated } from '~/utils/auth';
 import publicPath from '~/utils/publicPath';
 import { mapActions } from 'vuex';
@@ -28,16 +27,19 @@ export default {
   },
   mounted() {
     this.initializeMiddleware(this.$route);
+    if (isAuthenticated()) {
+      this.connect();
+    }
   },
   methods: {
     ...mapActions('chat', ['connect']),
     initializeMiddleware(router) {
-      if (!isAuthenticated() && !publicPath.find((route) => route.path === router.path)) {
+      if (
+        !isAuthenticated() &&
+        !publicPath.find((route) => route.path === router.path)
+      )
         this.$router.push('/login');
-        return
-      }
-      this.connect()
-    },
+    }
   }
 };
 </script>
