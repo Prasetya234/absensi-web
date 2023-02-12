@@ -152,7 +152,7 @@ import { mapActions } from 'vuex'
 
 import './style.css';
 import { createConfig, responseManager } from '@/service/api-manager/index';
-import { getToken, loggined } from '~/utils/auth';
+import { isAuthenticated, loggined } from '~/utils/auth';
 
 export default {
   name: 'LoginPage',
@@ -210,7 +210,7 @@ export default {
     }
   },
   mounted() {
-    if (getToken()) {
+    if (isAuthenticated()) {
       this.$router.push('/dashboard');
     }
   }

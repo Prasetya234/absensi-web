@@ -1,5 +1,6 @@
+import { API_PRODUCTION } from "~/utils/api";
 import { getToken } from "~/utils/auth";
-const API_PRODUCTION = "https://absensi-server-production.up.railway.app"
+
 const KEY_TOKEN = "Microservice "
 
 export class createConfig {

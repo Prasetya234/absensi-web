@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#FFFFFF] absolute w-full">
+  <div class="bg-[#FFFFFF] fixed z-10 w-full">
     <div class="mx-[5%] flex justify-between">
       <div class="app-name flex items-center">
         <p
@@ -24,7 +24,7 @@
               >Home</span
             >
           </li>
-          <li
+          <!-- <li
             :class="`${activeMenu(
               '/notification',
               route
@@ -37,7 +37,7 @@
               class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
               >Notification</span
             >
-          </li>
+          </li> -->
           <li
             :class="`${activeMenu(
               '/profile',
@@ -66,6 +66,21 @@
             <span
               class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
               >Timetable</span
+            >
+          </li>
+          <li
+            :class="`${activeMenu(
+              '/chat',
+              route
+            )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
+            @click="$router.push('/chat')"
+          >
+            <span class="relative">
+              <icons-chat />
+            </span>
+            <span
+              class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
+              >Chat</span
             >
           </li>
           <li
@@ -126,7 +141,6 @@ export default {
         : 'text-[#828282] fill-[#828282]';
     },
     logout() {
-      console.log("runn");
       this.$toast.show(`Good bye ${getUsername()}`, {
           position: 'top-center',
           type: 'error',

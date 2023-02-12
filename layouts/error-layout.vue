@@ -8,13 +8,13 @@
           class="w-1/2 mx-auto"
         />
         <p class="text-[#58595B] font-semibold">
-          Access your {{ role }} information system here
+          Page not found or you don't have access to this page
         </p>
         <button
           class="px-3 py-2 bg-[#F7931E] rounded-lg text-white capitalize font-semibold"
           @click="$router.push('/')"
         >
-          Open {{ role }} Page
+          Back to Home
         </button>
       </div>
     </div>
@@ -22,23 +22,16 @@
 </template>
 
 <script>
+import { isAuthenticated } from '~/utils/auth';
 export default {
   name: 'ErrorLayout',
-  data() {
-    return {
-      role: ''
-    };
+  methods: {
+    isAuthenticated() {
+      if(!isAuthenticated()) this.$router.push('/login');
+    }
   },
   mounted() {
-    if (localStorage.getItem('role') === 'ADMIN') {
-      this.role = 'dashboard admin';
-    } else if (localStorage.getItem('role') === 'INSTRUCTOR') {
-      this.role = 'dashboard intructor';
-    } else if (localStorage.getItem('role') === 'STUDENT') {
-      this.role = 'dashboard student';
-    } else {
-      this.role = 'login';
-    }
+    this.isAuthenticated()
   }
 };
 </script>
