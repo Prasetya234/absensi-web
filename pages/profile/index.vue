@@ -11,7 +11,7 @@
             <h2 class="text-[32px] font-medium leading-[40px]">Overview :</h2>
           </div>
           <div class="">
-            <h2 class="text-[32px] font-medium leading-[40px]">211</h2>
+            <h2 class="text-[32px] font-medium leading-[40px]">{{userData.viewers }}</h2>
             <p>Jumlah Profil Dilihat</p>
           </div>
           <div class="">
@@ -34,7 +34,7 @@
               >
                 <img
                   class="w-44 h-44 rounded-full"
-                  src="~assets/img/photo-profile.png"
+                  :src="userData.avatarUrl"
                   alt="photo-profile"
                 />
                 <div class="absolute bottom-0 w-full bg-[#CC6666E5]/90">
@@ -78,19 +78,19 @@
             </div>
             <div class="px-8 py-5 roboto text-[#333333] space-y-2">
               <h2 class="username alata text-[26px] font-normal leading-[38px]">
-                Camelia Cameli
+                {{ userData.firstName }} {{ userData.lastName }}
               </h2>
               <p class="registered-since text-base text-[#616161] font-normal">
-                Terdaftar sejak 20 Oktober 2020
+                Terdaftar sejak {{ userData.createAt }}
               </p>
               <div class="flex gap-x-5">
                 <div class="space-y-2">
                   <h5 class="text-base font-medium">Email</h5>
-                  <h5 class="text-base font-medium">No Telepon</h5>
+                  <h5 class="text-base font-medium">No Urut</h5>
                 </div>
                 <div class="space-y-2">
-                  <p class="text-base font-normal">camelia.c@gmail.com</p>
-                  <p class="text-base font-normal">0857154412414</p>
+                  <p class="text-base font-normal">{{ userData.email }}</p>
+                  <p class="text-base font-normal">{{ userData.noSiswa }}</p>
                 </div>
               </div>
             </div>
@@ -103,47 +103,122 @@
             </h2>
           </div>
           <hr class="border-[#F7F7F7]" />
-          <div class="p-6"></div>
+          <div class="p-6">{{ userData.description }}</div>
         </div>
-        <div class="reference-link rounded-[10px] bg-white">
+        <div class="biodata-siswa rounded-[10px] bg-white">
           <div class="p-6">
             <h2 class="alata text-lg text-[#333333] font-normal leading-4">
-              Reference Link
+              Biodata Siswa
             </h2>
           </div>
           <hr class="border-[#F7F7F7]" />
-          <div class="p-6 space-y-6 w-[50%]">
-            <div class="external-link space-y-2">
-              <p class="roboto text-[#616161] text-base font-normal">
-                External Link
-              </p>
-              <p class="roboto text-base text-[#333333] font-normal leading-6">
-                -
-              </p>
-              <hr class="border-[#BDBDBD]" />
+          <div class="p-6 grid md:grid-cols-2 grid-cols-1 gap-7">
+            <div class="space-y-6">
+              <div class="fullname space-y-2">
+                <p class="roboto text-[#333333] text-base font-medium">
+                  Nama Lengkap
+                </p>
+                <p
+                  class="roboto text-base text-[#616161] font-normal leading-6"
+                >
+                  {{ userData.firstName }} {{ userData.lastName }}
+                </p>
+                <hr class="border-[#BDBDBD]" />
+              </div>
+              <div class="birth-date space-y-2">
+                <p class="roboto text-[#333333] text-base font-medium">
+                  Tanggal Lahir
+                </p>
+                <p
+                  class="roboto text-base text-[#616161] font-normal leading-6"
+                >
+                  {{ userData.birthDate }}
+                </p>
+                <hr class="border-[#BDBDBD]" />
+              </div>
             </div>
-            <div class="linkedin-profile space-y-2">
-              <p class="roboto text-[#616161] text-base font-normal">
-                Linkedin Profile
-              </p>
-              <p class="roboto text-base text-[#333333] font-normal leading-6">
-                -
-              </p>
-              <hr class="border-[#BDBDBD]" />
+            <div class="space-y-6">
+              <div class="gender space-y-2">
+                <p class="roboto text-[#333333] text-base font-medium">
+                  Jenis Kelamin
+                </p>
+                <p
+                  class="roboto text-base text-[#616161] font-normal leading-6"
+                >
+                  {{ userData.gender }}
+                </p>
+                <hr class="border-[#BDBDBD]" />
+              </div>
+              <div class="school-class space-y-2">
+                <p class="roboto text-[#333333] text-base font-medium">
+                  Kelas
+                </p>
+                <p
+                  class="roboto text-base text-[#616161] font-normal leading-6"
+                >
+                  {{ userData.schoolClass }}
+                </p>
+                <hr class="border-[#BDBDBD]" />
+              </div>
             </div>
           </div>
         </div>
-        <div class="kelas-g2academy rounded-[10px] bg-white">
+        <div class="kelas-bootcamp rounded-[10px] bg-white">
           <div class="p-6">
             <h2 class="alata text-lg text-[#333333] font-normal leading-4">
-              Kelas G2Academy
+              Kelas Bootcamp
             </h2>
           </div>
           <hr class="border-[#F7F7F7]" />
-          <div class="p-6">
-            <p class="roboto text-base text-[#333333] font-medium leading-6">
-              -
-            </p>
+          <div class="p-6 grid md:grid-cols-2 grid-cols-1 gap-7">
+            <div class="space-y-6">
+              <div class="class-name space-y-2">
+                <p class="roboto text-[#333333] text-base font-medium">
+                  Nama Kelas
+                </p>
+                <p
+                  class="roboto text-base text-[#616161] font-normal leading-6"
+                >
+                  {{ userData.classBootcampId.name }}
+                </p>
+                <hr class="border-[#BDBDBD]" />
+              </div>
+              <div class="foundation space-y-2">
+                <p class="roboto text-[#333333] text-base font-medium">
+                  Pendiri
+                </p>
+                <p
+                  class="roboto text-base text-[#616161] font-normal leading-6"
+                >
+                  {{ userData.classBootcampId.foundation }}
+                </p>
+                <hr class="border-[#BDBDBD]" />
+              </div>
+            </div>
+            <div class="space-y-6">
+              <div class="address space-y-2">
+                <p class="roboto text-[#333333] text-base font-medium">
+                  Alamat
+                </p>
+                <p
+                  class="roboto text-base text-[#616161] font-normal break-normal h-6 max-h-6 w-full max-w-full overflow-x-auto"
+                >
+                  {{ userData.classBootcampId.address }}
+                </p>
+                <hr class="border-[#BDBDBD]" />
+              </div>
+              <div class="leader-instructor space-y-2">
+                <p class="roboto text-[#333333] text-base font-medium">
+                  Kepala Intruktor
+                </p>
+                <p
+                  class="roboto text-base text-[#616161] font-normal leading-6"
+                >
+                  {{ userData.classBootcampId.leadInstructor }}
+                </p>
+                <hr class="border-[#BDBDBD]" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -270,8 +345,60 @@
   </div>
 </template>
 <script>
+import { createConfig, responseManager } from '~/service/api-manager';
 export default {
-  name: 'ProfilePage'
+  name: 'ProfilePage',
+  data() {
+    return {
+      userData: {
+        createAt: '',
+        noSiswa: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        avatarUrl: '',
+        schoolClass: '',
+        batch: '',
+        description: '',
+        gender: '',
+        birthDate: '',
+        favorite: '',
+        viewers: 0,
+        classBootcampId: {
+          name: '',
+          foundation: '',
+          address: '',
+          leadInstructor: ''
+        }
+      }
+    };
+  },
+  mounted() {
+    this.getUserById();
+  },
+  methods: {
+    async getUserById() {
+      try {
+        const { data: resData } = await this.$axios(
+          /* eslint-disable new-cap */
+          new createConfig().getData({
+            url: `user/${localStorage.getItem('userId')}`,
+          })
+        );
+        this.userData = resData.data;
+      } catch (err) {
+        const error = new responseManager().manageError(err);
+        this.$toast.show(error?.error || error.message, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+      }
+    },
+
+  }
 };
 </script>
 <style scoped>
