@@ -11,7 +11,9 @@
             <h2 class="text-[32px] font-medium leading-[40px]">Overview :</h2>
           </div>
           <div class="">
-            <h2 class="text-[32px] font-medium leading-[40px]">{{userData.viewers }}</h2>
+            <h2 class="text-[32px] font-medium leading-[40px]">
+              {{ userData.viewers }}
+            </h2>
             <p>Jumlah Profil Dilihat</p>
           </div>
           <div class="">
@@ -150,9 +152,7 @@
                 <hr class="border-[#BDBDBD]" />
               </div>
               <div class="school-class space-y-2">
-                <p class="roboto text-[#333333] text-base font-medium">
-                  Kelas
-                </p>
+                <p class="roboto text-[#333333] text-base font-medium">Kelas</p>
                 <p
                   class="roboto text-base text-[#616161] font-normal leading-6"
                 >
@@ -347,7 +347,7 @@
 <script>
 import { createConfig, responseManager } from '~/service/api-manager';
 export default {
-  name: 'ProfilePage',
+  name: 'ProfileIdPage',
   data() {
     return {
       userData: {
@@ -375,6 +375,7 @@ export default {
   },
   mounted() {
     this.getUserById();
+    console.log(atob(this.$route.params.id));
   },
   methods: {
     async getUserById() {
@@ -382,7 +383,7 @@ export default {
         const { data: resData } = await this.$axios(
           /* eslint-disable new-cap */
           new createConfig().getData({
-            url: `user/${localStorage.getItem('userId')}`,
+            url: `user/${atob(this.$route.params.id)}`
           })
         );
         this.userData = resData.data;
@@ -396,8 +397,7 @@ export default {
           singleton: true
         });
       }
-    },
-
+    }
   }
 };
 </script>
