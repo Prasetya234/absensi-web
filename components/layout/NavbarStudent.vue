@@ -40,10 +40,10 @@
           </li> -->
           <li
             :class="`${activeMenu(
-              '/profile',
+              `/profile`,
               route
             )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
-            @click="$router.push('/profile')"
+            @click="profile"
           >
             <span>
               <icons-profile />
@@ -150,6 +150,10 @@ export default {
         });
       removeAllStorage()
       this.$router.push('/login');
+    },
+    profile() {
+      const userId = btoa(localStorage.getItem('userId'))
+      this.$router.push('/profile/' + userId)
     }
   }
 };
