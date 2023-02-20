@@ -1,37 +1,54 @@
 <template>
   <div
-    class="flex justify-center items-center pt-[6.85%]"
+    class="flex justify-center items-center pt-[5.85%]"
     style="height: 100vh"
   >
-    <div class="container w-4/5">
-      <aside>
-        <header>
+    <div class="container w-11/12">
+      <aside class="border-r w-2/4">
+        <header class="border-b">
           <h1 class="title">Chat (BETA)</h1>
-          <input type="text" placeholder="search" />
+          <div class="box-input flex gap-x-3 border rounded-lg px-2 py-1">
+            <input type="text" placeholder="Search" class="" />
+            <span class="flex items-center">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 18C11.775 17.9996 13.4988 17.4054 14.897 16.312L19.293 20.708L20.707 19.294L16.311 14.898C17.405 13.4997 17.9996 11.7754 18 10C18 5.589 14.411 2 10 2C5.589 2 2 5.589 2 10C2 14.411 5.589 18 10 18ZM10 4C13.309 4 16 6.691 16 10C16 13.309 13.309 16 10 16C6.691 16 4 13.309 4 10C4 6.691 6.691 4 10 4Z"
+                  fill="#828282"
+                />
+                <path
+                  d="M11.4118 8.58511C11.7908 8.96511 11.9998 9.46711 11.9998 9.99911H13.9998C14.0007 9.47354 13.8974 8.953 13.6959 8.46759C13.4944 7.98219 13.1987 7.54153 12.8258 7.17111C11.3118 5.65911 8.68683 5.65911 7.17383 7.17111L8.58583 8.58711C9.34583 7.82911 10.6558 7.83111 11.4118 8.58511Z"
+                  fill="#828282"
+                />
+              </svg>
+            </span>
+          </div>
         </header>
         <ul>
           <li
             v-for="(data, idx) in getContactList"
             :key="idx"
+            :class="data.active ? 'bg-[#f7931e] text-white' : 'bg-transparent text-black'"
+            class="border-b gap-x-3"
             @click="selectedContactChat(idx)"
           >
             <img :src="data.image" alt="Profile Picture" />
             <div>
               <h2 class="truncate">{{ data.name }}</h2>
-              <h3>
-                <span class="status green" v-if="data.active"></span>
-                <span class="status orange" v-else></span>
-                {{ data.active ? 'Selected' : 'Unselected' }}
-              </h3>
             </div>
           </li>
         </ul>
       </aside>
       <main>
         <header>
-          <div class="flex w-2/4">
+          <div class="flex gap-x-5 w-2/4">
             <img :src="activechat.image" alt="Image Active" />
-            <div class="ml-4">
+            <div class="flex items-center">
               <h2>{{ activechat.name }}</h2>
               <!-- <h3>already 1902 messages</h3> -->
             </div>
@@ -44,18 +61,17 @@
           </div>
         </header>
         <ul
-          id="chat"
           v-if="chatList.length && !activechat.notcomment"
+          id="chat"
           ref="scrollToMe"
         >
           <li
             v-for="(data, idx) in chatList"
+            :id="`m-${idx}`"
             :key="idx"
             :class="data.me ? 'me' : 'you'"
-            :id="`m-${idx}`"
           >
             <div class="entete">
-              <span :class="`status ${data.me ? 'blue' : 'green'}`"></span>
               <h2>{{ data.senderName }}</h2>
               <h3>{{ new Date(data.date) }}</h3>
             </div>
@@ -72,12 +88,13 @@
         >
           <h1>Belum ada Chat</h1>
         </div>
-        <footer v-if="!activechat.notcomment">
+        <footer v-if="!activechat.notcomment" class="border-t flex justify-center items-center gap-x-3">
           <textarea
-            placeholder="Type your message"
             v-model="textchat"
+            placeholder="Type your message"
+            class="border focus:outline-none focus:ring-0"
           ></textarea>
-          <button class="cursor-pointer" @click="sendMessage">Send</button>
+          <button class="cursor-pointer border border-transparent rounded-lg bg-[#f7931e] text-white transition duration-300 hover:bg-transparent hover:text-[#f7931e] hover:border-[#f7931e] hover:transition hover:duration-300" @click="sendMessage">Send</button>
         </footer>
       </main>
     </div>
@@ -85,10 +102,10 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import { getClassId, getUsername } from '~/utils/auth';
 import { createConfig } from '~/service/api-manager';
 import emptyImage from '~/assets/img/empty-profile.png';
-import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Chat',
@@ -111,7 +128,12 @@ export default {
   },
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
-    ...mapActions('chat', ['addContact', 'sendMessages', 'setChatFirst', 'setActiveContact']),
+    ...mapActions('chat', [
+      'addContact',
+      'sendMessages',
+      'setChatFirst',
+      'setActiveContact'
+    ]),
     sendMessage() {
       if (!this.textchat) return;
       const chatMessage = {
@@ -134,6 +156,7 @@ export default {
     async fetchChat() {
       try {
         const { data } = await this.$axios(
+          // eslint-disable-next-line new-cap
           new createConfig().getData({
             url: 'chat'
           })
@@ -141,7 +164,7 @@ export default {
         this.setChatFirst(
           data.data.map((item) => ({
             ...item,
-            me: item.senderName === getUsername() ? true : false
+            me: item.senderName === getUsername()
           }))
         );
       } catch (error) {
@@ -150,10 +173,10 @@ export default {
     },
     scrollDown() {
       this.$nextTick(() => {
-        let length = this.chatList.length;
+        const length = this.chatList.length;
         if (length > 0) {
-          let id = length - 1;
-          let element = document.getElementById('m-' + id);
+          const id = length - 1;
+          const element = document.getElementById('m-' + id);
           element.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
       });
@@ -164,7 +187,8 @@ export default {
           ...data,
           schoolId: getClassId()
         };
-        this.$axios(
+        await this.$axios(
+          // eslint-disable-next-line new-cap
           new createConfig().postData({
             url: 'chat/send',
             data: chatMessage
@@ -177,6 +201,7 @@ export default {
     async fetchSchool() {
       try {
         const { data } = await this.$axios(
+          // eslint-disable-next-line new-cap
           new createConfig().getData({
             url: 'class-bootcamp/' + getClassId()
           })
@@ -202,18 +227,23 @@ export default {
 };
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
 .container {
-  height: 580px;
   background: white;
   margin: 0 auto;
   font-size: 0;
+  font-family: 'Roboto', sans-serif;
   border-radius: 5px;
   overflow: hidden;
+  border: gainsboro;
+  box-shadow: 0 2px 4px gainsboro;
 }
 aside {
   width: 25%;
   height: 100%;
-  background-color: #3b3e49;
+  background-color: #ffffff;
   display: inline-block;
   font-size: 15px;
   vertical-align: top;
@@ -228,22 +258,19 @@ main {
 aside header {
   padding: 30px 20px;
 }
-aside input {
+aside div input {
   width: 100%;
-  height: 50px;
+  height: 35px;
   line-height: 50px;
-  padding: 0 50px 0 20px;
-  background-color: #5e616a;
+  padding: 0 20px;
+  background-color: #ffffff;
   border: none;
   border-radius: 3px;
-  color: #fff;
-  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_search.png);
-  background-repeat: no-repeat;
-  background-position: 220px;
-  background-size: 40px;
+  color: #828282;
 }
-aside input::placeholder {
-  color: #fff;
+aside div input::placeholder {
+  color: #000000;
+  font-family: 'Open Sans', sans-serif;
 }
 aside ul {
   padding-left: 0;
@@ -259,7 +286,8 @@ aside li {
   align-items: center;
 }
 aside li:hover {
-  background-color: #5e616a;
+  background-color: #fde9d0;
+  color: #000000;
 }
 h2,
 h3 {
@@ -267,23 +295,21 @@ h3 {
 }
 aside li img {
   border-radius: 50%;
-  width: 60px;
-  margin-left: 20px;
-  margin-right: 8px;
+  width: 50px;
+  margin-left: 5%;
 }
 aside li div {
   display: inline-block;
   vertical-align: top;
 }
 aside li h2 {
-  font-size: 14px;
-  color: #fff;
-  font-weight: normal;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Alata', sans-serif;
   margin-bottom: 5px;
 }
 aside li h3 {
   font-size: 12px;
-  color: #7e818a;
   font-weight: normal;
 }
 
@@ -294,24 +320,17 @@ aside li h3 {
   display: inline-block;
   margin-right: 7px;
 }
-.green {
-  background-color: #58b666;
-}
 .orange {
   background-color: #ff725d;
 }
-.blue {
-  background-color: #6fbced;
-  margin-right: 0;
-  margin-left: 7px;
-}
 
 main header {
-  height: 110px;
+  height: 80px;
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 30px 20px 30px 40px;
+  padding: 10px 20px 10px 40px;
+  box-shadow: 1.5px 4px 4px gainsboro;
 }
 
 main header img:first-child {
@@ -323,7 +342,9 @@ main header img:last-child {
 }
 
 main header h2 {
-  font-size: 16px;
+  font-size: 17px;
+  font-family: 'Alata', sans-serif;
+  font-weight: 600;
   margin-bottom: 5px;
 }
 main header h3 {
@@ -344,36 +365,42 @@ main header h3 {
 #chat li {
   padding: 10px 30px;
 }
-#chat h2,
-#chat h3 {
+#chat h2 {
   display: inline-block;
-  font-size: 13px;
-  font-weight: normal;
+  font-family: 'Alata', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
 }
 #chat h3 {
   color: #bbb;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: normal;
 }
 #chat .entete {
   margin-bottom: 10px;
 }
 #chat .message {
-  padding: 20px;
-  color: #fff;
+  padding: 7px 17px;
   line-height: 25px;
   max-width: 90%;
   display: inline-block;
   text-align: left;
+  font-family: 'Open Sans', sans-serif;
   border-radius: 5px;
+  box-shadow: 3px 4px 4px gainsboro;
 }
 #chat .me {
   text-align: right;
   position: relative;
 }
 #chat .you .message {
-  background-color: #58b666;
+  background-color: #fde9d0;
+  color: #000000;
 }
 #chat .me .message {
-  background-color: #6fbced;
+  background-color: #f7931e;
+  color: #ffffff;
 }
 #chat .triangle {
   width: 0;
@@ -382,34 +409,33 @@ main header h3 {
   border-width: 0 10px 10px 10px;
 }
 #chat .you .triangle {
-  border-color: transparent transparent #58b666 transparent;
+  border-color: transparent transparent #fde9d0 transparent;
   margin-left: 15px;
 }
 #chat .me .triangle {
-  border-color: transparent transparent #6fbced transparent;
+  border-color: transparent transparent #f7931e transparent;
   position: absolute;
-  right: 44px;
-  top: 35px;
+  right: 4.5%;
+  top: 39.5%;
 }
 main footer {
   display: flex;
   gap: 1;
-  padding: 20px 30px 10px 20px;
+  padding: 20px 30px 20px 20px;
 }
 main footer textarea {
   resize: none;
-  border: none;
   display: block;
   width: 100%;
-  padding: 4px;
+  height: 36px;
+  padding: 4px 7px;
   border-radius: 3px;
   font-size: 13px;
-  margin-bottom: 13px;
 }
 .title {
   font-size: 22px;
   font-weight: bold;
-  color: white;
+  color: #000000;
   margin-bottom: 20px;
 }
 main footer textarea::placeholder {
@@ -420,19 +446,15 @@ main footer img {
   cursor: pointer;
 }
 main footer button {
-  border: none;
+  height: fit-content;
   text-decoration: none;
   text-transform: uppercase;
   font-weight: bold;
-  color: #6fbced;
-  vertical-align: top;
-  margin-left: 30px;
-  margin-top: -20px;
-  display: inline-block;
+  padding: 6px 15px;
 }
 
 ::-webkit-scrollbar {
-  width: 16px;
+  width: 10px;
   height: 16px;
 }
 
@@ -446,7 +468,7 @@ main footer button {
 ::-webkit-scrollbar-thumb {
   background: #cbd5e0;
   border-radius: 100vh;
-  border: 3px solid #edf2f7;
+  border: 2px solid #edf2f7;
 }
 
 /* Handle on hover */
