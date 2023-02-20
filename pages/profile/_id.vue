@@ -23,10 +23,10 @@
         </div>
         <div class="rounded-[10px]">
           <div class="relative">
-            <div class="background-profile">
+            <div class="background-profile h-32">
               <img
-                class="rounded-t-[10px]"
-                src="~assets/img/background-profile.jpg"
+                class="rounded-t-[10px] h-48 w-full"
+                :src="userData.classBootcampId.backgroundProfile"
                 alt="background-profile"
               />
             </div>
@@ -65,7 +65,7 @@
               </div>
             </div>
           </div>
-          <div class="bg-white p-3 space-y-11 rounded-b-[10px]">
+          <div class="bg-white p-3 space-y-11 rounded-b-[10px] mt-16">
             <div class="flex justify-end gap-4 montserrat">
               <button
                 class="py-2 px-6 rounded-lg text-sm text-white font-bold bg-[#CC6633]"
@@ -78,7 +78,7 @@
                 Download Profile
               </button>
             </div>
-            <div class="px-8 py-5 roboto text-[#333333] space-y-2">
+            <div class="px-8 py-4 roboto text-[#333333] space-y-2">
               <h2 class="username alata text-[26px] font-normal leading-[38px]">
                 {{ userData.firstName }} {{ userData.lastName }}
               </h2>
@@ -368,14 +368,14 @@ export default {
           name: '',
           foundation: '',
           address: '',
-          leadInstructor: ''
+          leadInstructor: '',
+          backgroundProfile: ''
         }
       }
     };
   },
   mounted() {
     this.getUserById();
-    console.log(atob(this.$route.params.id));
   },
   methods: {
     async getUserById() {
