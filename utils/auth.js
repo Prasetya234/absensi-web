@@ -22,11 +22,18 @@ export function getClassId() {
 export function setClassId(classId) {
   return localStorage.setItem('class_id', classId);
 }
+export function getRole() {
+  return localStorage.getItem('role') || null;
+}
+export function setRole(role) {
+  return localStorage.setItem('role', role);
+}
 export function loggined({data}) {
   setUserId(data.user.id)
   setUsername(data.user.firstName + " " + data.user.lastName)
   setToken(data.token)
   setClassId(data.user?.classBootcampId?.id)
+  setRole(data.user?.roleId.name)
 }
 export function isAuthenticated() {
   return getToken() && getUserId() && getClassId(); 

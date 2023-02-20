@@ -14,7 +14,8 @@ export default {
   name: 'LayoutDefault',
   computed: {
     pattren() {
-      return publicPath.find((route) => route.path !== this.$route.path);
+      const res = publicPath.find((route) => route.path === this.$route.path)
+      return res ? res.no_nav !== true : true;
     },
     isLoading() {
       return this.$store.getters['loading/getLoading'];
@@ -34,11 +35,7 @@ export default {
   methods: {
     ...mapActions('chat', ['connect']),
     initializeMiddleware(router) {
-      if (
-        !isAuthenticated() &&
-        !publicPath.find((route) => route.path === router.path)
-      )
-        this.$router.push('/login');
+      if (!isAuthenticated() && publicPath.find((route) => route.path === router.path)?.isAuthenticate !== false) this.$router.push('/login');
     }
   }
 };
