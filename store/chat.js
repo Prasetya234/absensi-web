@@ -26,7 +26,7 @@ export const getters = {
         return state.contacs
     },
     getStompClient(state) {
-        return JSON.parse(state.stompClient)
+        return state.stompClient ? true : false
     },
     chatList(state) {
         return state.chat
@@ -82,6 +82,7 @@ export const actions = {
         let Sock = new SockJS(API_WEB_SOCKET);
         stompClient = over(Sock);
         stompClient.connect({}, (e) => dispatch('onConnected', e), (e) => dispatch('onError', e));
+        commit('SET_STOMP_CLIENT', JSON.stringify(stompClient))
     },
     onConnected({ commit, dispatch }) {
         stompClient.subscribe('/chatroom/public', (e) => dispatch('onMessageReceived', e));
