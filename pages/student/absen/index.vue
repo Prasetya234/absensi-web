@@ -287,6 +287,7 @@ export default {
     }
   },
   async mounted() {
+    this.$emit('no-nav')
     this.showLoading();
     await this.fetchConditionalAbsence();
     await this.fetchOperationalClass();
