@@ -1,22 +1,18 @@
 <template>
-  <div :class="`${pattren ? 'bg-[#F5F5F5]' : ''}`">
-    <layout-navbar-student v-if="pattren" />
+  <div class="bg-[#F5F5F5]">
     <ilustration-loading v-if="isLoading" />
     <Nuxt />
   </div>
 </template>
 <script>
-import { isAuthenticated } from '~/utils/auth';
 import publicPath from '~/utils/publicPath';
+
+import { isAuthenticated } from '~/utils/auth';
 import { mapActions } from 'vuex';
 
 export default {
   name: 'LayoutDefault',
   computed: {
-    pattren() {
-      const res = publicPath.find((route) => route.path === this.$route.path)
-      return res ? res.no_nav !== true : true;
-    },
     isLoading() {
       return this.$store.getters['loading/getLoading'];
     }

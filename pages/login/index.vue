@@ -191,7 +191,7 @@ export default {
         );
         loggined(resData)
         if (!this.getStompClient) this.connect();
-        this.$router.push('/dashboard');
+        this.$router.push('/');
         this.$toast.show(`Welcome ${resData.data.user?.firstName}`, {
           position: 'top-center',
           type: 'success',
@@ -215,7 +215,7 @@ export default {
   },
   mounted() {
     if (isAuthenticated()) {
-      this.$router.push('/dashboard');
+      this.$router.push('/');
     }
   }
 };
