@@ -12,10 +12,10 @@
         <ul class="flex justify-center items-center gap-[16px]">
           <li
             :class="`${activeMenu(
-              '/',
+              '/student',
               route
             )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
-            @click="$router.push('/')"
+            @click="$router.push('/student')"
           >
             <span>
               <icons-home />
@@ -24,23 +24,9 @@
               >Home</span
             >
           </li>
-          <!-- <li
-            :class="`${activeMenu(
-              '/notification',
-              route
-            )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
-          >
-            <span>
-              <icons-notification />
-            </span>
-            <span
-              class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
-              >Notification</span
-            >
-          </li> -->
           <li
             :class="`${activeMenu(
-              `/profile`,
+              `/student/profile`,
               route
             )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
             @click="profile"
@@ -55,10 +41,10 @@
           </li>
           <li
             :class="`${activeMenu(
-              '/calender',
+              '/student/calender',
               route
             )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
-            @click="$router.push('/calender')"
+            @click="$router.push('/student/calender')"
           >
             <span class="relative">
               <icons-timetable />
@@ -70,10 +56,10 @@
           </li>
           <li
             :class="`${activeMenu(
-              '/chat',
+              '/student/chat',
               route
             )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
-            @click="$router.push('/chat')"
+            @click="$router.push('/student/chat')"
           >
             <span class="relative">
               <icons-chat />
@@ -84,10 +70,7 @@
             >
           </li>
           <li
-            :class="`${activeMenu(
-              '/other',
-              route
-            )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633] group`"
+            class="flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer text-[#828282] fill-[#828282] hover:text-[#CC6633] hover:fill-[#CC6633] group"
           >
             <span class="flex items-center">
               <icons-other />
@@ -126,7 +109,7 @@
   </div>
 </template>
 <script>
-import { getUsername, removeAllStorage } from '~/utils/auth';
+import { getUserId, getUsername, removeAllStorage } from '~/utils/auth';
 export default {
   name: 'NavbarComponent',
   computed: {
@@ -152,8 +135,8 @@ export default {
       this.$router.push('/login');
     },
     profile() {
-      const userId = btoa(localStorage.getItem('userId'))
-      this.$router.push('/profile/' + userId)
+      const userId = btoa(getUserId())
+      this.$router.push('/student/profile/' + userId)
     }
   }
 };
