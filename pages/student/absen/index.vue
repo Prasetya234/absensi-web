@@ -4,66 +4,90 @@
     style="min-height: 100vh"
   >
     <div
-      class="absolute top-5 left-3 flex gap-3 items-center cursor-pointer"
+      class="absolute top-5 left-5 flex gap-3 items-center cursor-pointer"
       @click="$router.go(-1)"
     >
-      <icons-arrow size="18" />
-      <span class="font-bold text-2xl">Daily absen</span>
+      <icons-arrow
+        size="28"
+        class="rounded-full p-1.5 transition duration-300 hover:bg-gray-300 hover:transition hover:duration-300"
+      />
+      <span class="font-bold text-2xl text-center nunito">Daily Absen</span>
     </div>
     <!-- <span class="absolute right-5 top-5 p-3 rounded-xl bg-[#CC6633] text-white font-md" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">00 : 00 : 10</span> -->
     <div
-      class="bg-white rounded-md p-3 flex relative justify-center flex-wrap"
+      class="bg-white rounded-md"
       style="max-width: 800px; width: 100%; max-height: 550px"
     >
-      <div class="w-full text-center p-4 text-sm text-gray-400">
-        I declare that I am an absentee and ready to take responsibility for
-        what I do
+      <div
+        class="p-3 rounded-md border-[6px] border-dashed border-gray-200 w-full h-full"
+      >
+        <div class="flex justify-center flex-wrap w-full h-[90%]">
+          <div class="w-full text-center p-4 text-base text-gray-400 nunito">
+            I declare that I am an absent and ready to take responsibility for
+            what I do
+          </div>
+          <div class="relative w-100" v-if="readyAbasen">
+            <span
+              v-if="isNotNotDetected"
+              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-400 text-xl font-bold z-20"
+              >Face not detected!</span
+            >
+            <canvas class="absolute z-10" ref="canvasref"></canvas>
+            <video
+              :class="isNotNotDetected ? 'opacity-50' : ''"
+              ref="videoref"
+              autoplay
+              muted
+              :height="custom.videoHeight"
+              :width="custom.videoWidth"
+              @play="handleVideoOnPlay"
+            ></video>
+          </div>
+          <div class="w-100" v-else>
+            <button
+              type="button"
+              class="bubbly-button nunito"
+              @click="onReadyAbsen"
+            >
+              Click for start scan
+            </button>
+          </div>
+          <div
+            class="w-full text-center p-4 text-md font-bold"
+            v-if="readyAbasen"
+          >
+            <span class="text-red-400" v-if="isProcess">On Processing...</span>
+            <span class="text-green-400" v-if="!isNotNotDetected && !isProcess"
+              >In process of scanning. <b>Please wait</b></span
+            >
+            <span
+              class="block text-center text-sm text-gray-500"
+              v-if="isNotNotDetected"
+              >Position your face to the camera</span
+            >
+          </div>
+        </div>
+        <div class="flex justify-center h-fit">
+          <div class="nunito font-[500]">
+            <p>
+              Class Start Time :
+              <span class="text-left"> {{ operationalClass.entryTime }}</span>
+            </p>
+            <p>
+              Class End Time :
+              <span>{{ operationalClass.dismissalTime }}</span>
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="relative w-100" v-if="readyAbasen">
-        <span
-          v-if="isNotNotDetected"
-          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-red-400 text-xl font-bold z-20"
-          >Face not detected!</span
-        >
-        <canvas class="absolute z-10" ref="canvasref"></canvas>
-        <video
-          :class="isNotNotDetected ? 'opacity-50' : ''"
-          ref="videoref"
-          autoplay
-          muted
-          :height="custom.videoHeight"
-          :width="custom.videoWidth"
-          @play="handleVideoOnPlay"
-        ></video>
-      </div>
-      <div class="w-100" v-else>
-        <button type="button" class="bubbly-button" @click="onReadyAbsen">
-          Click for start scan
-        </button>
-      </div>
-      <div class="w-full text-center p-4 text-md font-bold" v-if="readyAbasen">
-        <span class="text-red-400" v-if="isProcess">On Processing...</span>
-        <span class="text-green-400" v-if="!isNotNotDetected && !isProcess"
-          >In process of scanning. <b>Please wait</b></span
-        >
-        <span
-          class="block text-center text-sm text-gray-500"
-          v-if="isNotNotDetected"
-          >Position your face to the camera</span
-        >
-      </div>
-    </div>
-    <div class="absolute bottom-5">
-      <p>Start Class {{ operationalClass.entryTime }}</p>
-      <p>End Class {{ operationalClass.dismissalTime }}</p>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import * as faceapi from 'face-api.js';
 import { createConfig, responseManager } from '~/service/api-manager';
-import { mapActions } from 'vuex';
 import { getUserId, getUsername } from '~/utils/auth';
 
 export default {
@@ -109,7 +133,7 @@ export default {
       navigator.getUserMedia(
         { video: {} },
         (stream) => (this.$refs.videoref.srcObject = stream),
-        (err) => {}
+        (err) => err
       );
     },
     getToastError() {
@@ -159,7 +183,7 @@ export default {
     },
     onCheckFace(el) {
       const valNumb = this.detectorScores.find(
-        (e) => e == el.detection._score.toFixed(2)
+        (e) => e === el.detection._score.toFixed(2)
       );
       if (valNumb) {
         this.fetchAbsenceNow(valNumb);
@@ -168,7 +192,7 @@ export default {
       return 'Unknown';
     },
     otherCondition(el) {
-      if (el.length == 0) {
+      if (el.length === 0) {
         this.isNotNotDetected = true;
       } else {
         this.isNotNotDetected = false;
@@ -209,6 +233,7 @@ export default {
     async fetchOperationalClass() {
       try {
         const { data } = await this.$axios(
+          // eslint-disable-next-line new-cap
           new createConfig().getData({
             url: 'operational-class'
           })
@@ -219,6 +244,7 @@ export default {
     async fetchFace() {
       try {
         const { data } = await this.$axios(
+          // eslint-disable-next-line new-cap
           new createConfig().getData({
             url: 'face-user/' + getUserId()
           })
@@ -233,6 +259,7 @@ export default {
       this.showLoading();
       try {
         await this.$axios(
+          // eslint-disable-next-line new-cap
           new createConfig().postData({
             url: 'presensi/absen-now',
             data: this.absenceModel
@@ -250,6 +277,7 @@ export default {
           window.location.reload();
         }, 2000);
       } catch {
+        // eslint-disable-next-line new-cap
         const error = new responseManager().manageError(this.errorMessage);
         this.errorMessage(error?.error || error.message);
       } finally {
@@ -259,6 +287,7 @@ export default {
     async fetchConditionalAbsence() {
       try {
         const { data: resp } = await this.$axios(
+          // eslint-disable-next-line new-cap
           new createConfig().getData({
             url: 'presensi/check'
           })
@@ -287,7 +316,7 @@ export default {
     }
   },
   async mounted() {
-    this.$emit('no-nav')
+    this.$emit('no-nav');
     this.showLoading();
     await this.fetchConditionalAbsence();
     await this.fetchOperationalClass();
@@ -298,8 +327,12 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+.nunito {
+  font-family: 'Nunito', sans-serif;
+}
 .bubbly-button {
-  font-family: 'Helvetica', 'Arial', sans-serif;
   display: inline-block;
   font-size: 1em;
   padding: 1em 2em;
@@ -312,7 +345,8 @@ export default {
   cursor: pointer;
   position: relative;
   transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
-  box-shadow: 0 2px 25px rgba(255, 0, 130, 0.5);
+  /* box-shadow: 0 2px 25px rgba(255, 0, 130, 0.5); */
+  box-shadow: 0 2px 25px #cc6633;
 }
 .bubbly-button:focus {
   outline: 0;
