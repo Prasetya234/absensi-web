@@ -102,7 +102,14 @@ export const actions = {
         }
         if (!me) notificateAudioPlay()
     },
-    sendMessages({ commit }, payload) {
+    sendMessages({ commit, dispatch }, payload) {
+        if (!stompClient) {
+            dispatch('connect')
+            setTimeout(() => {
+                stompClient.send('/app/message', {}, JSON.stringify(payload));
+            }, 1000);
+            return
+        }
         stompClient.send('/app/message', {}, JSON.stringify(payload));
     },
     onError({ commit }, error) {

@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 import './style.css';
 import { createConfig, responseManager } from '@/service/api-manager/index';
@@ -167,14 +167,10 @@ export default {
       role: 'student'
     };
   },
-  computed: {
-    ...mapGetters('chat', ['getStompClient'])
-  },
   methods: {
     onToggle() {
       this.isOpen = !this.isOpen;
     },
-     ...mapActions('chat', ['connect']),
     ...mapActions('loading', ['showLoading', 'hideLoading']),
     async onLogin(e) {
       e.preventDefault();
@@ -190,7 +186,6 @@ export default {
           })
         );
         loggined(resData)
-        if (!this.getStompClient) this.connect();
         this.$router.push('/');
         this.$toast.show(`Welcome ${resData.data.user?.firstName}`, {
           position: 'top-center',
@@ -218,5 +213,5 @@ export default {
       this.$router.push('/');
     }
   }
-};
+}
 </script>
