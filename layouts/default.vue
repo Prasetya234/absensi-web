@@ -24,6 +24,7 @@ export default {
   },
   mounted() {
     this.initializeMiddleware(this.$route);
+    this.requestPermision();
     if (isAuthenticated()) {
       this.connect();
     }
@@ -31,7 +32,15 @@ export default {
   methods: {
     ...mapActions('chat', ['connect']),
     initializeMiddleware(router) {
-      if (!isAuthenticated() && publicPath.find((route) => route.path === router.path)?.isAuthenticate !== false) this.$router.push('/login');
+      if (
+        !isAuthenticated() &&
+        publicPath.find((route) => route.path === router.path)
+          ?.isAuthenticate !== false
+      )
+        this.$router.push('/login');
+    },
+    requestPermision() {
+        if (Notification.permission !== "granted") Notification.requestPermission();
     }
   }
 };

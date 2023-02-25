@@ -2,7 +2,7 @@ import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import { API_WEB_SOCKET } from '~/utils/api';
 import { getUsername } from '~/utils/auth';
-import { notificateAudioPlay } from '~/utils/audio';
+import { notificateAudioPlay, notificatePopUpPlay } from '~/utils/notification';
 var stompClient = null
 
 export const state = () => ({
@@ -100,7 +100,10 @@ export const actions = {
                 })
                 break;
         }
-        if (!me) notificateAudioPlay()
+        if (!me) {
+            notificateAudioPlay()
+            notificatePopUpPlay({ message: payloadData.message })
+        }
     },
     sendMessages({ commit, dispatch }, payload) {
         if (!stompClient) {
