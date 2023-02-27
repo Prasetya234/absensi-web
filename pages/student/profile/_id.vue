@@ -14,11 +14,11 @@
             <h2 class="text-[32px] font-medium leading-[40px]">
               {{ userData.viewers }}
             </h2>
-            <p>Jumlah Profil Dilihat</p>
+            <p>Viewers</p>
           </div>
           <div class="">
             <h2 class="text-[32px] font-medium leading-[40px]">5</h2>
-            <p>Lamaran Diproses</p>
+            <p>...</p>
           </div>
         </div>
         <div class="rounded-[10px]">
@@ -26,7 +26,7 @@
             <div class="background-profile h-32">
               <img
                 class="rounded-t-[10px] h-48 w-full"
-                :src="userData.classBootcampId.backgroundProfile"
+                :src="userData.schoolId.backgroundProfile"
                 alt="background-profile"
               />
             </div>
@@ -43,7 +43,7 @@
                   <div class="flex justify-center">
                     <button class="h-7 px-5 pb-0.5 flex items-center gap-2">
                       <p class="alata text-white text-[10px] font-normal">
-                        Ganti Foto
+                        Change Photo
                       </p>
                       <span class="">
                         <svg
@@ -70,7 +70,7 @@
               <button
                 class="py-2 px-6 rounded-lg text-sm text-white font-bold bg-[#CC6633]"
               >
-                Ubah
+                Change
               </button>
               <button
                 class="py-2 px-6 rounded-lg text-sm text-[#F7931E] font-bold bg-[#FDE9D2]"
@@ -83,12 +83,12 @@
                 {{ userData.firstName }} {{ userData.lastName }}
               </h2>
               <p class="registered-since text-base text-[#616161] font-normal">
-                Terdaftar sejak {{ userData.createAt }}
+                Registered since {{ userData.createAt }}
               </p>
               <div class="flex gap-x-5">
                 <div class="space-y-2">
                   <h5 class="text-base font-medium">Email</h5>
-                  <h5 class="text-base font-medium">No Urut</h5>
+                  <h5 class="text-base font-medium">Serial Number</h5>
                 </div>
                 <div class="space-y-2">
                   <p class="text-base font-normal">{{ userData.email }}</p>
@@ -101,7 +101,7 @@
         <div class="deskripsi rounded-[10px] bg-white">
           <div class="p-6">
             <h2 class="alata text-lg text-[#333333] font-normal leading-4">
-              Deskripsi
+              Description
             </h2>
           </div>
           <hr class="border-[#F7F7F7]" />
@@ -110,7 +110,7 @@
         <div class="biodata-siswa rounded-[10px] bg-white">
           <div class="p-6">
             <h2 class="alata text-lg text-[#333333] font-normal leading-4">
-              Biodata Siswa
+              Student Bio
             </h2>
           </div>
           <hr class="border-[#F7F7F7]" />
@@ -118,7 +118,7 @@
             <div class="space-y-6">
               <div class="fullname space-y-2">
                 <p class="roboto text-[#333333] text-base font-medium">
-                  Nama Lengkap
+                  Full Name
                 </p>
                 <p
                   class="roboto text-base text-[#616161] font-normal leading-6"
@@ -129,7 +129,7 @@
               </div>
               <div class="birth-date space-y-2">
                 <p class="roboto text-[#333333] text-base font-medium">
-                  Tanggal Lahir
+                  Date of Birth
                 </p>
                 <p
                   class="roboto text-base text-[#616161] font-normal leading-6"
@@ -142,7 +142,7 @@
             <div class="space-y-6">
               <div class="gender space-y-2">
                 <p class="roboto text-[#333333] text-base font-medium">
-                  Jenis Kelamin
+                  Gender
                 </p>
                 <p
                   class="roboto text-base text-[#616161] font-normal leading-6"
@@ -152,7 +152,7 @@
                 <hr class="border-[#BDBDBD]" />
               </div>
               <div class="school-class space-y-2">
-                <p class="roboto text-[#333333] text-base font-medium">Kelas</p>
+                <p class="roboto text-[#333333] text-base font-medium">Class</p>
                 <p
                   class="roboto text-base text-[#616161] font-normal leading-6"
                 >
@@ -166,7 +166,7 @@
         <div class="kelas-bootcamp rounded-[10px] bg-white">
           <div class="p-6">
             <h2 class="alata text-lg text-[#333333] font-normal leading-4">
-              Kelas Bootcamp
+              Bootcamp Class
             </h2>
           </div>
           <hr class="border-[#F7F7F7]" />
@@ -174,23 +174,23 @@
             <div class="space-y-6">
               <div class="class-name space-y-2">
                 <p class="roboto text-[#333333] text-base font-medium">
-                  Nama Kelas
+                  Class Name
                 </p>
                 <p
                   class="roboto text-base text-[#616161] font-normal leading-6"
                 >
-                  {{ userData.classBootcampId.name }}
+                  {{ userData.schoolId.name }}
                 </p>
                 <hr class="border-[#BDBDBD]" />
               </div>
               <div class="foundation space-y-2">
                 <p class="roboto text-[#333333] text-base font-medium">
-                  Pendiri
+                  Founder
                 </p>
                 <p
                   class="roboto text-base text-[#616161] font-normal leading-6"
                 >
-                  {{ userData.classBootcampId.foundation }}
+                  {{ userData.schoolId.foundation }}
                 </p>
                 <hr class="border-[#BDBDBD]" />
               </div>
@@ -198,23 +198,23 @@
             <div class="space-y-6">
               <div class="address space-y-2">
                 <p class="roboto text-[#333333] text-base font-medium">
-                  Alamat
+                  Address
                 </p>
                 <p
                   class="roboto text-base text-[#616161] font-normal break-normal h-6 max-h-6 w-full max-w-full overflow-x-auto"
                 >
-                  {{ userData.classBootcampId.address }}
+                  {{ userData.schoolId.address }}
                 </p>
                 <hr class="border-[#BDBDBD]" />
               </div>
               <div class="leader-instructor space-y-2">
                 <p class="roboto text-[#333333] text-base font-medium">
-                  Kepala Intruktor
+                  Lead Intructor
                 </p>
                 <p
                   class="roboto text-base text-[#616161] font-normal leading-6"
                 >
-                  {{ userData.classBootcampId.leadInstructor }}
+                  {{ userData.schoolId.leadInstructor }}
                 </p>
                 <hr class="border-[#BDBDBD]" />
               </div>
@@ -364,7 +364,7 @@ export default {
         birthDate: '',
         favorite: '',
         viewers: 0,
-        classBootcampId: {
+        schoolId: {
           name: '',
           foundation: '',
           address: '',
