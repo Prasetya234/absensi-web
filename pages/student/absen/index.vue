@@ -292,7 +292,7 @@ export default {
             url: 'presensi/check'
           })
         );
-        if (!resp.data.absen) {
+        if (resp.data.absen) {
           this.$router.push('/');
           this.errorMessage("You've been absent");
           return;
