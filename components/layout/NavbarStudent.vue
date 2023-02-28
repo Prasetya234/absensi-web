@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#FFFFFF] fixed z-10 w-full">
+  <div class="bg-[#FFFFFF] fixed z-10 w-full shadow-md">
     <div class="mx-[5%] flex justify-between">
       <div class="app-name flex items-center">
         <p

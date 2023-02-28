@@ -39,7 +39,7 @@ export default {
       {
         name: 'Absen',
         icon: 'mdi-calendar-check',
-        to: '/admin/absen'
+        to: '/admin/presence'
       },
       {
         name: 'Report',
