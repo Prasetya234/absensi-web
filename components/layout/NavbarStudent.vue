@@ -26,7 +26,7 @@
           </li>
           <li
             :class="`${activeMenu(
-              `/student/profile`,
+              `/student/profile/`,
               route
             )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
             @click="profile"
@@ -125,18 +125,18 @@ export default {
     },
     logout() {
       this.$toast.show(`Good bye ${getUsername()}`, {
-          position: 'top-center',
-          type: 'error',
-          duration: 5000,
-          theme: 'bubble',
-          singleton: true
-        });
-      removeAllStorage()
+        position: 'top-center',
+        type: 'error',
+        duration: 5000,
+        theme: 'bubble',
+        singleton: true
+      });
+      removeAllStorage();
       this.$router.push('/login');
     },
     profile() {
-      const userId = btoa(getUserId())
-      this.$router.push('/student/profile/' + userId)
+      const userId = btoa(getUserId());
+      this.$router.push('/student/profile/' + userId);
     }
   }
 };
