@@ -1,7 +1,7 @@
 <template>
   <div>
     <layout-navbar-admin />
-    <div class="flex pt-20" style="min-height: 100vh">
+    <div class="flex pt-20">
       <div class="w-1/6 bg-[#58595B] pt-2 font-medium alata">
         <span
           :class="`text-white py-4 px-7 block cursor-pointer transition duration-300 hover:bg-[#fde9d0]/50 hover:transition hover:duration-300 ${
@@ -13,7 +13,7 @@
           >{{ data.name }}</span
         >
       </div>
-      <div class="w-full p-5">
+      <div class="w-full p-7 h-[36.05rem] overflow-y-auto">
         <nuxt-child />
       </div>
     </div>

@@ -88,7 +88,7 @@
               <div class="flex gap-x-5">
                 <div class="space-y-2">
                   <h5 class="text-base font-medium">Email</h5>
-                  <h5 class="text-base font-medium">Serial Number</h5>
+                  <h5 class="text-base font-medium">No Student</h5>
                 </div>
                 <div class="space-y-2">
                   <p class="text-base font-normal">{{ userData.email }}</p>

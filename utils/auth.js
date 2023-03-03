@@ -32,11 +32,11 @@ export function loggined({data}) {
   setUserId(data.user.id)
   setUsername(data.user.firstName + " " + data.user.lastName)
   setToken(data.token)
-  setClassId(data.user?.classBootcampId?.id)
+  setClassId(data.user?.schoolId?.id)
   setRole(data.user?.roleId.name)
 }
 export function isAuthenticated() {
-  return getToken() && getUserId() && getClassId(); 
+  return getToken() && getUserId() && getClassId();
 }
 
 export function removeAllStorage() {

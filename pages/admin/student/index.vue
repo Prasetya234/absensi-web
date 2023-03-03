@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <div class="flex justify-between">
+  <div class="flex flex-col gap-5">
+    <div class="flex justify-start">
       <h2 class="font-bold text-3xl">List Students</h2>
     </div>
-    <div class="ml-5 mt-10 p-6 bg-white rounded-md">
+    <div class="bg-white rounded-md p-3 shadow-md">
       <table class="fl-table">
         <thead>
           <tr>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'; 
+import { mapActions } from 'vuex';
 import { createConfig, responseManager } from '~/service/api-manager';
 export default {
   name: 'Student',
@@ -45,12 +45,14 @@ export default {
     async fetchStudent() {
       try {
         const { data: res } = await this.$axios(
+        // eslint-disable-next-line new-cap
           new createConfig().getData({
             url: 'class-bootcamp/students'
           })
         );
         this.students = res.data;
       } catch (err) {
+        // eslint-disable-next-line new-cap
         const error = new responseManager().manageError(err);
         this.$toast.show(error?.error || error.message, {
           position: 'top-center',
@@ -85,6 +87,7 @@ export default {
       this.showLoading();
       try {
         await this.$axios(
+        // eslint-disable-next-line new-cap
           new createConfig().getData({
             url: 'face-user/'  + userId
           })
@@ -116,7 +119,7 @@ export default {
 }
 .fl-table {
   border-radius: 5px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: normal;
   border: none;
   border-collapse: collapse;
