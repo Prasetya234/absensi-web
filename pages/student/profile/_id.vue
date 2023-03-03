@@ -24,9 +24,14 @@
         <div class="rounded-[10px]">
           <div class="relative">
             <div class="background-profile h-32">
-              <img
+              <img v-if="userData.schoolId.backgroundProfile"
                 class="rounded-t-[10px] h-48 w-full"
                 :src="userData.schoolId.backgroundProfile"
+                alt="background-profile"
+              />
+              <img v-if="!userData.schoolId.backgroundProfile"
+                class="rounded-t-[10px] h-48 w-full"
+                src="~/assets/img/background-profile.png"
                 alt="background-profile"
               />
             </div>
@@ -35,8 +40,15 @@
                 class="relative w-fit border border-transparent rounded-full overflow-hidden"
               >
                 <img
+                v-if="userData.avatarUrl"
                   class="w-44 h-44 rounded-full"
                   :src="userData.avatarUrl"
+                  alt="photo-profile"
+                />
+                <img
+                v-if="!userData.avatarUrl"
+                  class="w-44 h-44 rounded-full"
+                  src="~/assets/img/default-profile.jpg"
                   alt="photo-profile"
                 />
                 <div class="absolute bottom-0 w-full bg-[#CC6666E5]/90">
@@ -88,7 +100,7 @@
               <div class="flex gap-x-5">
                 <div class="space-y-2">
                   <h5 class="text-base font-medium">Email</h5>
-                  <h5 class="text-base font-medium">Serial Number</h5>
+                  <h5 class="text-base font-medium">No Student</h5>
                 </div>
                 <div class="space-y-2">
                   <p class="text-base font-normal">{{ userData.email }}</p>
