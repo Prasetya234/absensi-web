@@ -3,7 +3,7 @@
     <div class="flex justify-start">
       <h2 class="text-3xl font-bold">Attendance List</h2>
     </div>
-    <div class="bg-white rounded-md text-center p-3 shadow-md overflow-x-auto">
+    <div class="bg-white rounded-md shadow-md text-center p-3 overflow-x-auto">
       <table class="">
         <thead class="bg-[#e8e8e8] text-sm">
           <tr>

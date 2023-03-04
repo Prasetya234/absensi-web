@@ -3,7 +3,7 @@
     <div class="flex justify-start">
       <h2 class="font-bold text-3xl">List Students</h2>
     </div>
-    <div class="bg-white rounded-md p-3 shadow-md">
+    <div class="bg-white rounded-md shadow-md text-center p-3 overflow-x-auto">
       <table class="fl-table">
         <thead>
           <tr>
@@ -23,7 +23,9 @@
             <td>{{ data.gender }}</td>
             <td>{{ data.favorite }}</td>
             <td>
-              <button class="button" @click="toDetil(false, data.id)">Add User Face</button>
+              <button class="button" @click="toDetil(false, data.id)">
+                Add User Face
+              </button>
             </td>
           </tr>
         </tbody>
@@ -45,7 +47,7 @@ export default {
     async fetchStudent() {
       try {
         const { data: res } = await this.$axios(
-        // eslint-disable-next-line new-cap
+          // eslint-disable-next-line new-cap
           new createConfig().getData({
             url: 'class-bootcamp/students'
           })
@@ -87,16 +89,15 @@ export default {
       this.showLoading();
       try {
         await this.$axios(
-        // eslint-disable-next-line new-cap
+          // eslint-disable-next-line new-cap
           new createConfig().getData({
-            url: 'face-user/'  + userId
+            url: 'face-user/' + userId
           })
         );
-        return true
+        return true;
       } catch {
-        return false
-      }
-      finally {
+        return false;
+      } finally {
         this.hideLoading();
       }
     }
@@ -109,17 +110,17 @@ export default {
 
 <style scoped>
 .button {
-  background: #F7931E;
+  background: #f7931e;
   border-radius: 10px;
   padding: 8px 24px;
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: 700;
   font-size: 16px;
   border: none;
 }
 .fl-table {
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: normal;
   border: none;
   border-collapse: collapse;

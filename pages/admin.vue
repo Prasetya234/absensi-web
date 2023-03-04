@@ -50,6 +50,11 @@ export default {
         name: 'Setting',
         icon: 'mdi-cog',
         to: '/admin/setting'
+      },
+      {
+        name: 'Add User',
+        icon: 'mdi-account-group',
+        to: '/admin/add-user'
       }
     ]
   }),
