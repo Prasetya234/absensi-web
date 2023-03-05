@@ -3,16 +3,19 @@
 </template>
 
 <script>
-import { getRole } from '~/utils/auth'
+import { mapGetters} from 'vuex'
 
 export default {
     name: "IndexPage",
+    computed: {
+      ...mapGetters('auth', ['getRole'])
+    },
     mounted() {
-      if (getRole() === 'STUDENT') {
+      if (this.getRole === 'STUDENT') {
         this.$router.push('/student')
-      } else if (getRole() === 'INSTRUCTOR') {
+      } else if (this.getRole === 'INSTRUCTOR') {
         this.$router.push('/admin')
-      } else if (getRole() === 'ADMIN') {
+      } else if (this.getRole === 'ADMIN') {
         this.$router.push('/admin')
       } else {
         this.$router.push('/login')

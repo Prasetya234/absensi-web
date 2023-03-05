@@ -845,7 +845,7 @@
           <h2
             class="text-[#5A5A5A] text-[26px] font-[400] leading-[38px] mb-[6%] alata"
           >
-            Welcome, {{ username }}
+            Welcome, {{ getUsername }}
           </h2>
           <p
             class="text-[#5A5A5A] text-[16px] font-[400] leading-[24px] mb-[10%] roboto"
@@ -869,15 +869,13 @@
   </div>
 </template>
 <script>
-import { getUsername } from '~/utils/auth';
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'DashboardPage',
-  data: () => ({
-    username: ''
-  }),
-  mounted() {
-    this.username = getUsername();
+
+  computed: {
+    ...mapGetters('auth', ['getUsername'])
   }
 };
 </script>

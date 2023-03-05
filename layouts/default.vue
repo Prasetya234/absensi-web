@@ -1,22 +1,18 @@
 <template>
   <div class="bg-[#F5F5F5]">
-    <ilustration-loading v-if="isLoading" />
+    <ilustration-loading v-if="getLoading" />
     <Nuxt />
   </div>
 </template>
 <script>
 import publicPath from '~/utils/publicPath';
 
-import { isAuthenticated } from '~/utils/auth';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import { createConfig } from '~/service/api-manager';
+import { getToken } from '~/utils/auth';
 
 export default {
   name: 'LayoutDefault',
-  computed: {
-    isLoading() {
-      return this.$store.getters['loading/getLoading'];
-    }
-  },
   watch: {
     $route(to, from) {
       this.initializeMiddleware(to);
@@ -25,22 +21,37 @@ export default {
   mounted() {
     this.initializeMiddleware(this.$route);
     this.requestPermision();
-    if (isAuthenticated()) {
+    if (this.isAuthenticated) {
       this.connect();
     }
   },
+  computed: {
+    ...mapGetters('auth', ['isAuthenticated']),
+    ...mapGetters('loading', ['getLoading'])
+  },
   methods: {
+    ...mapActions('auth', ['setCredential']),
     ...mapActions('chat', ['connect']),
-    initializeMiddleware(router) {
+    async initializeMiddleware(router) {
+      if (getToken()) {
+        const { data: resData } = await this.$axios(
+          new createConfig().getData({
+            url: 'user'
+          })
+        );
+        this.setCredential({ token: getToken(), user: resData.data });
+      }
       if (
-        !isAuthenticated() &&
+        !this.isAuthenticated &&
         publicPath.find((route) => route.path === router.path)
           ?.isAuthenticate !== false
       )
         this.$router.push('/login');
     },
+
     requestPermision() {
-        if (Notification.permission !== "granted") Notification.requestPermission();
+      if (Notification.permission !== 'granted')
+        Notification.requestPermission();
     }
   }
 };
