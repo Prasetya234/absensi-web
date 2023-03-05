@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { getRole } from '~/utils/auth';
+import { mapGetters } from 'vuex'
 export default {
   name: 'Admin',
   data: () => ({
@@ -59,6 +59,7 @@ export default {
     ]
   }),
   computed: {
+    ...mapGetters('auth', ['getRole']),
     activeMenu() {
       return this.$route.path;
     }
@@ -68,7 +69,7 @@ export default {
       this.$router.push(to);
     },
     checkRole() {
-      if (getRole() !== 'INSTRUCTOR') {
+      if (this.getRole !== 'INSTRUCTOR') {
         this.$router.push('/');
       }
     },

@@ -109,10 +109,13 @@
   </div>
 </template>
 <script>
-import { getUserId, getUsername, removeAllStorage } from '~/utils/auth';
+import { removeAllStorage } from '~/utils/auth';
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'NavbarComponent',
   computed: {
+    ...mapGetters('auth', ['getUsername', 'getUserId']),
     route() {
       return this.$route.path;
     }
@@ -124,7 +127,7 @@ export default {
         : 'text-[#828282] fill-[#828282]';
     },
     logout() {
-      this.$toast.show(`Good bye ${getUsername()}`, {
+      this.$toast.show(`Good bye ${this.getUsername}`, {
         position: 'top-center',
         type: 'error',
         duration: 5000,
@@ -135,7 +138,7 @@ export default {
       this.$router.push('/login');
     },
     profile() {
-      const userId = btoa(getUserId());
+      const userId = btoa(this.getUserId);
       this.$router.push('/student/profile/' + userId);
     }
   }

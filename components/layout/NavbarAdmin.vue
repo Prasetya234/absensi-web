@@ -33,12 +33,16 @@
   </div>
 </template>
 <script>
-import { getUsername, removeAllStorage } from '~/utils/auth';
+import { mapGetters } from 'vuex';
+import { removeAllStorage } from '~/utils/auth';
 export default {
   name: 'NavbarAdmin',
+  computed: {
+    ...mapGetters('auth', ['getUsername'])
+  },
   methods: {
     logout() {
-      this.$toast.show(`Good bye ${getUsername()}`, {
+      this.$toast.show(`Good bye ${this.getUsername}`, {
         position: 'top-center',
         type: 'error',
         duration: 5000,

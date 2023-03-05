@@ -22,12 +22,15 @@
 </template>
 
 <script>
-import { isAuthenticated } from '~/utils/auth';
+import { mapGetters } from 'vuex'
 export default {
   name: 'ErrorLayout',
+  computed: {
+    ...mapGetters('auth', ['isAuthenticated'])
+  },
   methods: {
     isAuthenticated() {
-      if(!isAuthenticated()) this.$router.push('/login');
+      if(!this.isAuthenticated) this.$router.push('/login');
     }
   },
   mounted() {
