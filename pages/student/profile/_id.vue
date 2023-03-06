@@ -24,12 +24,14 @@
         <div class="rounded-[10px]">
           <div class="relative">
             <div class="background-profile h-32">
-              <img v-if="userData.schoolId.backgroundProfile"
+              <img
+                v-if="userData.schoolId.backgroundProfile"
                 class="rounded-t-[10px] h-48 w-full"
                 :src="userData.schoolId.backgroundProfile"
                 alt="background-profile"
               />
-              <img v-if="!userData.schoolId.backgroundProfile"
+              <img
+                v-if="!userData.schoolId.backgroundProfile"
                 class="rounded-t-[10px] h-48 w-full"
                 src="~/assets/img/background-profile.png"
                 alt="background-profile"
@@ -40,13 +42,13 @@
                 class="relative w-fit border border-transparent rounded-full overflow-hidden"
               >
                 <img
-                v-if="userData.avatarUrl"
+                  v-if="userData.avatarUrl"
                   class="w-44 h-44 rounded-full"
                   :src="userData.avatarUrl"
                   alt="photo-profile"
                 />
                 <img
-                v-if="!userData.avatarUrl"
+                  v-if="!userData.avatarUrl"
                   class="w-44 h-44 rounded-full"
                   src="~/assets/img/default-profile.jpg"
                   alt="photo-profile"
@@ -80,14 +82,23 @@
           <div class="bg-white p-3 space-y-11 rounded-b-[10px] mt-16">
             <div class="flex justify-end gap-4 montserrat">
               <button
+                v-if="isChange"
+                @click="saveChange"
                 class="py-2 px-6 rounded-lg text-sm text-white font-bold bg-[#CC6633]"
               >
-                Change
+                <p>Save</p>
+              </button>
+              <button
+                @click="change"
+                class="py-2 px-6 rounded-lg text-sm text-white font-bold bg-[#CC6633]"
+              >
+                <p v-if="!isChange">Change</p>
+                <p v-if="isChange">Cancel</p>
               </button>
               <button
                 class="py-2 px-6 rounded-lg text-sm text-[#F7931E] font-bold bg-[#FDE9D2]"
               >
-                Download Profile
+                <p>Download Profile</p>
               </button>
             </div>
             <div class="px-8 py-4 roboto text-[#333333] space-y-2">
@@ -117,7 +128,16 @@
             </h2>
           </div>
           <hr class="border-[#F7F7F7]" />
-          <div class="p-6">{{ userData.description }}</div>
+          <div class="p-6">
+            <p v-if="!isChange">{{ userData.description }}</p>
+            <textarea
+              v-if="isChange"
+              class="border border-gray-300 w-full p-3 rounded-md"
+              name="description"
+              rows="3"
+              v-model="userData.description"
+            ></textarea>
+          </div>
         </div>
         <div class="biodata-siswa rounded-[10px] bg-white">
           <div class="p-6">
@@ -133,10 +153,28 @@
                   Full Name
                 </p>
                 <p
-                  class="roboto text-base text-[#616161] font-normal leading-6"
+                  v-if="!isChange"
+                  class="roboto text-base text-[#616161] font-normal leading-6 overflow-x-auto [&::-webkit-scrollbar]:hidden"
                 >
                   {{ userData.firstName }} {{ userData.lastName }}
                 </p>
+                <div
+                  v-if="isChange"
+                  class="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden"
+                >
+                  <input
+                    type="text"
+                    class="px-1.5"
+                    placeholder="Firstname"
+                    v-model="userData.firstName"
+                  />
+                  <input
+                    type="text"
+                    class="px-1.5"
+                    placeholder="Lastname"
+                    v-model="userData.lastName"
+                  />
+                </div>
                 <hr class="border-[#BDBDBD]" />
               </div>
               <div class="birth-date space-y-2">
@@ -144,10 +182,17 @@
                   Date of Birth
                 </p>
                 <p
+                  v-if="!isChange"
                   class="roboto text-base text-[#616161] font-normal leading-6"
                 >
                   {{ userData.birthDate }}
                 </p>
+                <input
+                  v-if="isChange"
+                  type="date"
+                  class="w-full"
+                  v-model="userData.birthDate"
+                />
                 <hr class="border-[#BDBDBD]" />
               </div>
             </div>
@@ -157,10 +202,20 @@
                   Gender
                 </p>
                 <p
+                  v-if="!isChange"
                   class="roboto text-base text-[#616161] font-normal leading-6"
                 >
                   {{ userData.gender }}
                 </p>
+                <select
+                  v-if="isChange"
+                  v-model="userData.gender"
+                  id="gender"
+                  class="w-full"
+                >
+                  <option value="FEMALE">FEMALE</option>
+                  <option value="MALE">MALE</option>
+                </select>
                 <hr class="border-[#BDBDBD]" />
               </div>
               <div class="school-class space-y-2">
@@ -383,7 +438,8 @@ export default {
           leadInstructor: '',
           backgroundProfile: ''
         }
-      }
+      },
+      isChange: false
     };
   },
   mounted() {
@@ -402,6 +458,41 @@ export default {
       } catch (err) {
         const error = new responseManager().manageError(err);
         this.$toast.show(error?.error || error.message, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+      }
+    },
+    change() {
+      this.isChange = !this.isChange;
+    },
+    async saveChange() {
+      this.isChange = !this.isChange;
+      try {
+        const { data: resData } = await this.$axios(
+          new createConfig().putData({
+            url: `user/${atob(this.$route.params.id)}`,
+            data: {
+              firstName: this.userData.firstName,
+              lastName: this.userData.lastName,
+              birthDate: this.userData.birthDate,
+              email: this.userData.email,
+              gender: this.userData.gender,
+              noSiswa: this.userData.noSiswa,
+              batch: this.userData.batch,
+              favorite: this.userData.favorite,
+              schoolClass: this.userData.schoolClass,
+              description: this.userData.description
+            }
+          })
+        );
+        this.userData = resData.data;
+      } catch (error) {
+        const err = new responseManager().manageError(error);
+        this.$toast.show(err?.error || error.message, {
           position: 'top-center',
           type: 'error',
           duration: 5000,
