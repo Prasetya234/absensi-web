@@ -3,7 +3,7 @@
     <div class="flex justify-start">
       <h2 class="text-3xl font-bold">Add User</h2>
     </div>
-    <div class="bg-white p-3 rounded-md selection:bg-[#CC6633] selection:text-white">
+    <div class="bg-white p-3 rounded-md shadow-md selection:bg-[#CC6633] selection:text-white">
         <form
           class="bg-white rounded-md p-5 flex flex-col gap-5"
           @submit="addUser"
