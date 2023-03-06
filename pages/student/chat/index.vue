@@ -33,7 +33,11 @@
           <li
             v-for="(data, idx) in getContactList"
             :key="idx"
-            :class="data.active ? 'bg-[#f7931e] text-white' : 'bg-transparent text-black'"
+            :class="
+              data.active
+                ? 'bg-[#f7931e] text-white'
+                : 'bg-transparent text-black'
+            "
             class="border-b gap-x-3"
             @click="selectedContactChat(idx)"
           >
@@ -88,13 +92,22 @@
         >
           <h1>Belum ada Chat</h1>
         </div>
-        <footer v-if="!activechat.notcomment" class="border-t flex justify-center items-center gap-x-3">
-          <textarea
+        <footer
+          v-if="!activechat.notcomment"
+          class="border-t flex justify-center items-center gap-x-3"
+        >
+          <input
             v-model="textchat"
+            @keyup.enter="sendMessage"
             placeholder="Type your message"
             class="border focus:outline-none focus:ring-0"
-          ></textarea>
-          <button class="cursor-pointer border border-transparent rounded-lg bg-[#f7931e] text-white transition duration-300 hover:bg-transparent hover:text-[#f7931e] hover:border-[#f7931e] hover:transition hover:duration-300" @click="sendMessage">Send</button>
+          />
+          <button
+            class="cursor-pointer border border-transparent rounded-lg bg-[#f7931e] text-white transition duration-300 hover:bg-transparent hover:text-[#f7931e] hover:border-[#f7931e] hover:transition hover:duration-300"
+            @click="sendMessage"
+          >
+            Send
+          </button>
         </footer>
       </main>
     </div>
@@ -103,7 +116,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { getClassId, getUsername } from '~/utils/auth';
 import { createConfig } from '~/service/api-manager';
 import emptyImage from '~/assets/img/empty-profile.png';
 
@@ -117,13 +129,14 @@ export default {
     textchat: ''
   }),
   computed: {
+    ...mapGetters('auth', ['getUsername', 'getClassId']),
     ...mapGetters('chat', ['getContactList', 'chatList'])
   },
   watch: {
     chatList() {
       setTimeout(() => {
         this.scrollDown();
-      }, 100);
+      }, 50);
     }
   },
   methods: {
@@ -137,7 +150,7 @@ export default {
     sendMessage() {
       if (!this.textchat) return;
       const chatMessage = {
-        senderName: getUsername(),
+        senderName: this.getUsername,
         message: this.textchat,
         date: new Date(),
         status: 'MESSAGE'
@@ -151,6 +164,7 @@ export default {
     },
     selectedContactChat(idx) {
       this.setActiveContact(idx);
+      this.scrollDown();
       this.activechat = this.getContactList[idx];
     },
     async fetchChat() {
@@ -164,7 +178,7 @@ export default {
         this.setChatFirst(
           data.data.map((item) => ({
             ...item,
-            me: item.senderName === getUsername()
+            me: item.senderName === this.getUsername
           }))
         );
       } catch (error) {
@@ -173,19 +187,21 @@ export default {
     },
     scrollDown() {
       this.$nextTick(() => {
-        const length = this.chatList.length;
-        if (length > 0) {
-          const id = length - 1;
-          const element = document.getElementById('m-' + id);
-          element.scrollIntoView({ behavior: 'smooth', block: 'end' });
-        }
+        try {
+          const length = this.chatList.length;
+          if (length > 0) {
+            const id = length - 1;
+            const element = document.getElementById('m-' + id);
+            element.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          }
+        } catch {}
       });
     },
     async postMessage(data) {
       try {
         const chatMessage = {
           ...data,
-          schoolId: getClassId()
+          schoolId: this.getClassId
         };
         await this.$axios(
           // eslint-disable-next-line new-cap
@@ -203,7 +219,7 @@ export default {
         const { data } = await this.$axios(
           // eslint-disable-next-line new-cap
           new createConfig().getData({
-            url: 'class-bootcamp/' + getClassId()
+            url: 'class-bootcamp/' + this.getClassId
           })
         );
         this.addContact({
@@ -423,7 +439,7 @@ main footer {
   gap: 1;
   padding: 20px 30px 20px 20px;
 }
-main footer textarea {
+main footer input {
   resize: none;
   display: block;
   width: 100%;
@@ -438,7 +454,7 @@ main footer textarea {
   color: #000000;
   margin-bottom: 20px;
 }
-main footer textarea::placeholder {
+main footer input::placeholder {
   color: #ddd;
 }
 main footer img {

@@ -67,7 +67,6 @@
 import * as faceapi from 'face-api.js';
 import { createConfig, responseManager } from '~/service/api-manager';
 import { mapActions } from 'vuex';
-import { getUserId } from '~/utils/auth';
 
 var interval;
 export default {

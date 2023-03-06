@@ -85,10 +85,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import * as faceapi from 'face-api.js';
 import { createConfig, responseManager } from '~/service/api-manager';
-import { getUserId, getUsername } from '~/utils/auth';
 
 export default {
   name: 'Absen',
@@ -114,6 +113,9 @@ export default {
       videoWidth: 550
     }
   }),
+  computed: {
+    ...mapGetters('auth', ['getUsername', 'getUserId'])
+  },
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
     loadModuls() {
@@ -187,7 +189,7 @@ export default {
       );
       if (valNumb) {
         this.fetchAbsenceNow(valNumb);
-        return getUsername();
+        return this.getUsername;
       }
       return 'Unknown';
     },
@@ -246,7 +248,7 @@ export default {
         const { data } = await this.$axios(
           // eslint-disable-next-line new-cap
           new createConfig().getData({
-            url: 'face-user/' + getUserId()
+            url: 'face-user/' + this.getUserId
           })
         );
         this.detectorScores = data.data.detectorScores;
