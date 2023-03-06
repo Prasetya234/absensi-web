@@ -13,14 +13,18 @@
       class="bg-white p-5 rounded-md shadow-md selection:bg-[#CC6633] selection:text-white"
     >
       <div class="flex flex-row gap-5 w-full">
-        <div class="avatar-url flex flex-row justify-center py-5 w-2/6">
-          <img
-            :src="userData.avatarUrl"
-            alt="user-photo"
-            class="h-64 w-64 rounded-full"
-          />
+        <div
+          class="avatar-url flex flex-row justify-center items-center rounded-md bg-black/30 p-3 w-2/6"
+        >
+          <div class="bg-white h-fit w-fit rounded-full">
+            <img
+              :src="userData.avatarUrl"
+              alt="user-photo"
+              class="h-64 w-64 rounded-full"
+            />
+          </div>
         </div>
-        <div class="flex flex-col gap-3 w-full">
+        <div class="flex flex-col gap-1 w-full">
           <div class="flex flex-row justify-between gap-3 w-full">
             <div class="first-name w-1/3 flex flex-col gap-1">
               <label class="text-sm font-semibold" for="firstname"
