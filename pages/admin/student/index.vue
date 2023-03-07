@@ -25,14 +25,15 @@
             <td class="w-56">
               <div class="flex flex-row justify-center gap-5">
                 <button
-                  class="bg-[#CC6633] p-3 rounded-lg"
+                  class="bg-[#CC6633] p-2.5 rounded-lg"
+                  title="Add Face Data"
                   @click="toDetil(false, data.id)"
                 >
                   <span
                     ><svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
+                      width="17"
+                      height="17"
                       fill="#FFFFFF"
                       class="bi bi-plus"
                       viewBox="0 0 16 16"
@@ -42,11 +43,11 @@
                       /></svg
                   ></span>
                 </button>
-                <button class="bg-[#21759B] p-3 rounded-lg" @click="toInfo(data.id)">
+                <button class="bg-[#21759B] p-2.5 rounded-lg" title="User Information" @click="toInfo(data.id)">
                   <span
                     ><svg
-                      width="20"
-                      height="20"
+                      width="17"
+                      height="17"
                       viewBox="0 0 16 16"
                       fill="#FFFFFF"
                       xmlns="http://www.w3.org/2000/svg"
@@ -62,11 +63,11 @@
                     </svg>
                   </span>
                 </button>
-                <button class="bg-[#DA8C2A] p-3 rounded-lg" @click="toEdit(data.id)">
+                <button class="bg-[#DA8C2A] p-2.5 rounded-lg" title="Edit User" @click="toEdit(data.id)">
                   <span
                     ><svg
-                      width="20"
-                      height="20"
+                      width="17"
+                      height="17"
                       viewBox="0 0 13 13"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
