@@ -467,7 +467,7 @@ export default {
       }
     },
     change() {
-      this.isChange = !this.isChange;
+      this.isChange = !this.isChange
     },
     async saveChange() {
       this.isChange = !this.isChange;
@@ -476,6 +476,7 @@ export default {
           new createConfig().putData({
             url: `user/${atob(this.$route.params.id)}`,
             data: {
+              avatarUrl: this.userData.avatarUrl,
               firstName: this.userData.firstName,
               lastName: this.userData.lastName,
               birthDate: this.userData.birthDate,

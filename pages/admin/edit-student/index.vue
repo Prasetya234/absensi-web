@@ -1,7 +1,10 @@
 <template>
   <div class="flex flex-col gap-5">
     <div class="flex justify-start gap-3">
-      <button class="h-fit w-fit p-2.5 rounded-full duration-300 hover:bg-gray-200 over:duration-300" @click="$router.go(-1)">
+      <button
+        class="h-fit w-fit p-2.5 rounded-full duration-300 hover:bg-gray-200 over:duration-300"
+        @click="$router.go(-1)"
+      >
         <IconsArrow size="20" />
       </button>
       <h2 class="text-3xl font-bold">Edit User</h2>
@@ -9,7 +12,10 @@
     <div
       class="bg-white p-3 rounded-md shadow-md selection:bg-[#CC6633] selection:text-white"
     >
-      <form class="bg-white rounded-md p-5 flex flex-col gap-5">
+      <form
+        class="bg-white rounded-md p-5 flex flex-col gap-5"
+        @submit="saveChange"
+      >
         <div class="flex flex-col gap-3">
           <div class="avatar-url flex flex-col gap-1">
             <label class="text-sm font-semibold" for="avatar-url"
@@ -20,7 +26,7 @@
               type="text"
               class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]"
               autocomplete="off"
-              :value="userData.avatarUrl"
+              v-model="userData.avatarUrl"
             />
           </div>
           <div class="flex flex-row justify-between gap-3 w-full">
@@ -33,7 +39,7 @@
                 type="text"
                 class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]"
                 autocomplete="off"
-                :value="userData.firstName"
+                v-model="userData.firstName"
               />
             </div>
             <div class="last-name w-1/3 flex flex-col gap-1">
@@ -45,7 +51,7 @@
                 type="text"
                 class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]"
                 autocomplete="off"
-                :value="userData.lastName"
+                v-model="userData.lastName"
               />
             </div>
             <div class="birth-date w-1/3 flex flex-col gap-1">
@@ -57,7 +63,7 @@
                 type="date"
                 class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]"
                 autocomplete="off"
-                :value="userData.birthDate"
+                v-model="userData.birthDate"
               />
             </div>
           </div>
@@ -69,40 +75,27 @@
                 type="email"
                 class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]"
                 autocomplete="off"
-                :value="userData.email"
+                v-model="userData.email"
               />
             </div>
             <div class="gender flex flex-col gap-1 w-full">
               <label class="text-sm font-semibold" for="gender">Gender</label>
               <div class="flex flex-row gap-3">
-                <div class="male-gender flex flex-row gap-2 w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]">
-                  <input
-                    type="radio"
-                    name="genders"
-                    id="male"
-                    class="accent-[#CC6633]"
-                    :value="userData.gender"
-                    :checked="userData.gender === 'MALE'"
-                  />
-                  <label for="male">Male</label>
-                </div>
-                <div class="female-gender flex flex-row gap-2 w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]">
-                  <input
-                    type="radio"
-                    name="genders"
-                    id="female"
-                    class="accent-[#CC6633]"
-                    :value="userData.gender"
-                    :checked="userData.gender === 'FEMALE'"
-                  />
-                  <label for="female">Female</label>
-                </div>
+                <select
+                  v-model="userData.gender"
+                  id="genders"
+                  class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]"
+                  autocomplete="off"
+                >
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                </select>
               </div>
             </div>
           </div>
         </div>
         <div class="flex flex-row justify-between gap-3 w-full">
-          <div class="no-siswa w-1/3 flex flex-col gap-1">
+          <div class="no-siswa w-full flex flex-col gap-1">
             <label class="text-sm font-semibold" for="nosiswa"
               >No Student</label
             >
@@ -111,7 +104,7 @@
               type="number"
               class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633] [&::-webkit-inner-spin-button]:appearance-none"
               autocomplete="off"
-              :value="userData.noSiswa"
+              v-model="userData.noSiswa"
             />
           </div>
           <div class="batch w-1/3 flex flex-col gap-1">
@@ -121,21 +114,24 @@
               type="number"
               class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633] [&::-webkit-inner-spin-button]:appearance-none"
               autocomplete="off"
-              :value="userData.batch"
-            />
-          </div>
-          <div class="favorite w-1/3 flex flex-col gap-1">
-            <label class="text-sm font-semibold" for="fav">Favorite</label>
-            <input
-              id="fav"
-              type="text"
-              class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633] uppercase"
-              autocomplete="off"
-              :value="userData.favorite"
+              v-model="userData.batch"
             />
           </div>
         </div>
         <div class="flex flex-row justify-between gap-3">
+          <div class="favorite flex flex-col gap-1 w-1/3">
+            <label class="text-sm font-semibold" for="fav">Favorite</label>
+            <select
+              v-model="userData.favorite"
+              id="fav"
+              class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]"
+              autocomplete="off"
+              placeholder="Favorite"
+            >
+              <option :value="false">FALSE</option>
+              <option :value="true">TRUE</option>
+            </select>
+          </div>
           <div class="school-class flex flex-col gap-1 w-full">
             <label class="text-sm font-semibold" for="school-class"
               >School Class</label
@@ -145,19 +141,7 @@
               type="text"
               class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]"
               autocomplete="off"
-              :value="userData.schoolClass"
-            />
-          </div>
-          <div class="school-id flex flex-col gap-1 w-full">
-            <label class="text-sm font-semibold" for="school-id"
-              >School ID</label
-            >
-            <input
-              id="schoolId"
-              type="text"
-              class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633] [&::-webkit-inner-spin-button]:appearance-none"
-              autocomplete="off"
-              :value="userData.schoolId.name"
+              v-model="userData.schoolClass"
             />
           </div>
         </div>
@@ -170,10 +154,15 @@
             rows="1"
             class="w-full border-2 px-2 py-1.5 text-[#CC6633] text-sm border-gray-300 rounded-md focus:outline-none focus:border-[#CC6633] focus:shadow-sm focus:shadow-[#CC6633]"
             autocomplete="off"
-            :value="userData.description"
+            v-model="userData.description"
           ></textarea>
         </div>
-        <button class="uppercase bg-[#CC6633] rounded-md py-2 text-white font-semibold" type="submit">Submit</button>
+        <button
+          class="uppercase bg-[#CC6633] rounded-md py-2 text-white font-semibold"
+          type="submit"
+        >
+          Submit
+        </button>
       </form>
     </div>
   </div>
@@ -216,6 +205,48 @@ export default {
         );
         this.userData = resData.data;
       } catch (err) {
+        const error = new responseManager().manageError(err);
+        this.$toast.show(error?.error || error.message, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+      }
+    },
+    async saveChange(e) {
+      e.preventDefault();
+      try {
+        const { data: resData } = await this.$axios(
+          new createConfig().putData({
+            url: `user/${atob(this.$route.query.idUser)}`,
+            data: {
+              avatarUrl: this.userData.avatarUrl,
+              firstName: this.userData.firstName,
+              lastName: this.userData.lastName,
+              birthDate: this.userData.birthDate,
+              email: this.userData.email,
+              gender: this.userData.gender,
+              noSiswa: this.userData.noSiswa,
+              batch: this.userData.batch,
+              favorite: this.userData.favorite,
+              schoolClass: this.userData.schoolClass,
+              description: this.userData.description
+            }
+          })
+        );
+        this.userData = resData.data;
+        this.$router.go(-1);
+        this.$toast.show(`Successful edit user ${resData.data.firstName}`, {
+          position: 'top-center',
+          type: 'success',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+      } catch (err) {
+        console.log(err);
         const error = new responseManager().manageError(err);
         this.$toast.show(error?.error || error.message, {
           position: 'top-center',
