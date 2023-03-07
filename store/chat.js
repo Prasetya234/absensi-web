@@ -1,5 +1,6 @@
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
+import store from "./auth"
 import { API_WEB_SOCKET } from '~/utils/api';
 import { notificateAudioPlay, notificatePopUpPlay } from '~/utils/notification';
 let stompClient
@@ -19,6 +20,9 @@ export const getters = {
     },
     chatList(state) {
         return state.chat
+    },
+    getUsername(state, getters, rootState) {
+        return rootState.auth.auth.user.firstName + ' ' + rootState.auth.auth.user.lastName
     }
 }
 
@@ -58,17 +62,17 @@ export const actions = {
     setChatFirst({ commit }, payload) {
         commit('SET_CHAT_FIRST', payload)
     },
-    connect({ commit, dispatch }) {
+    connect({ dispatch }) {
         let Sock = new SockJS(API_WEB_SOCKET);
         stompClient = over(Sock);
         stompClient.connect({}, (e) => dispatch('onConnected', e), (e) => dispatch('onError', e));
     },
-    onConnected({ commit, dispatch }) {
+    onConnected({ dispatch }) {
         stompClient.subscribe('/chatroom/public', (e) => dispatch('onMessageReceived', e));
     },
-    onMessageReceived({ commit, dispatch }, payload) {
+    onMessageReceived({ commit, getters }, payload) {
         const payloadData = JSON.parse(payload.body);
-        const me = payloadData.senderName === dispatch('auth/getUsername') ? true : false
+        const me = payloadData.senderName === getters.getUsername ? true : false
         switch (payloadData.status) {
             case 'MESSAGE':
                 commit('ADD_CHAT', {
@@ -83,7 +87,7 @@ export const actions = {
             notificateAudioPlay()
             notificatePopUpPlay({ message: payloadData.message, sender: payloadData.senderName })
         }
-        console.clear();
+        // console.clear();
     },
     sendMessages({ dispatch }, payload) {
         if (!stompClient) {
