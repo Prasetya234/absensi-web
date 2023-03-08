@@ -3,10 +3,13 @@
     <div class="flex justify-start">
       <h2 class="font-bold text-3xl">List Students</h2>
     </div>
-    <div class="bg-white rounded-md shadow-md text-center p-3 overflow-x-auto">
+    <div
+      class="bg-white rounded-md shadow-md flex flex-col gap-5 text-center p-3 overflow-x-auto"
+    >
       <table class="fl-table text-sm">
         <thead>
           <tr>
+            <th>No</th>
             <th>No Student</th>
             <th>Fullname</th>
             <th>Batch</th>
@@ -17,6 +20,7 @@
         </thead>
         <tbody class="txt-xs">
           <tr v-for="(data, idx) in students" :key="idx">
+            <td>{{ idx + 1 }}</td>
             <td>{{ data.noSiswa }}</td>
             <td>{{ data.firstName + ' ' + data.lastName }}</td>
             <td>{{ data.batch }}</td>
@@ -43,7 +47,11 @@
                       /></svg
                   ></span>
                 </button>
-                <button class="bg-[#21759B] p-2.5 rounded-lg" title="User Information" @click="toInfo(data.id)">
+                <button
+                  class="bg-[#21759B] p-2.5 rounded-lg"
+                  title="User Information"
+                  @click="toInfo(data.id)"
+                >
                   <span
                     ><svg
                       width="17"
@@ -63,7 +71,11 @@
                     </svg>
                   </span>
                 </button>
-                <button class="bg-[#DA8C2A] p-2.5 rounded-lg" title="Edit User" @click="toEdit(data.id)">
+                <button
+                  class="bg-[#DA8C2A] p-2.5 rounded-lg"
+                  title="Edit User"
+                  @click="toEdit(data.id)"
+                >
                   <span
                     ><svg
                       width="17"
@@ -94,6 +106,32 @@
           </tr>
         </tbody>
       </table>
+      <div class="pagination flex flex-row justify-center gap-2 text-sm my-3">
+        <button
+          class="border p-1 rounded-full flex justify-center"
+          title="Previous"
+          @click="prev"
+        >
+          <IconsArrowcevron style="transform: rotate('left')" size="20" />
+        </button>
+        <div class="flex flex-row gap-0.5">
+          <button
+            class="border rounded py-0.5 px-3 duration-300 hover:bg-[#CC6633] hover:text-white hover:duration-300"
+            v-for="(page, idx) in totalPages"
+            :key="idx"
+            @click="fetchStudent(page)"
+          >
+            {{ page + 1 }}
+          </button>
+        </div>
+        <button
+          class="border p-1 rounded-full flex justify-center"
+          title="Next"
+          @click="next"
+        >
+          <IconsArrowcevron size="20" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -104,19 +142,25 @@ import { createConfig, responseManager } from '~/service/api-manager';
 export default {
   name: 'Student',
   data: () => ({
-    students: []
+    students: [],
+    totalPages: []
   }),
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
-    async fetchStudent() {
+    async fetchStudent(page = 0, size = 10) {
       try {
         const { data: res } = await this.$axios(
           // eslint-disable-next-line new-cap
           new createConfig().getData({
-            url: 'class-bootcamp/students'
+            url: `class-bootcamp/students?page=${page}&size=${size}`
           })
         );
-        this.students = res.data;
+        this.students = res.data.content;
+        const pages = [];
+        for (let index = 0; index < res.data.totalPages; index++) {
+          pages.push(index);
+        }
+        this.totalPages = pages;
       } catch (err) {
         // eslint-disable-next-line new-cap
         const error = new responseManager().manageError(err);
@@ -166,22 +210,30 @@ export default {
       }
     },
     async toInfo(userId) {
-      const idUser = await btoa(userId)
-      this.$router.push({
+      const idUser = btoa(userId);
+      await this.$router.push({
         path: 'info-student',
         query: {
           idUser
         }
-      })
+      });
     },
     async toEdit(userId) {
-      const idUser = await btoa(userId)
-      this.$router.push({
+      const idUser = btoa(userId);
+      await this.$router.push({
         path: 'edit-student',
         query: {
           idUser
         }
-      })
+      });
+    },
+    next() {
+      this.fetchStudent(+1);
+    },
+    prev() {
+      if (this.fetchStudent() > 0) {
+        this.fetchStudent(-1);
+      }
     }
   },
   mounted() {
