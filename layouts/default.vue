@@ -21,6 +21,7 @@ export default {
   mounted() {
     this.initializeMiddleware(this.$route);
     this.requestPermision();
+    this.messagingTitle()
     if (this.isAuthenticated) {
       this.connect();
     }
@@ -32,6 +33,15 @@ export default {
   methods: {
     ...mapActions('auth', ['setCredential']),
     ...mapActions('chat', ['connect']),
+    messagingTitle() {
+      const defaultTitle = document.title;
+      window.onblur = () => {
+        document.title = 'Hey, Please come back!';
+      };
+      window.onfocus = () => {
+        document.title = defaultTitle;
+      };
+    },
     async initializeMiddleware(router) {
       if (getToken()) {
         const { data: resData } = await this.$axios(
