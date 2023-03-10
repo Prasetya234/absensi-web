@@ -104,6 +104,7 @@ export const actions = {
             notificateAudioPlay()
             notificatePopUpPlay({ message: payloadData.message })
         }
+        console.clear()
     },
     sendMessages({ commit, dispatch }, payload) {
         if (!stompClient) {

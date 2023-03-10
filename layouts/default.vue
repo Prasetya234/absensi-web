@@ -25,12 +25,22 @@ export default {
   mounted() {
     this.initializeMiddleware(this.$route);
     this.requestPermision();
+    this.messagingTitle();
     if (isAuthenticated()) {
       this.connect();
     }
   },
   methods: {
     ...mapActions('chat', ['connect']),
+     messagingTitle() {
+      const defaultTitle = document.title;
+      window.onblur = () => {
+        document.title = 'Hey, Please come back!';
+      };
+      window.onfocus = () => {
+        document.title = defaultTitle;
+      };
+    },
     initializeMiddleware(router) {
       if (
         !isAuthenticated() &&
