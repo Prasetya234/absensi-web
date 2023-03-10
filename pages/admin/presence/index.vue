@@ -23,38 +23,78 @@
             <td>
               <p>{{ data.userId.firstName + ' ' + data.userId.lastName }}</p>
             </td>
-            <td><p>{{ data.userId.noSiswa }}</p></td>
-            <td><p>{{ data.userId.schoolClass }}</p></td>
-            <td><p :class="data.userId.gender === 'FEMALE' ? 'bg-pink-200 rounded-full p-1' : 'bg-blue-200 rounded-full p-1'">{{ data.userId.gender }}</p></td>
-            <td><p>{{ data.dateSubmit }}</p></td>
             <td>
-              <p>{{ data.isLate === null ? '-' : data.isLate ? 'LATE' : '-' }}</p>
+              <p>{{ data.userId.noSiswa }}</p>
             </td>
             <td>
-              <p>{{
-                data.permissionAttend === null ||
-                data.permissionAttend === false
-                  ? '-'
-                  : data.permissionAttend
-              }}</p>
+              <p>{{ data.userId.schoolClass }}</p>
             </td>
             <td>
-              <p>{{
-                data.reasonId === null
-                  ? '-'
-                  : data.reasonId === 1
-                  ? 'SICK'
-                  : data.reasonId === 2
-                  ? 'FAMILY EVENTS'
-                  : data.reasonId === 3
-                  ? 'OTHERS'
-                  : data.reasonId
-              }}</p>
+              <p
+                :class="
+                  data.userId.gender === 'FEMALE'
+                    ? 'bg-pink-200 rounded-full p-1'
+                    : 'bg-blue-200 rounded-full p-1'
+                "
+              >
+                {{ data.userId.gender }}
+              </p>
             </td>
-            <td><p>{{ data.note === null ? '-' : data.note }}</p></td>
+            <td>
+              <p>{{ data.dateSubmit }}</p>
+            </td>
+            <td>
+              <p>
+                {{ data.isLate === null ? '-' : data.isLate ? 'LATE' : '-' }}
+              </p>
+            </td>
+            <td>
+              <p>
+                {{
+                  data.permissionAttend === null ||
+                  data.permissionAttend === false
+                    ? '-'
+                    : data.permissionAttend
+                }}
+              </p>
+            </td>
+            <td>
+              <p>
+                {{ data.reasonId === null ? '-' : data.reasonId.name }}
+              </p>
+            </td>
+            <td>
+              <p>{{ data.note === null ? '-' : data.note }}</p>
+            </td>
           </tr>
         </tbody>
       </table>
+      <div class="pagination flex flex-row justify-center gap-2 text-sm my-3">
+        <button
+          class="border p-1 rounded-full flex justify-center"
+          title="Previous"
+          @click="prev"
+        >
+          <IconsArrowcevron style="transform: rotate('left')" size="20" />
+        </button>
+        <div class="flex flex-row gap-0.5">
+          <button
+            class="border rounded py-0.5 px-3 duration-300 hover:bg-[#CC6633] hover:text-white hover:duration-300"
+            v-for="(page, idx) in totalPages"
+            :key="idx"
+            @click="fetchPresensi(page)"
+          >
+            {{ page + 1 }}
+          </button>
+        </div>
+        <button
+          class="border p-1 rounded-full flex justify-center"
+          title="Next"
+          @click="next"
+        >
+          <IconsArrowcevron size="20" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -65,19 +105,26 @@ import { createConfig, responseManager } from '~/service/api-manager';
 export default {
   name: 'PagePresence',
   data: () => ({
-    presensies: []
+    presensies: [],
+    totalPages: [],
+    page: 0,
   }),
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
-    async fetchPresensi() {
+    async fetchPresensi(page = 0, size = 10) {
       try {
         const { data: res } = await this.$axios(
           // eslint-disable-next-line new-cap
           new createConfig().getData({
-            url: 'presensi'
+            url: `presensi?page=${page}&size=${size}`
           })
         );
-        this.presensies = res.data;
+        this.presensies = res.data.content;
+        const pages = [];
+        for (let index = 0; index < res.data.totalPages; index++) {
+          pages.push(index);
+        }
+        this.totalPages = pages;
       } catch (error) {
         // eslint-disable-next-line new-cap
         const err = new responseManager().manageError(error);
@@ -88,6 +135,16 @@ export default {
           theme: 'bubble',
           singleton: true
         });
+      }
+    },
+    next() {
+      const next = this.page + 1;
+      this.fetchPresensi(next);
+    },
+    prev() {
+      const prev = this.page - 1;
+      if (this.fetchPresensi() > 0) {
+      this.fetchPresensi(prev);
       }
     }
   },
