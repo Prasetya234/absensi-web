@@ -9,7 +9,6 @@
       <table class="fl-table text-sm">
         <thead>
           <tr>
-            <th>No</th>
             <th>No Student</th>
             <th>Fullname</th>
             <th>Batch</th>
@@ -20,7 +19,6 @@
         </thead>
         <tbody class="txt-xs">
           <tr v-for="(data, idx) in students" :key="idx">
-            <td>{{ idx + 1 }}</td>
             <td>{{ data.noSiswa }}</td>
             <td>{{ data.firstName + ' ' + data.lastName }}</td>
             <td>{{ data.batch }}</td>
@@ -108,28 +106,61 @@
       </table>
       <div class="pagination flex flex-row justify-center gap-2 text-sm my-3">
         <button
-          class="border p-1 rounded-full flex justify-center"
-          title="Previous"
+          :class="`border bg-gray-100 rounded-full p-2 ${
+            currentPage === 0
+              ? 'cursor-not-allowed text-gray-500'
+              : 'cursor-pointer hover:bg-[#F7931E] hover:text-white hover:duration-300 hover:border-transparent'
+          }`"
           @click="prev"
         >
-          <IconsArrowcevron style="transform: rotate('left')" size="20" />
+          <span class="flex justify-center"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-chevron-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+              /></svg
+          ></span>
         </button>
-        <div class="flex flex-row gap-0.5">
-          <button
-            class="border rounded py-0.5 px-3 duration-300 hover:bg-[#CC6633] hover:text-white hover:duration-300"
-            v-for="(page, idx) in totalPages"
-            :key="idx"
-            @click="fetchStudent(page)"
-          >
-            {{ page + 1 }}
-          </button>
-        </div>
         <button
-          class="border p-1 rounded-full flex justify-center"
-          title="Next"
+          :class="`rounded-full py-1 px-3 duration-300 hover:bg-[#F7931E]/60 hover:text-white hover:border-transparent hover:duration-300 ${
+            currentPage === page
+              ? 'bg-[#F7931E] text-white border border-[#F7931E] px-3'
+              : 'bg-gray-100 border'
+          }`"
+          v-for="(page, idx) in totalPages"
+          :key="idx"
+          @click="curr(page)"
+        >
+          {{ page + 1 }}
+        </button>
+        <button
+          :class="`border bg-gray-100 rounded-full p-2 ${
+            currentPage === totalPages.length - 1
+              ? 'cursor-not-allowed text-gray-500' : 'cursor-pointer hover:bg-[#F7931E] hover:text-white hover:duration-300 hover:border-transparent'
+          }`"
           @click="next"
         >
-          <IconsArrowcevron size="20" />
+          <span class="flex justify-center"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-chevron-right"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+              /></svg
+          ></span>
         </button>
       </div>
     </div>
@@ -143,16 +174,23 @@ export default {
   name: 'Student',
   data: () => ({
     students: [],
-    totalPages: []
+    totalPages: [],
+    currentPage: 0,
+    perPage: 10
   }),
+  computed: {
+    pageTotal() {
+      return Math.ceil(this.totalPages.length / this.perPage);
+    }
+  },
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
-    async fetchStudent(page = 0, size = 10) {
+    async fetchStudent(page = 0) {
       try {
         const { data: res } = await this.$axios(
           // eslint-disable-next-line new-cap
           new createConfig().getData({
-            url: `class-bootcamp/students?page=${page}&size=${size}`
+            url: `class-bootcamp/students?page=${page}&size=${this.perPage}`
           })
         );
         this.students = res.data.content;
@@ -227,12 +265,38 @@ export default {
         }
       });
     },
+    setPage(page) {
+      if (page < 0 || page > this.pageTotal) {
+        return;
+      }
+      this.currentPage = page;
+    },
+    curr(page) {
+      this.currentPage = page;
+      this.setPage(page);
+      return this.fetchStudent(page);
+    },
     next() {
-      this.fetchStudent(+1);
+      const total = this.totalPages.length - 1;
+      if (this.currentPage === total) {
+        const page = this.currentPage;
+        this.setPage(page);
+        return this.fetchStudent(page);
+      } else {
+        const next = this.currentPage + 1;
+        this.setPage(next);
+        return this.fetchStudent(next);
+      }
     },
     prev() {
-      if (this.fetchStudent() > 0) {
-        this.fetchStudent(-1);
+      const page = this.currentPage;
+      if (page === 0) {
+        this.setPage(page);
+        return this.fetchStudent(page);
+      } else {
+        const prev = this.currentPage - 1;
+        this.setPage(prev);
+        return this.fetchStudent(prev);
       }
     }
   },
