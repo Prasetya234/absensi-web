@@ -26,7 +26,7 @@
           </li>
           <li
             :class="`${activeMenu(
-              `/student/profile/`,
+              `/student/profile/${userId}`,
               route
             )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
             @click="profile"
@@ -109,8 +109,8 @@
   </div>
 </template>
 <script>
-import { removeAllStorage } from '~/utils/auth';
 import { mapGetters } from 'vuex';
+import { removeAllStorage } from '~/utils/auth';
 
 export default {
   name: 'NavbarComponent',
@@ -118,6 +118,9 @@ export default {
     ...mapGetters('auth', ['getUsername', 'getUserId']),
     route() {
       return this.$route.path;
+    },
+    userId() {
+      return this.$route.params.id
     }
   },
   methods: {
@@ -140,7 +143,7 @@ export default {
     profile() {
       const userId = btoa(this.getUserId);
       this.$router.push('/student/profile/' + userId);
-    }
+    },
   }
 };
 </script>
