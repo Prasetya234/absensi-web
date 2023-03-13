@@ -111,6 +111,7 @@
               ? 'cursor-not-allowed text-gray-500'
               : 'cursor-pointer hover:bg-[#F7931E] hover:text-white hover:duration-300 hover:border-transparent'
           }`"
+          title="Previous Page"
           @click="prev"
         >
           <span class="flex justify-center"
@@ -136,6 +137,7 @@
           }`"
           v-for="(page, idx) in totalPages"
           :key="idx"
+          :title="`Page ${idx + 1}`"
           @click="curr(page)"
         >
           {{ page + 1 }}
@@ -143,8 +145,10 @@
         <button
           :class="`border bg-gray-100 rounded-full p-2 ${
             currentPage === totalPages.length - 1
-              ? 'cursor-not-allowed text-gray-500' : 'cursor-pointer hover:bg-[#F7931E] hover:text-white hover:duration-300 hover:border-transparent'
+              ? 'cursor-not-allowed text-gray-500'
+              : 'cursor-pointer hover:bg-[#F7931E] hover:text-white hover:duration-300 hover:border-transparent'
           }`"
+          title="Next Page"
           @click="next"
         >
           <span class="flex justify-center"
