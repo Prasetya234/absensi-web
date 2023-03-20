@@ -90,16 +90,9 @@
                     Log Out
                   </p>
                 </button>
-                <button class="w-full">
-                  <p
-                    class="text-[#828282] text-left text-base hover:text-[#CC6633] leading-[22px] montserrat"
-                  >
-                    Ganti ke Tampilan Talent
-                  </p>
-                </button>
               </span>
               <div
-                class="w-3 h-3 bg-white rotate-[135deg] relative -top-[6.45rem] left-[57%] arrow"
+                class="w-3 h-3 bg-white rotate-[135deg] relative -top-[4.3rem] left-[57%] arrow"
               ></div>
             </div>
           </li>
