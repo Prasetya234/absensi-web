@@ -9,6 +9,10 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: 'Absensi adalah website yang dikembangkan oleh siswa bootcamp yayasan bina nusantara semarang untuk menejemen absen secara digital dan di lengkapi dengan smart logice dan lainnya' },
       { name: 'format-detection', content: 'telephone=+6289504731540' },
+      { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
+      { name: 'author', content: 'Yayasan Bina Nusantara' },
+      { 'http-equiv': 'Content-Security-Policy', content: 'upgrade-insecure-requests' },
+
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
@@ -59,6 +63,9 @@ export default {
     transpile: [
       'defu'
     ]
+  },
+  generate: {
+    dir: 'public'
   },
   hooks: {
     listen(server, { host, port }) {
