@@ -11,7 +11,7 @@ export default {
       { name: 'format-detection', content: 'telephone=+6289504731540' },
       { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
       { name: 'author', content: 'Yayasan Bina Nusantara' },
-      { 'http-equiv': 'Content-Security-Policy', content: 'upgrade-insecure-requests' },
+      // { 'http-equiv': 'Content-Security-Policy', content: 'upgrade-insecure-requests' },
 
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
