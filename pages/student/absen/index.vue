@@ -1,8 +1,16 @@
 <template>
   <div
-    class="pt-20 flex justify-center relative bg-gray-200"
+    class="pt-20 flex justify-center relative bg-gray-200 relative"
     style="min-height: 100vh"
   >
+    <modal v-if="modalActive" :onclose="closeModalAlert">
+      <h3 class="mb-4 text-2xl font-bold">Alert</h3>
+      <p class="text-lg">
+        Sistem gagal mendeteksi wajah anda saat absen. Laporan ini akan di
+        kirmkan ke intruktur kamu dan akan di tindak lanjuti.
+      </p>
+      <p>Have a great day!</p>
+    </modal>
     <div
       class="absolute top-5 left-5 flex gap-3 items-center cursor-pointer"
       @click="$router.go(-1)"
@@ -56,7 +64,7 @@
             class="w-full text-center p-4 text-md font-bold"
             v-if="readyAbasen"
           >
-            <span class="text-red-400" v-if="isProcess">On Processing...</span>
+            <span class="text-red-400" v-if="isProcess">Processing...</span>
             <span class="text-green-400" v-if="!isNotNotDetected && !isProcess"
               >In process of scanning. <b>Please wait</b></span
             >
@@ -67,15 +75,17 @@
             >
           </div>
         </div>
-        <div class="flex justify-center h-fit">
-          <div class="nunito font-[500]">
-            <p>
+        <div class="w-2/4 absolute bottom-5 text-xl">
+          <div class="nunito font-[500] flex justify-between">
+            <p class="text-green-400 font-bold">
               Class Start Time :
-              <span class="text-left"> {{ operationalClass.entryTime }}</span>
+              <span class="text-left">
+                {{ moment(operationalClass.entryTime) }}</span
+              >
             </p>
-            <p>
+            <p class="text-red-400 font-bold">
               Class End Time :
-              <span>{{ operationalClass.dismissalTime }}</span>
+              <span>{{ moment(operationalClass.dismissalTime) }}</span>
             </p>
           </div>
         </div>
@@ -88,10 +98,12 @@
 import { mapActions, mapGetters } from 'vuex';
 import * as faceapi from 'face-api.js';
 import { createConfig, responseManager } from '~/service/api-manager';
+import moment from 'moment';
 
 export default {
   name: 'Absen',
   data: () => ({
+    modalActive: false,
     isNotNotDetected: false,
     readyAbasen: false,
     isProcess: true,
@@ -131,6 +143,13 @@ export default {
         this.checkingCameraAccess();
       }, 500);
     },
+    closeModalAlert() {
+      this.modalActive = false;
+      this.$router.push('/');
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    },
     startVideo() {
       navigator.getUserMedia(
         { video: {} },
@@ -150,38 +169,50 @@ export default {
       }
     },
     handleVideoOnPlay() {
+      let qty = 0;
       const display = {
         width: this.custom.videoWidth,
         height: this.custom.videoHeight
       };
       setInterval(async () => {
-        this.isProcess = false;
-        this.$refs.canvasref.innerHTML = faceapi.createCanvasFromMedia(
-          this.$refs.videoref
-        );
-        faceapi.matchDimensions(this.$refs.canvasref, display);
-        const detections = await faceapi
-          .detectAllFaces(
-            this.$refs.videoref,
-            new faceapi.TinyFaceDetectorOptions()
-          )
-          .withFaceLandmarks()
-          .withFaceExpressions();
-        const resizedDetections = faceapi.resizeResults(detections, display);
-        this.$refs.canvasref
-          .getContext('2d')
-          .clearRect(0, 0, this.custom.videoWidth, this.custom.videoHeight);
-        faceapi.draw.drawDetections(this.$refs.canvasref, resizedDetections);
-        faceapi.draw.drawFaceLandmarks(this.$refs.canvasref, resizedDetections);
-        resizedDetections.forEach((detections) => {
-          const box = detections.detection.box;
-          const drawBox = new faceapi.draw.DrawBox(box, {
-            label: this.onCheckFace(detections)
-          });
-          drawBox.draw(this.$refs.canvasref);
-        });
-        this.otherCondition(detections);
-      }, 2000);
+        try {
+          this.isProcess = false;
+          this.$refs.canvasref.innerHTML = faceapi.createCanvasFromMedia(
+            this.$refs.videoref
+          );
+          faceapi.matchDimensions(this.$refs.canvasref, display);
+          const detections = await faceapi
+            .detectSingleFace(
+              this.$refs.videoref,
+              new faceapi.TinyFaceDetectorOptions()
+            )
+            .withFaceLandmarks()
+            .withFaceExpressions();
+          const resizedDetections = faceapi.resizeResults(detections, display);
+          this.$refs.canvasref
+            .getContext('2d')
+            .clearRect(0, 0, this.custom.videoWidth, this.custom.videoHeight);
+          faceapi.draw.drawDetections(this.$refs.canvasref, resizedDetections);
+          faceapi.draw.drawFaceLandmarks(
+            this.$refs.canvasref,
+            resizedDetections
+          );
+          const box = resizedDetections?.detection.box;
+          if (box) {
+            const drawBox = new faceapi.draw.DrawBox(box, {
+              label: this.onCheckFace(resizedDetections)
+            });
+            drawBox.draw(this.$refs.canvasref);
+          }
+          qty++;
+          if (qty >= 54) {
+            this.modalActive = true;
+          }
+          this.otherCondition(true);
+        } catch {
+          this.otherCondition(false);
+        }
+      }, 1200);
     },
     onCheckFace(el) {
       const valNumb = this.detectorScores.find(
@@ -194,7 +225,7 @@ export default {
       return 'Unknown';
     },
     otherCondition(el) {
-      if (el.length === 0) {
+      if (!el) {
         this.isNotNotDetected = true;
       } else {
         this.isNotNotDetected = false;
@@ -306,6 +337,9 @@ export default {
         }
         this.getLocation();
       } catch {}
+    },
+    moment(time) {
+      return moment(time, 'HH').format('HH:mm');
     },
     errorMessage(msg) {
       this.$toasted.show(msg, {

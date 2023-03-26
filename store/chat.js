@@ -23,6 +23,9 @@ export const getters = {
     },
     getUsername(state, getters, rootState) {
         return rootState.auth.auth.user.firstName + ' ' + rootState.auth.auth.user.lastName
+    },
+    getClassId(state, getters, rootState) {
+        return rootState.auth.auth.user.schoolId.id
     }
 }
 
@@ -69,25 +72,28 @@ export const actions = {
     },
     onConnected({ dispatch }) {
         stompClient.subscribe('/chatroom/public', (e) => dispatch('onMessageReceived', e));
+        console.clear();
     },
     onMessageReceived({ commit, getters }, payload) {
         const payloadData = JSON.parse(payload.body);
         const me = payloadData.senderName === getters.getUsername ? true : false
         switch (payloadData.status) {
             case 'MESSAGE':
-                commit('ADD_CHAT', {
-                    senderName: payloadData.senderName,
-                    message: payloadData.message,
-                    date: payloadData.date,
-                    me
-                })
+                if (getters.getClassId.id == payloadData.classId) {
+                    commit('ADD_CHAT', {
+                        senderName: payloadData.senderName,
+                        message: payloadData.message,
+                        date: payloadData.date,
+                        me
+                    })
+                }
                 break;
         }
         if (!me) {
             notificateAudioPlay()
             notificatePopUpPlay({ message: payloadData.message, sender: payloadData.senderName })
         }
-        // console.clear();
+        console.clear();
     },
     sendMessages({ dispatch }, payload) {
         if (!stompClient) {

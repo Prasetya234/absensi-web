@@ -132,6 +132,9 @@ export default {
       });
       removeAllStorage();
       this.$router.push('/login');
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     },
     profile() {
       const userId = btoa(this.getUserId);

@@ -148,10 +148,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 import './style.css';
 import { createConfig, responseManager } from '@/service/api-manager/index';
+import { getToken } from '~/utils/auth';
 
 export default {
   name: 'LoginPage',
@@ -166,10 +167,8 @@ export default {
       role: 'student'
     };
   },
-   computed: {
-    ...mapGetters('auth', ['isAuthenticated']),
-  },
   methods: {
+    ...mapActions('chat', ['connect']),
     ...mapActions('auth', ['setCredential']),
     ...mapActions('loading', ['showLoading', 'hideLoading']),
     onToggle() {
@@ -189,6 +188,7 @@ export default {
           })
         );
         this.setCredential(resData.data)
+         this.connect();
         this.$router.push('/');
         this.$toast.show(`Welcome ${resData.data.user?.firstName}`, {
           position: 'top-center',
@@ -212,7 +212,7 @@ export default {
     }
   },
   mounted() {
-    if (this.isAuthenticated) {
+    if (getToken()) {
       this.$router.push('/');
     }
   }

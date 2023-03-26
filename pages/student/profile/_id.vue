@@ -1,5 +1,9 @@
 <template>
   <div class="bg-gray-50 md:py-[7.83%] py-32">
+    <modal v-if="modalActive" :onclose="onToggle">
+      <h3 class="mb-4 text-2xl font-bold">Alert</h3>
+      <p>Sorry, this feature is not available yet</p>
+    </modal>
     <div
       class="box-profile grid md:grid-cols-3 grid-cols-1 md:gap-x-[3.25%] md:space-y-0 space-y-5 md:mx-[5%]"
     >
@@ -17,8 +21,8 @@
             <p>Viewers</p>
           </div>
           <div class="">
-            <h2 class="text-[32px] font-medium leading-[40px]">5</h2>
-            <p>...</p>
+            <h2 class="text-[32px] font-medium leading-[40px]">0</h2>
+            <p>Task</p>
           </div>
         </div>
         <div class="rounded-[10px]">
@@ -55,7 +59,7 @@
                 />
                 <div class="absolute bottom-0 w-full bg-[#CC6666E5]/90">
                   <div class="flex justify-center">
-                    <button class="h-7 px-5 pb-0.5 flex items-center gap-2">
+                    <button class="h-7 px-5 pb-0.5 flex items-center gap-2"  v-if="isChange" @click="modalActive = true">
                       <p class="alata text-white text-[10px] font-normal">
                         Change Photo
                       </p>
@@ -92,13 +96,14 @@
                 @click="change"
                 class="py-2 px-6 rounded-lg text-sm text-white font-bold bg-[#CC6633]"
               >
-                <p v-if="!isChange">Change</p>
+                <p v-if="!isChange">Edit</p>
                 <p v-if="isChange">Cancel</p>
               </button>
               <button
                 class="py-2 px-6 rounded-lg text-sm text-[#F7931E] font-bold bg-[#FDE9D2]"
+                @click="modalActive = true"
               >
-                <p>Download Profile</p>
+                <p>Download Pdf</p>
               </button>
             </div>
             <div class="px-8 py-4 roboto text-[#333333] space-y-2">
@@ -233,7 +238,7 @@
         <div class="kelas-bootcamp rounded-[10px] bg-white">
           <div class="p-6">
             <h2 class="alata text-lg text-[#333333] font-normal leading-4">
-              Bootcamp Class
+              Class
             </h2>
           </div>
           <hr class="border-[#F7F7F7]" />
@@ -301,16 +306,16 @@
           <p
             class="float-left roboto text-[#616161] text-base font-normal leading-6"
           >
-            Total Application : 40
+            Total Task : 0
           </p>
           <p
             class="float-right roboto text-[#616161] text-base font-normal leading-6"
           >
-            On Progress : 12
+            On Progress : 0
           </p>
         </div>
         <div class="border rounded-lg p-6 space-y-3">
-          <div class="border rounded-lg py-2.5 px-6 space-y-3">
+          <!-- <div class="border rounded-lg py-2.5 px-6 space-y-3">
             <p class="roboto text-base font-medium">Back End Developer</p>
             <p class="roboto text-[#616161] text-base font-normal">
               PT Jaya Bersama
@@ -363,7 +368,7 @@
               Applied on 14 Aug 2021
             </p>
             <p class="roboto text-[#CC6633] text-base font-medium">Lihat</p>
-          </div>
+          </div>-->
           <div class="pagination flex justify-center gap-3">
             <div class="w-3 h-3 border rounded-full bg-[#F7931E]"></div>
             <div class="w-3 h-3 border rounded-full"></div>
@@ -374,9 +379,9 @@
           <h4
             class="alata text-[#333333] text-[18px] font-normal leading-4 -mt-3.5"
           >
-            Offer : 2
+            Over : 0
           </h4>
-          <div class="border rounded-lg py-2.5 px-6 space-y-3">
+          <!-- <div class="border rounded-lg py-2.5 px-6 space-y-3">
             <p class="roboto text-base font-medium">Back End Developer</p>
             <p class="roboto text-[#616161] text-base font-normal">
               PT Jaya Bersama
@@ -395,7 +400,7 @@
               Applied on 14 Aug 2021
             </p>
             <p class="roboto text-[#CC6633] text-base font-medium">Lihat</p>
-          </div>
+          </div> -->
           <div class="pagination flex justify-center gap-3">
             <div class="w-3 h-3 border rounded-full bg-[#F7931E]"></div>
             <div class="w-3 h-3 border rounded-full"></div>
@@ -404,7 +409,7 @@
         </div>
         <div class="border rounded-lg p-6 space-y-3">
           <h4 class="alata text-[#333333] text-[18px] font-normal leading-4">
-            Hire : 0
+            Favorite : 0
           </h4>
         </div>
       </div>
@@ -417,6 +422,7 @@ export default {
   name: 'ProfileIdPage',
   data() {
     return {
+      modalActive: false,
       userData: {
         createAt: '',
         noSiswa: '',
@@ -446,6 +452,9 @@ export default {
     this.getUserById();
   },
   methods: {
+    onToggle() {
+      this.modalActive = !this.modalActive;
+    },
     async getUserById() {
       try {
         const { data: resData } = await this.$axios(
@@ -467,7 +476,7 @@ export default {
       }
     },
     change() {
-      this.isChange = !this.isChange
+      this.isChange = !this.isChange;
     },
     async saveChange() {
       this.isChange = !this.isChange;

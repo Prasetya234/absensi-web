@@ -21,7 +21,7 @@ export default {
   mounted() {
     this.initializeMiddleware(this.$route);
     this.requestPermision();
-    if (this.isAuthenticated) {
+    if (getToken()) {
       this.connect();
     }
   },
