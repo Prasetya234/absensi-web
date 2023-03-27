@@ -5,10 +5,10 @@
       <div class="flex justify-between items-start mb-6">
         <div class="flex items-center gap-4">
           <span @click="changeCalender('prev')">
-            <icons-arrowcevron class="cursor-pointer" direction="left" />
+            <icons-arrowcevron class="cursor-pointer fill-[#828282] pt-[9.5px] pl-[8px]" direction="left" :size="38" />
           </span>
           <span @click="changeCalender('next')">
-            <icons-arrowcevron class="cursor-pointer" />
+            <icons-arrowcevron class="cursor-pointer fill-[#828282] pt-[9.5px] pl-[8px]" :size="38" />
           </span>
           <p
             class="text-[#CC6633] text-[30px] leading-[41px] font-extrabold uppercase nunito ml-4"
@@ -97,7 +97,7 @@ export default {
       );
       this.fetchDataCalender(date);
       let dayData = [];
-      let monthDate = moment(date).startOf('month');
+      const monthDate = moment(date).startOf('month');
       dayData = [...Array(monthDate.daysInMonth())].map((_, i) => ({
         date: monthDate.clone().add(i, 'day'),
         noteplus: null,
@@ -136,14 +136,14 @@ export default {
           isDay: false,
         });
       }
-      if (date.getMonth()  == dateNow.getMonth() && date.getFullYear() == dateNow.getFullYear()) {
+      if (date.getMonth()  === dateNow.getMonth() && date.getFullYear() === dateNow.getFullYear()) {
        this.days.forEach(day => {
           day.forEach(data => {
-            if (data.date._d.getDate() == dateNow.getDate()) {
+            if (data.date._d.getDate() === dateNow.getDate()) {
               data.isDay = true
             }
           })
-        }) 
+        })
       }
     },
     selectCalender(e) {
@@ -163,6 +163,7 @@ export default {
       this.isLoading = true;
       try {
         const { data: resp } = await this.$axios(
+          // eslint-disable-next-line new-cap
           new createConfig().getData({
             url: 'calender',
             params: {
