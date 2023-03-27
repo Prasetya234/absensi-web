@@ -32,7 +32,7 @@
             @click="profile"
           >
             <span>
-              <icons-profile />
+              <Profile :size="38" />
             </span>
             <span
               class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
@@ -103,44 +103,46 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import Profile from '../icons/profile.vue';
 import { removeAllStorage } from '~/utils/auth';
 
 export default {
-  name: 'NavbarComponent',
-  computed: {
-    ...mapGetters('auth', ['getUsername', 'getUserId']),
-    route() {
-      return this.$route.path;
+    name: "NavbarComponent",
+    computed: {
+        ...mapGetters("auth", ["getUsername", "getUserId"]),
+        route() {
+            return this.$route.path;
+        },
+        userId() {
+            return this.$route.params.id;
+        }
     },
-    userId() {
-      return this.$route.params.id
-    }
-  },
-  methods: {
-    activeMenu(path, route) {
-      return path === route
-        ? 'text-[#CC6633] fill-[#CC6633] border-b-2 border-b-[#CC6633]'
-        : 'text-[#828282] fill-[#828282]';
+    methods: {
+        activeMenu(path, route) {
+            return path === route
+                ? "text-[#CC6633] fill-[#CC6633] border-b-2 border-b-[#CC6633]"
+                : "text-[#828282] fill-[#828282]";
+        },
+        logout() {
+            this.$toast.show(`Good bye ${this.getUsername}`, {
+                position: "top-center",
+                type: "error",
+                duration: 5000,
+                theme: "bubble",
+                singleton: true
+            });
+            removeAllStorage();
+            this.$router.push("/login");
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        },
+        profile() {
+            const userId = btoa(this.getUserId);
+            this.$router.push("/student/profile/" + userId);
+        },
     },
-    logout() {
-      this.$toast.show(`Good bye ${this.getUsername}`, {
-        position: 'top-center',
-        type: 'error',
-        duration: 5000,
-        theme: 'bubble',
-        singleton: true
-      });
-      removeAllStorage();
-      this.$router.push('/login');
-      setTimeout(() => {
-        window.location.reload();
-      }, 500);
-    },
-    profile() {
-      const userId = btoa(this.getUserId);
-      this.$router.push('/student/profile/' + userId);
-    },
-  }
+    components: { Profile }
 };
 </script>
 <style scoped>
