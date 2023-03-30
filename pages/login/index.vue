@@ -152,7 +152,7 @@ import { mapActions } from 'vuex';
 
 import './style.css';
 import { createConfig, responseManager } from '@/service/api-manager/index';
-import { getToken } from '~/utils/auth';
+import { getFirstAccess, getToken } from '~/utils/auth';
 
 export default {
   name: 'LoginPage',
@@ -188,8 +188,12 @@ export default {
           })
         );
         this.setCredential(resData.data)
-         this.connect();
-        this.$router.push('/');
+        this.connect();
+        if (!getFirstAccess() && resData.data.user.roleId.id === 1) {
+          this.$router.push('/student/dashboard');  
+        } else {
+          this.$router.push('/');  
+        }
         this.$toast.show(`Welcome ${resData.data.user?.firstName}`, {
           position: 'top-center',
           type: 'success',

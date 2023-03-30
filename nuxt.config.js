@@ -62,7 +62,12 @@ export default {
   build: {
     transpile: [
       'defu'
-    ]
+    ],
+    extend(config, {}) {
+      config.node = {
+          fs: 'empty'
+      }
+    }
   },
   generate: {
     dir: 'public'
