@@ -1,7 +1,8 @@
 <template>
   <div style="min-height: 100vh; height: 100%">
     <layout-navbar-student v-if="nav" />
-    <nuxt-child @no-nav="hideNav" />
+    <nuxt-child @no-nav="hideNav" @no-footer="hideFooter" />
+    <layout-footer v-if="footer"  />
   </div>
 </template>
 
@@ -9,7 +10,8 @@
 export default {
   name: 'Student',
   data: () => ({
-    nav: true
+    nav: true,
+    footer: true
   }),
    watch: {
     $route() {
@@ -19,6 +21,9 @@ export default {
   methods: {
     hideNav() {
       this.nav = false;
+    },
+    hideFooter() {
+      this.footer = false;
     }
   }
 };

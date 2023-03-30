@@ -23,18 +23,7 @@
               v-model="keyword"
             />
             <span class="flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
-                fill="currentColor"
-                class="bi bi-search"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                />
-              </svg>
+              <icons-magnifier :size="20" />
             </span>
           </div>
         </div>
@@ -178,7 +167,7 @@
       </table>
       <div class="pagination flex flex-row justify-center gap-2 text-sm my-3">
         <button
-          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full p-2 ${
+          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 ${
             currentPage === 0
               ? 'cursor-not-allowed text-gray-500 bg-gray-100 border-0'
               : 'cursor-pointer hover:bg-[#F7931E] hover:duration-300 hover:border-transparent'
@@ -186,23 +175,12 @@
           title="Previous Page"
           @click="prev"
         >
-          <span class="flex justify-center"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-chevron-left"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
-              /></svg
-          ></span>
+          <span class="flex justify-center">
+            <IconsArrowcevron class="pt-[8px] pl-[7px]" direction="left" :size="34"
+          /></span>
         </button>
         <button
-          :class="`rounded-full py-1 px-3 duration-300 hover:bg-[#F7931E] hover:text-white hover:border-transparent hover:duration-300 ${
+          :class="`rounded-full w-9 h-9 duration-300 hover:bg-[#F7931E] hover:text-white hover:border-transparent hover:duration-300 ${
             currentPage === page
               ? 'bg-[#CC6633] text-white border border-[#CC6633] px-3'
               : 'bg-gray-100 border'
@@ -215,7 +193,7 @@
           {{ page + 1 }}
         </button>
         <button
-          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full p-2 ${
+          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 ${
             currentPage === totalPages.length - 1
               ? 'cursor-not-allowed text-gray-500 bg-gray-100 border-0'
               : 'cursor-pointer hover:bg-[#F7931E] hover:duration-300 hover:border-transparent'
@@ -224,19 +202,8 @@
           @click="next"
         >
           <span class="flex justify-center"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-chevron-right"
-              viewBox="0 0 16 16"
             >
-              <path
-                fill-rule="evenodd"
-                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
-              /></svg
-          ></span>
+          <IconsArrowcevron class="pt-[8px] pl-[7px]" :size="34" /></span>
         </button>
       </div>
     </div>
@@ -264,7 +231,13 @@ export default {
   },
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
-    async fetchPresensi(page = 0, isLate = '', perPage = 10, keyword = '', sort = '') {
+    async fetchPresensi(
+      page = 0,
+      isLate = '',
+      perPage = 10,
+      keyword = '',
+      sort = ''
+    ) {
       try {
         const { data: res } = await this.$axios(
           // eslint-disable-next-line new-cap

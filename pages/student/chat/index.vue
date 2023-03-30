@@ -10,22 +10,7 @@
           <div class="box-input flex gap-x-3 border rounded-lg px-2 py-1">
             <input type="text" placeholder="Search" class="" />
             <span class="flex items-center">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M10 18C11.775 17.9996 13.4988 17.4054 14.897 16.312L19.293 20.708L20.707 19.294L16.311 14.898C17.405 13.4997 17.9996 11.7754 18 10C18 5.589 14.411 2 10 2C5.589 2 2 5.589 2 10C2 14.411 5.589 18 10 18ZM10 4C13.309 4 16 6.691 16 10C16 13.309 13.309 16 10 16C6.691 16 4 13.309 4 10C4 6.691 6.691 4 10 4Z"
-                  fill="#828282"
-                />
-                <path
-                  d="M11.4118 8.58511C11.7908 8.96511 11.9998 9.46711 11.9998 9.99911H13.9998C14.0007 9.47354 13.8974 8.953 13.6959 8.46759C13.4944 7.98219 13.1987 7.54153 12.8258 7.17111C11.3118 5.65911 8.68683 5.65911 7.17383 7.17111L8.58583 8.58711C9.34583 7.82911 10.6558 7.83111 11.4118 8.58511Z"
-                  fill="#828282"
-                />
-              </svg>
+              <Magnifier/>
             </span>
           </div>
         </header>
@@ -118,8 +103,10 @@
 import { mapActions, mapGetters } from 'vuex';
 import { createConfig } from '~/service/api-manager';
 import emptyImage from '~/assets/img/empty-profile.png';
+import Magnifier from '~/components/icons/magnifier.vue';
 
 export default {
+  components: { Magnifier },
   name: 'Chat',
   data: () => ({
     activechat: {
@@ -239,6 +226,7 @@ export default {
     await this.fetchSchool();
     this.scrollDown();
     this.hideLoading();
+    this.$emit('no-footer')
   }
 };
 </script>

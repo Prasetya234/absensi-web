@@ -59,23 +59,12 @@
                 />
                 <div class="absolute bottom-0 w-full bg-[#CC6666E5]/90">
                   <div class="flex justify-center">
-                    <button class="h-7 px-5 pb-0.5 flex items-center gap-2"  v-if="isChange" @click="modalActive = true">
+                    <button class="h-7 px-7 pb-0.5 flex items-center gap-1"  v-if="isChange" @click="modalActive = true">
                       <p class="alata text-white text-[10px] font-normal">
                         Change Photo
                       </p>
                       <span class="">
-                        <svg
-                          width="10"
-                          height="10"
-                          viewBox="0 0 11 11"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M10.2799 2.19127L8.5103 0.203062C8.39336 0.0730083 8.23512 0 8.07016 0C7.9052 0 7.74695 0.0730083 7.63001 0.203062L1.35641 7.20559L0.783621 9.96886C0.763862 10.0699 0.764539 10.1745 0.785604 10.2752C0.806668 10.3759 0.847588 10.4701 0.905374 10.5508C0.96316 10.6315 1.03635 10.6968 1.1196 10.7419C1.20285 10.787 1.29406 10.8107 1.38656 10.8113C1.42966 10.8162 1.47309 10.8162 1.51619 10.8113L4.01538 10.171L10.2799 3.17526C10.3963 3.04455 10.4616 2.86766 10.4616 2.68326C10.4616 2.49887 10.3963 2.32198 10.2799 2.19127V2.19127ZM3.71391 9.56448L1.37149 10.1138L1.90509 7.54594L6.59898 2.31932L8.4078 4.34123L3.71391 9.56448ZM8.81177 3.8526L7.00295 1.83069L8.05207 0.66473L9.83074 2.68663L8.81177 3.8526Z"
-                            fill="white"
-                          />
-                        </svg>
+                        <Edit :size="10"/>
                       </span>
                     </button>
                   </div>
@@ -417,8 +406,10 @@
   </div>
 </template>
 <script>
+import Edit from '~/components/icons/edit.vue';
 import { createConfig, responseManager } from '~/service/api-manager';
 export default {
+  components: { Edit },
   name: 'ProfileIdPage',
   data() {
     return {

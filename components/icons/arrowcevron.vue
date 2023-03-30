@@ -1,13 +1,29 @@
 <template>
-  <svg
+  <!-- <svg
     width="24"
     height="24"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     :style="`transform: ${rotate(direction)}`"
+  > -->
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    :width="size"
+    :height="size"
+    class="rounded-full"
+    fill="currentColor"
+    viewBox="0 0 24 24"
+    :style="`transform: ${rotate(
+      direction
+    )}`"
   >
-    <rect width="24" height="24" fill="#E5E5E5" />
+    <path
+      fill-rule="evenodd"
+      d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+    />
+  </svg>
+  <!-- <rect width="24" height="24" fill="#E5E5E5" />
     <rect
       width="42720"
       height="11287"
@@ -47,30 +63,34 @@
       stroke-linejoin="round"
       stroke-dasharray="10 10"
     />
-  </svg>
+  </svg> -->
 </template>
 
 <script>
 export default {
-    name: 'ArrowChevronIcon',
-    props: {
-        direction: {
-            type: String,
-            default: 'right'
-        }
+  name: 'ArrowChevronIcon',
+  props: {
+    direction: {
+      type: String,
+      default: 'right'
     },
-    methods: {
-        rotate(direction) {
-            if (direction == 'left') {
-                return 'rotate(0deg)'
-            } else if (direction == 'right') {
-                return 'rotate(180deg)'
-            } else if (direction == 'up') {
-                return 'rotate(90deg)'
-            } else if (direction == 'down') {
-                return 'rotate(270deg)'
-            }
-        }
+    size: {
+      type: Number,
+      default: 24
     }
-}
+  },
+  methods: {
+    rotate(direction) {
+      if (direction === 'left') {
+        return 'rotate(0deg)';
+      } else if (direction === 'right') {
+        return 'rotate(180deg)';
+      } else if (direction === 'up') {
+        return 'rotate(90deg)';
+      } else if (direction === 'down') {
+        return 'rotate(270deg)';
+      }
+    }
+  }
+};
 </script>
