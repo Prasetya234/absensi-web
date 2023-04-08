@@ -38,7 +38,7 @@
             </div>
             <div class="flex flex-col py-5 pl-24">
               <span class="text-slate-900 font-semibold">Permission</span>
-              <span class="text-slate-500">0 Day</span>
+              <span class="text-slate-500">{{ totalPermit }} Day</span>
             </div>
           </div>
           <div
@@ -70,17 +70,21 @@
         </div>
         <div class="absolute top-2.5 right-0">
           <div class="relative">
+              <button
+                :class="`absolute top-1 right-0 cursor-pointer bg-[#F7931E] text-white inline-flex truncate px-3 p-2.5 rounded-l-full duration-300 ${
+                  lastAbsent === 'Not'
+                    ? 'w-36 gap-3'
+                    : 'w-11 gap-5 hover:duration-300 hover:w-36 hover:gap-3'
+                }`"
+                @click="$router.push('/student/absen')"
+              >
+                <span class="flex justify-center items-center mt-0.5"
+                  ><icons-in
+                /></span>
+                <span>Absen Now</span>
+              </button>
             <button
-              class="absolute top-1 right-0 cursor-pointer bg-[#F7931E] text-white w-11 inline-flex truncate px-3 p-2.5 rounded-l-full w-36 gap-3"
-              @click="$router.push('/student/absen')"
-            >
-              <span class="flex justify-center items-center mt-0.5"
-                ><icons-in
-              /></span>
-              <span>Absen Now</span>
-            </button>
-            <button
-              @click="modalActive = true"
+              @click="togglePermitModal"
               class="absolute top-14 right-0 cursor-pointer bg-[#F7931E] text-white w-11 inline-flex gap-5 truncate px-3.5 p-2.5 rounded-l-full duration-300 hover:duration-300 hover:w-36 hover:gap-3"
             >
               <span class="flex justify-center items-center mt-0.5">
@@ -144,7 +148,9 @@
             </div>
             <div class="text-center flex flex-col justify-center gap-y-5 w-1/4">
               <div class="flex justify-center">
-                <span class="rounded-full bg-[#F7931E] p-4"><icons-global /></span>
+                <span class="rounded-full bg-[#F7931E] p-4"
+                  ><icons-global
+                /></span>
               </div>
               <p class="flex flex-col">
                 <span class="text-2xl font-semibold">1</span>
@@ -186,7 +192,7 @@
       </div>
       <div class="bg-white w-full p-3 footer">
         <p class="text-center">
-          Copyright &copy; {{new Date().getFullYear()}},
+          Copyright &copy; {{ new Date().getFullYear() }},
           <span class="text-[#F7931E] font-extrabold uppercase">Absensi</span>.
           All Right Reserved.
         </p>
@@ -205,14 +211,49 @@
       </div>
     </div>
     <!-- bubble history section end -->
+    <!-- modal permission start -->
+    <modal v-if="modalPermit" :onclose="togglePermitModal">
+      <h3 class="text-xl font-semibold">Permission Letter</h3>
+      <form class="mt-5 flex flex-col gap-7">
+        <div class="flex flex-col gap-1">
+          <label for="reason" class="text-lg font-medium">Reason :</label>
+          <input
+            type="text"
+            id="reason"
+            class="border-2 border-gray-500 bg-white w-full rounded-md py-1.5 px-2 focus:border-[#F7931E] focus:shadow outline-none ring-0"
+            v-model="formPermit.reason"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="note" class="text-lg font-medium">Note :</label>
+          <textarea
+            name="note"
+            id="note"
+            rows="5"
+            class="border-2 border-gray-500 bg-white w-full rounded-md py-1.5 px-2 focus:border-[#F7931E] focus:shadow outline-none ring-0"
+            v-model="formPermit.note"
+          ></textarea>
+        </div>
+        <button
+          @click="sendPermissionLetter"
+          type="submit"
+          class="border border-transparent bg-[#F7931E] rounded-md text-white text-base font-medium py-2 uppercase"
+        >
+          Send
+        </button>
+      </form>
+    </modal>
+    <!-- modal permission end -->
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import bgHome from '~/assets/img/bg-home.jpg';
+import Modal from '~/components/Modal.vue';
 import { createConfig, responseManager } from '~/service/api-manager';
 export default {
+  components: { Modal },
   name: 'StudentPage',
   data() {
     return {
@@ -225,7 +266,13 @@ export default {
       ],
       totalPresentLate: 0,
       totalPresent: 0,
+      totalPermit: 0,
       modalActive: false,
+      modalPermit: false,
+      formPermit: {
+        reason: '',
+        note: ''
+      },
       bgImg: bgHome,
       lastAbsent: ''
     };
@@ -237,11 +284,30 @@ export default {
     this.fetchAbsent();
     this.fetchTotalPresent();
     this.fetchTotalPresentLate();
-      this.$emit('no-footer')
+    this.fetchTotalPermit();
+    this.$emit('no-footer');
   },
   methods: {
+    ...mapActions('loading', ['showLoading', 'hideLoading']),
     onToggle() {
       this.modalActive = !this.modalActive;
+    },
+    togglePermitModal() {
+      if (this.lastAbsent === 'Not') {
+        this.modalPermit = !this.modalPermit;
+      } else {
+        this.modalPermit = false;
+        this.errorMessage("You've been absent");
+      }
+    },
+    errorMessage(msg) {
+      this.$toasted.show(msg, {
+        position: 'top-center',
+        type: 'error',
+        duration: 5000,
+        theme: 'bubble',
+        singleton: true
+      });
     },
     async fetchAbsent() {
       try {
@@ -277,7 +343,7 @@ export default {
             url: 'presensi/total-present'
           })
         );
-        this.totalPresent = resData.data;
+        this.totalPresent = resData.data.content.length;
       } catch {}
     },
     async fetchTotalPresentLate() {
@@ -290,6 +356,50 @@ export default {
         );
         this.totalPresentLate = resData.data;
       } catch {}
+    },
+    async fetchTotalPermit() {
+      try {
+        const { data: resData } = await this.$axios(
+          // eslint-disable-next-line new-cap
+          new createConfig().getData({
+            url: 'presensi/total-permission'
+          })
+        );
+        this.totalPermit = resData.data.content.length;
+      } catch {}
+    },
+    async sendPermissionLetter(e) {
+      e.preventDefault();
+      this.showLoading();
+      try {
+        const { data: res } = await this.$axios(
+          // eslint-disable-next-line new-cap
+          new createConfig().postData({
+            url: 'presensi/permit',
+            data: {
+              reason: this.formPermit.reason,
+              note: this.formPermit.note
+            }
+          })
+        );
+        this.formPermit = res.data;
+        this.modalPermit = false;
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } catch (err) {
+        // eslint-disable-next-line new-cap
+        const error = new responseManager().manageError(err);
+        this.$toast.show(error?.error || error.message, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+      } finally {
+        this.hideLoading();
+      }
     }
   }
 };

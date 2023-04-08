@@ -37,7 +37,7 @@
             <th>Tuesday</th>
             <th>Wednesday</th>
             <th>Thursday</th>
-            <th>Firday</th>
+            <th>Friday</th>
             <th>Saturday</th>
           </tr>
         </thead>

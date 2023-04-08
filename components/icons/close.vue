@@ -19,8 +19,8 @@ export default {
   name: 'CloseIcon',
   props: {
     size: {
-      type: String,
-      default: '22'
+      type: Number,
+      default: 22
     }
   }
 };
