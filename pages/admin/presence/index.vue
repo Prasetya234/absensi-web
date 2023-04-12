@@ -59,7 +59,6 @@
               class="text-sm text-[#333333] w-full focus:outline-none focus:ring-0 cursor-pointer"
               v-model="perPage"
             >
-              <option :value="3">3</option>
               <option :value="10">10</option>
               <option :value="25">25</option>
               <option :value="50">50</option>
@@ -90,7 +89,7 @@
         <div class="flex items-end">
           <button
             class="bg-[#CC6633] py-2 px-5 rounded-md w-fit h-fit text-white text-bold duration-300 hover:duration-300 hover:bg-[#F7931E]"
-            @click="filter(currentPage, isLate, perPage, keyword, direction)"
+            @click="filter(isLate, keyword, direction, currentPage, perPage)"
           >
             Filter
           </button>
@@ -99,7 +98,7 @@
       <table class="table-fixed">
         <thead class="bg-[#e8e8e8] text-sm">
           <tr>
-            <th>Create At</th>
+            <th>No</th>
             <th>Full Name</th>
             <th>Serial Number</th>
             <th>School Class</th>
@@ -112,9 +111,15 @@
           </tr>
         </thead>
         <tbody class="text-xs">
-          <tr v-for="(data, idx) in presensies" :key="idx">
+          <tr
+            v-for="(data, idx) in presensies.slice(
+              pageStart,
+              pageStart + perPage
+            )"
+            :key="idx"
+          >
             <td>
-              <p>{{ data.createAt }}</p>
+              <p>{{ currentPage * perPage + idx + 1 }}</p>
             </td>
             <td>
               <p>{{ data.userId.firstName + ' ' + data.userId.lastName }}</p>
@@ -176,21 +181,24 @@
           @click="prev"
         >
           <span class="flex justify-center">
-            <IconsArrowcevron class="pt-[8px] pl-[7px]" direction="left" :size="34"
+            <IconsArrowcevron
+              class="pt-[8px] pl-[7px]"
+              direction="left"
+              :size="34"
           /></span>
         </button>
         <button
           :class="`rounded-full w-9 h-9 duration-300 hover:bg-[#F7931E] hover:text-white hover:border-transparent hover:duration-300 ${
-            currentPage === page
+            currentPage === idx
               ? 'bg-[#CC6633] text-white border border-[#CC6633] px-3'
               : 'bg-gray-100 border'
           }`"
-          v-for="(page, idx) in totalPages"
+          v-for="(page, idx) in pageTotal"
           :key="idx"
-          :title="`Page ${idx + 1}`"
-          @click="curr(page, isLate, perPage, keyword, direction)"
+          :title="`Page ${page}`"
+          @click="curr(idx, perPage, isLate, keyword, direction)"
         >
-          {{ page + 1 }}
+          {{ page }}
         </button>
         <button
           :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 ${
@@ -201,9 +209,9 @@
           title="Next Page"
           @click="next"
         >
-          <span class="flex justify-center"
-            >
-          <IconsArrowcevron class="pt-[8px] pl-[7px]" :size="34" /></span>
+          <span class="flex justify-center">
+            <IconsArrowcevron class="pt-[8px] pl-[7px]" :size="34"
+          /></span>
         </button>
       </div>
     </div>
@@ -225,29 +233,27 @@ export default {
     direction: ''
   }),
   computed: {
+    pageStart() {
+      return this.currentPage * this.perPage;
+    },
     pageTotal() {
-      return Math.ceil(this.totalPages.length / this.perPage);
+      return Math.ceil(this.presensies.length / this.perPage);
     }
   },
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
-    async fetchPresensi(
-      page = 0,
-      isLate = '',
-      perPage = 10,
-      keyword = '',
-      sort = ''
-    ) {
+    async fetchPresensi(isLate = '', keyword = '', sort = '') {
       try {
         const { data: res } = await this.$axios(
           // eslint-disable-next-line new-cap
           new createConfig().getData({
-            url: `presensi?search=${keyword}&isLate=${isLate}&page=${page}&size=${perPage}`
+            url: `presensi?search=${keyword}&isLate=${isLate}`
           })
         );
-        this.presensies = res.data.content;
+        this.presensies = res.data;
+        const totalPage = Math.ceil(this.presensies.length / this.perPage);
         const pages = [];
-        for (let index = 0; index < res.data.totalPages; index++) {
+        for (let index = 0; index < totalPage; index++) {
           pages.push(index);
         }
         this.totalPages = pages;
@@ -270,62 +276,61 @@ export default {
         });
       }
     },
-    setPage(page) {
+    setPage(page, size) {
       if (page < 0 || page > this.pageTotal) {
         return;
       }
       this.currentPage = page;
-    },
-    curr(page, late, size, search, sort) {
-      this.currentPage = page;
-      this.isLate = late;
       this.perPage = size;
+    },
+    curr(page, size, late, search, sort) {
+      this.currentPage = page;
+      this.perPage = size;
+      this.isLate = late;
       this.keyword = search;
       this.direction = sort;
-      this.setPage(page);
-      return this.fetchPresensi(page, late, size, search, sort);
+      this.setPage(page, size);
+      this.fetchPresensi(late, search, sort);
+      console.log(page);
     },
-    async next() {
-      console.log(this.currentPage);
-      console.log(this.totalPages.length);
-      const total = this.totalPages.length - 1;
+    next() {
       const page = this.currentPage;
-      const late = this.isLate;
       const size = this.perPage;
-      const search = this.keyword;
       const sort = this.direction;
-      if (this.currentPage === total) {
-        this.setPage(page);
-        return await this.fetchPresensi(page, late, size, search, sort);
+      const search = this.keyword;
+      const late = this.isLate;
+      const next = page + 1;
+      if (this.currentPage < this.pageTotal - 1 || this.currentPage === 0) {
+        this.setPage(next, size);
+        this.fetchPresensi(late, search, sort);
       } else {
-        const next = this.currentPage + 1;
-        this.setPage(next);
-        return await this.fetchPresensi(next, late, size, search, sort);
+        this.setPage(page, size);
+        this.fetchPresensi(late, search, sort);
       }
     },
-    async prev() {
+    prev() {
       const page = this.currentPage;
-      const late = this.isLate;
       const size = this.perPage;
-      const search = this.keyword;
       const sort = this.direction;
-      if (page === 0) {
-        this.setPage(page);
-        return await this.fetchPresensi(page, late, size, search, sort);
+      const search = this.keyword;
+      const late = this.isLate;
+      const prev = page - 1;
+      if (this.currentPage > 0) {
+        this.setPage(prev, size);
+        this.fetchPresensi(late, search, sort);
       } else {
-        const prev = this.currentPage - 1;
-        this.setPage(prev);
-        return await this.fetchPresensi(prev, late, size, search, sort);
+        this.setPage(page, size);
+        this.fetchPresensi(late, search, sort);
       }
     },
-    async filter(page, late, size, search, sort) {
+    async filter(late, search, sort, page, size) {
       this.currentPage = page = 0;
       this.isLate = late;
       this.perPage = size;
       this.keyword = search;
       this.direction = sort;
-      console.log(page, late, size, search, sort);
-      return await this.fetchPresensi(page, late, size, search, sort);
+      this.setPage(page, size);
+      return await this.fetchPresensi(late, search, sort);
     }
   },
   mounted() {

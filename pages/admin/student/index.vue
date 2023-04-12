@@ -31,8 +31,7 @@
                   title="Add Face Data"
                   @click="toDetil(false, data.id)"
                 >
-                  <span
-                    >
+                  <span>
                     <icons-Plus />
                   </span>
                 </button>
@@ -41,8 +40,7 @@
                   title="User Information"
                   @click="toInfo(data.id)"
                 >
-                  <span
-                    >
+                  <span>
                     <icons-detail />
                   </span>
                 </button>
@@ -51,8 +49,7 @@
                   title="Edit User"
                   @click="toEdit(data.id)"
                 >
-                  <span
-                    >
+                  <span>
                     <icons-edit :size="17" />
                   </span>
                 </button>
@@ -72,7 +69,10 @@
           @click="prev"
         >
           <span class="flex justify-center">
-            <IconsArrowcevron class="pt-[8px] pl-[7px]" direction="left" :size="34"
+            <IconsArrowcevron
+              class="pt-[8px] pl-[7px]"
+              direction="left"
+              :size="34"
           /></span>
         </button>
         <button
@@ -97,9 +97,9 @@
           title="Next Page"
           @click="next"
         >
-          <span class="flex justify-center"
-            >
-          <IconsArrowcevron class="pt-[8px] pl-[7px]" :size="34" /></span>
+          <span class="flex justify-center">
+            <IconsArrowcevron class="pt-[8px] pl-[7px]" :size="34"
+          /></span>
         </button>
       </div>
     </div>
@@ -110,141 +110,138 @@
 import { mapActions } from 'vuex';
 import { createConfig, responseManager } from '~/service/api-manager';
 export default {
-    name: "Student",
-    data: () => ({
-        students: [],
-        totalPages: [],
-        currentPage: 0,
-        perPage: 10
-    }),
-    computed: {
-        pageTotal() {
-            return Math.ceil(this.totalPages.length / this.perPage);
-        }
-    },
-    methods: {
-        ...mapActions("loading", ["showLoading", "hideLoading"]),
-        async fetchStudent(page = 0) {
-            try {
-                const { data: res } = await this.$axios(
-                // eslint-disable-next-line new-cap
-                new createConfig().getData({
-                    url: `class-bootcamp/students?page=${page}&size=${this.perPage}`
-                }));
-                this.students = res.data.content;
-                const pages = [];
-                for (let index = 0; index < res.data.totalPages; index++) {
-                    pages.push(index);
-                }
-                this.totalPages = pages;
-            }
-            catch (err) {
-                // eslint-disable-next-line new-cap
-                const error = new responseManager().manageError(err);
-                this.$toast.show(error?.error || error.message, {
-                    position: "top-center",
-                    type: "error",
-                    duration: 5000,
-                    theme: "bubble",
-                    singleton: true
-                });
-            }
-        },
-        async toDetil(detail, userId) {
-            const faceReady = await this.detectFaceReady(userId);
-            if (faceReady) {
-                this.$toast.show("User Face Already Exist", {
-                    position: "top-center",
-                    type: "error",
-                    duration: 5000,
-                    theme: "bubble",
-                    singleton: true
-                });
-                return;
-            }
-            this.$router.push({
-                path: "student/detail",
-                query: {
-                    detail,
-                    userId
-                }
-            });
-        },
-        async detectFaceReady(userId) {
-            this.showLoading();
-            try {
-                await this.$axios(
-                // eslint-disable-next-line new-cap
-                new createConfig().getData({
-                    url: "face-user/" + userId
-                }));
-                return true;
-            }
-            catch {
-                return false;
-            }
-            finally {
-                this.hideLoading();
-            }
-        },
-        async toInfo(userId) {
-            const idUser = btoa(userId);
-            await this.$router.push({
-                path: "info-student",
-                query: {
-                    idUser
-                }
-            });
-        },
-        async toEdit(userId) {
-            const idUser = btoa(userId);
-            await this.$router.push({
-                path: "edit-student",
-                query: {
-                    idUser
-                }
-            });
-        },
-        setPage(page) {
-            if (page < 0 || page > this.pageTotal) {
-                return;
-            }
-            this.currentPage = page;
-        },
-        curr(page) {
-            this.currentPage = page;
-            this.setPage(page);
-            return this.fetchStudent(page);
-        },
-        next() {
-            const total = this.totalPages.length - 1;
-            if (this.currentPage === total) {
-                const page = this.currentPage;
-                this.setPage(page);
-                return this.fetchStudent(page);
-            }
-            else {
-                const next = this.currentPage + 1;
-                this.setPage(next);
-                return this.fetchStudent(next);
-            }
-        },
-        prev() {
-            const page = this.currentPage;
-            if (page === 0) {
-                this.setPage(page);
-                return this.fetchStudent(page);
-            }
-            else {
-                const prev = this.currentPage - 1;
-                this.setPage(prev);
-                return this.fetchStudent(prev);
-            }
-        }
-    },
-    mounted() {
-        this.fetchStudent();
+  name: 'Student',
+  data: () => ({
+    students: [],
+    totalPages: [],
+    currentPage: 0,
+    perPage: 10
+  }),
+  computed: {
+    pageTotal() {
+      return Math.ceil(this.totalPages.length / this.perPage);
     }
+  },
+  methods: {
+    ...mapActions('loading', ['showLoading', 'hideLoading']),
+    async fetchStudent(page = 0) {
+      try {
+        const { data: res } = await this.$axios(
+          // eslint-disable-next-line new-cap
+          new createConfig().getData({
+            url: `class-bootcamp/students?page=${page}&size=${this.perPage}`
+          })
+        );
+        this.students = res.data.content;
+        const pages = [];
+        for (let index = 0; index < res.data.totalPages; index++) {
+          pages.push(index);
+        }
+        this.totalPages = pages;
+      } catch (err) {
+        // eslint-disable-next-line new-cap
+        const error = new responseManager().manageError(err);
+        this.$toast.show(error?.error || error.message, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+      }
+    },
+    async toDetil(detail, userId) {
+      const faceReady = await this.detectFaceReady(userId);
+      if (faceReady) {
+        this.$toast.show('User Face Already Exist', {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+        return;
+      }
+      this.$router.push({
+        path: 'student/detail',
+        query: {
+          detail,
+          userId
+        }
+      });
+    },
+    async detectFaceReady(userId) {
+      this.showLoading();
+      try {
+        await this.$axios(
+          // eslint-disable-next-line new-cap
+          new createConfig().getData({
+            url: 'face-user/' + userId
+          })
+        );
+        return true;
+      } catch {
+        return false;
+      } finally {
+        this.hideLoading();
+      }
+    },
+    async toInfo(userId) {
+      const idUser = btoa(userId);
+      await this.$router.push({
+        path: 'info-student',
+        query: {
+          idUser
+        }
+      });
+    },
+    async toEdit(userId) {
+      const idUser = btoa(userId);
+      await this.$router.push({
+        path: 'edit-student',
+        query: {
+          idUser
+        }
+      });
+    },
+    setPage(page) {
+      if (page < 0 || page > this.pageTotal) {
+        return;
+      }
+      this.currentPage = page;
+    },
+    curr(page) {
+      this.currentPage = page;
+      this.setPage(page);
+      return this.fetchStudent(page);
+    },
+    next() {
+      const total = this.totalPages.length - 1;
+      if (this.currentPage === total) {
+        const page = this.currentPage;
+        this.setPage(page);
+        return this.fetchStudent(page);
+      } else {
+        const next = this.currentPage + 1;
+        this.setPage(next);
+        return this.fetchStudent(next);
+      }
+    },
+    prev() {
+      const page = this.currentPage;
+      if (page === 0) {
+        this.setPage(page);
+        return this.fetchStudent(page);
+      } else {
+        const prev = this.currentPage - 1;
+        this.setPage(prev);
+        return this.fetchStudent(prev);
+      }
+    }
+  },
+  mounted() {
+    this.fetchStudent();
+  }
 };
 </script>
 
