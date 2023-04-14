@@ -206,7 +206,7 @@ export default {
         const { data } = await this.$axios(
           // eslint-disable-next-line new-cap
           new createConfig().getData({
-            url: 'class-bootcamp/' + this.getClassId
+            url: 'school/' + this.getClassId
           })
         );
         this.addContact({

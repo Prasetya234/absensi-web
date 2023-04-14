@@ -55,6 +55,11 @@ export default {
         name: 'Add User',
         icon: 'mdi-account-group',
         to: '/admin/add-user'
+      },
+      {
+        name: 'Create School',
+        icon: 'mdi-account-group',
+        to: '/admin/add-school'
       }
     ]
   }),

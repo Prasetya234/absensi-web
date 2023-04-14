@@ -80,7 +80,7 @@
               class="text-sm text-[#333333] focus:outline-none focus:ring-0 cursor-pointer"
               v-model="direction"
             >
-              <option value="">Original Update</option>
+              <option value="">Default Update</option>
               <option value="desc">New Update</option>
               <option value="asc">Oldest Update</option>
             </select>
@@ -291,7 +291,6 @@ export default {
       this.direction = sort;
       this.setPage(page, size);
       this.fetchPresensi(late, search, sort);
-      console.log(page);
     },
     next() {
       const page = this.currentPage;
@@ -300,7 +299,7 @@ export default {
       const search = this.keyword;
       const late = this.isLate;
       const next = page + 1;
-      if (this.currentPage < this.pageTotal - 1 || this.currentPage === 0) {
+      if (page < this.pageTotal - 1) {
         this.setPage(next, size);
         this.fetchPresensi(late, search, sort);
       } else {
@@ -315,7 +314,7 @@ export default {
       const search = this.keyword;
       const late = this.isLate;
       const prev = page - 1;
-      if (this.currentPage > 0) {
+      if (page > 0) {
         this.setPage(prev, size);
         this.fetchPresensi(late, search, sort);
       } else {
