@@ -6,10 +6,81 @@
     <div
       class="bg-white rounded-md shadow-md flex flex-col gap-5 text-center p-3 overflow-x-auto"
     >
-      <table class="fl-table text-sm">
-        <thead>
+      <div class="flex flex-row gap-4 pt-3 pb-0 px-2">
+        <div class="flex flex-col gap-1.5">
+          <label for="searchByName" class="text-left text-xs text-[#58595B]"
+            >Search By Name</label
+          >
+          <div
+            class="border border-[#C2C2C2] rounded-md flex flex-row gap-3 w-full py-2 px-3"
+          >
+            <input
+              type="text"
+              id="searchByName"
+              placeholder="Type here"
+              autocomplete="off"
+              class="text-sm placeholder:text-[#333333] w-full focus:outline-none focus:ring-0"
+              v-model="keyword"
+            />
+            <span class="flex items-center">
+              <icons-magnifier :size="20" />
+            </span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label for="itemPerPage" class="text-left text-xs text-[#58595B]"
+            >Display Items Per Page</label
+          >
+          <div
+            class="border border-[#C2C2C2] rounded-md flex flex-row w-full py-2 px-3"
+          >
+            <select
+              name="item-per-page"
+              id="itemPerPage"
+              class="text-sm text-[#333333] w-full focus:outline-none focus:ring-0 cursor-pointer"
+              v-model="perPage"
+            >
+              <option :value="10">10</option>
+              <option :value="25">25</option>
+              <option :value="50">50</option>
+              <option :value="75">75</option>
+              <option :value="100">100</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label for="sorByUpdate" class="text-left text-xs text-[#58595B]"
+            >Sort By ID Student</label
+          >
+          <div
+            class="border border-[#C2C2C2] rounded-md flex flex-row w-full py-2 px-3"
+          >
+            <select
+              name="sort-by-update"
+              id="sortByUpdate"
+              class="text-sm text-[#333333] focus:outline-none focus:ring-0 cursor-pointer"
+              v-model="direction"
+            >
+              <option value="">Default</option>
+              <option value="desc">Big - Small</option>
+              <option value="asc">Small - Big</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex items-end">
+          <button
+            class="bg-[#CC6633] py-2 px-5 rounded-md w-fit h-fit text-white text-bold duration-300 hover:duration-300 hover:bg-[#F7931E]"
+            @click="filter(currentPage, perPage, keyword, direction)"
+          >
+            Filter
+          </button>
+        </div>
+      </div>
+      <table class="fl-table">
+        <thead class="text-sm">
           <tr>
-            <th>No Student</th>
+            <!-- <th>No</th> -->
+            <th>ID Student</th>
             <th>Fullname</th>
             <th>Batch</th>
             <th>Gender</th>
@@ -17,8 +88,15 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody class="txt-xs">
-          <tr v-for="(data, idx) in students" :key="idx">
+        <tbody class="text-xs">
+          <tr
+            v-for="(data, idx) in students.slice(
+              pageStart,
+              pageStart + perPage
+            )"
+            :key="idx"
+          >
+            <!-- <td>{{ currentPage * perPage + idx + 1 }}</td> -->
             <td>{{ data.noSiswa }}</td>
             <td>{{ data.firstName + ' ' + data.lastName }}</td>
             <td>{{ data.batch }}</td>
@@ -77,14 +155,14 @@
         </button>
         <button
           :class="`rounded-full w-9 h-9 duration-300 hover:bg-[#F7931E] hover:text-white hover:border-transparent hover:duration-300 ${
-            currentPage === page
+            currentPage === index
               ? 'bg-[#CC6633] text-white border border-[#CC6633] px-3'
               : 'bg-gray-100 border'
           }`"
-          v-for="(page, idx) in totalPages"
-          :key="idx"
-          :title="`Page ${idx + 1}`"
-          @click="curr(page, isLate, perPage, keyword, direction)"
+          v-for="(page, index) in totalPages"
+          :key="index"
+          :title="`Page ${page + 1}`"
+          @click="curr(page)"
         >
           {{ page + 1 }}
         </button>
@@ -115,29 +193,42 @@ export default {
     students: [],
     totalPages: [],
     currentPage: 0,
-    perPage: 10
+    perPage: 10,
+    keyword: '',
+    direction: ''
   }),
   computed: {
+    pageStart() {
+      return this.currentPage * this.perPage;
+    },
     pageTotal() {
-      return Math.ceil(this.totalPages.length / this.perPage);
+      return Math.ceil(this.students.length / this.perPage);
     }
   },
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
-    async fetchStudent(page = 0) {
+    async fetchStudent(keyword = '', sort = '') {
       try {
         const { data: res } = await this.$axios(
           // eslint-disable-next-line new-cap
           new createConfig().getData({
-            url: `class-bootcamp/students?page=${page}&size=${this.perPage}`
+            url: `school/students?keyword=${keyword}`
           })
         );
-        this.students = res.data.content;
+        this.students = res.data;
+        const totalPage = Math.ceil(this.students.length / this.perPage);
         const pages = [];
-        for (let index = 0; index < res.data.totalPages; index++) {
+        for (let index = 0; index < totalPage; index++) {
           pages.push(index);
         }
         this.totalPages = pages;
+        const order = sort === 'desc' ? 1 : sort === 'asc' ? -1 : 0;
+        this.students.sort((a, b) => {
+          a = a.noSiswa;
+          b = b.noSiswa;
+          const result = a > b ? -1 : a < b ? 1 : 0;
+          return result * order;
+        });
       } catch (err) {
         // eslint-disable-next-line new-cap
         const error = new responseManager().manageError(err);
@@ -204,39 +295,56 @@ export default {
         }
       });
     },
-    setPage(page) {
+    setPage(page, size) {
       if (page < 0 || page > this.pageTotal) {
         return;
       }
       this.currentPage = page;
+      this.perPage = size;
     },
-    curr(page) {
+    curr(page, size, search, sort) {
       this.currentPage = page;
-      this.setPage(page);
-      return this.fetchStudent(page);
+      this.perPage = size;
+      this.keyword = search;
+      this.direction = sort;
+      this.setPage(page, size);
+      return this.fetchStudent(search, sort);
     },
     next() {
-      const total = this.totalPages.length - 1;
-      if (this.currentPage === total) {
-        const page = this.currentPage;
-        this.setPage(page);
-        return this.fetchStudent(page);
+      const page = this.currentPage;
+      const size = this.perPage;
+      const search = this.keyword;
+      const sort = this.direction;
+      const next = this.currentPage + 1;
+      if (page < this.pageTotal - 1) {
+        this.setPage(next, size);
+        return this.fetchStudent(search, sort);
       } else {
-        const next = this.currentPage + 1;
-        this.setPage(next);
-        return this.fetchStudent(next);
+        this.setPage(page, size);
+        return this.fetchStudent(search, sort);
       }
     },
     prev() {
       const page = this.currentPage;
-      if (page === 0) {
-        this.setPage(page);
-        return this.fetchStudent(page);
+      const size = this.perPage;
+      const search = this.keyword;
+      const sort = this.direction;
+      const prev = page - 1;
+      if (page > 0) {
+        this.setPage(prev, size);
+        return this.fetchStudent(search, sort);
       } else {
-        const prev = this.currentPage - 1;
-        this.setPage(prev);
-        return this.fetchStudent(prev);
+        this.setPage(page, size);
+        return this.fetchStudent(search, sort);
       }
+    },
+    filter(page, size, search, sort) {
+      this.currentPage = page = 0;
+      this.perPage = size;
+      this.keyword = search;
+      this.direction = sort;
+      this.setPage(page, size);
+      return this.fetchStudent(search, sort);
     }
   },
   mounted() {
