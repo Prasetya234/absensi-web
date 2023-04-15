@@ -70,19 +70,19 @@
         </div>
         <div class="absolute top-2.5 right-0">
           <div class="relative">
-              <button
-                :class="`absolute top-1 right-0 cursor-pointer bg-[#F7931E] text-white inline-flex truncate px-3 p-2.5 rounded-l-full duration-300 ${
-                  lastAbsent === 'Not'
-                    ? 'w-36 gap-3'
-                    : 'w-11 gap-5 hover:duration-300 hover:w-36 hover:gap-3'
-                }`"
-                @click="$router.push('/student/absen')"
-              >
-                <span class="flex justify-center items-center mt-0.5"
-                  ><icons-in
-                /></span>
-                <span>Absen Now</span>
-              </button>
+            <button
+              :class="`absolute top-1 right-0 cursor-pointer bg-[#F7931E] text-white inline-flex truncate px-3 p-2.5 rounded-l-full duration-300 ${
+                lastAbsent === 'Not'
+                  ? 'w-36 gap-3'
+                  : 'w-11 gap-5 hover:duration-300 hover:w-36 hover:gap-3'
+              }`"
+              @click="$router.push('/student/absen')"
+            >
+              <span class="flex justify-center items-center mt-0.5"
+                ><icons-in
+              /></span>
+              <span>Absen Now</span>
+            </button>
             <button
               @click="togglePermitModal"
               class="absolute top-14 right-0 cursor-pointer bg-[#F7931E] text-white w-11 inline-flex gap-5 truncate px-3.5 p-2.5 rounded-l-full duration-300 hover:duration-300 hover:w-36 hover:gap-3"
@@ -220,9 +220,13 @@
           <input
             type="text"
             id="reason"
+            list="reason-choice"
             class="border-2 border-gray-500 bg-white w-full rounded-md py-1.5 px-2 focus:border-[#F7931E] focus:shadow outline-none ring-0"
             v-model="formPermit.reason"
           />
+          <datalist id="reason-choice">
+            <option v-for="(data, index) in reason" :key="index" :value="data.name">{{ data.name }}</option>
+          </datalist>
         </div>
         <div class="flex flex-col gap-1">
           <label for="note" class="text-lg font-medium">Note :</label>
@@ -274,7 +278,8 @@ export default {
         note: ''
       },
       bgImg: bgHome,
-      lastAbsent: ''
+      lastAbsent: '',
+      reason: []
     };
   },
   computed: {
@@ -285,6 +290,7 @@ export default {
     this.fetchTotalPresent();
     this.fetchTotalPresentLate();
     this.fetchTotalPermit();
+    this.fetchReason();
     this.$emit('no-footer');
   },
   methods: {
@@ -366,6 +372,17 @@ export default {
           })
         );
         this.totalPermit = resData.data.content.length;
+      } catch {}
+    },
+    async fetchReason() {
+      try {
+        const {data: resData} =  await this.$axios(
+          // eslint-disable-next-line new-cap
+          new createConfig().getData({
+            url: 'reason'
+          })
+        )
+        this.reason = resData.data;
       } catch {}
     },
     async sendPermissionLetter(e) {
