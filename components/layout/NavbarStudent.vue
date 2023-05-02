@@ -3,12 +3,12 @@
     <div class="mx-[5%] flex justify-between">
       <div class="app-name flex items-center">
         <p
-          class="text-[#F7931E] text-[30px] leading-[41px] font-extrabold uppercase nunito"
+          class="text-[#F7931E] text-xl md:text-[30px] leading-[41px] font-extrabold uppercase nunito"
         >
           Absensi
         </p>
       </div>
-      <div class="nav-item">
+      <div class="nav-item hidden md:block">
         <ul class="flex justify-center items-center gap-[16px]">
           <li
             :class="`${activeMenu(
@@ -18,7 +18,7 @@
             @click="$router.push('/student')"
           >
             <span>
-              <icons-home />
+              <icons-home :size="38" />
             </span>
             <span class="text-inherit text-[14px] leading-[20px] roboto"
               >Home</span
@@ -47,7 +47,7 @@
             @click="$router.push('/student/calender')"
           >
             <span class="relative">
-              <icons-timetable />
+              <icons-timetable :size="34" />
             </span>
             <span
               class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
@@ -103,7 +103,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import Profile from '../icons/profile.vue';
+import Profile from '../icons/profile.vue'
 import { removeAllStorage } from '~/utils/auth';
 
 export default {

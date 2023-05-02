@@ -7,7 +7,7 @@
       >
         <IconsArrow size="20" />
       </button>
-      <h2 class="text-3xl font-bold">Edit User</h2>
+      <h2 class="text-2xl md:text-3xl font-bold">Edit User</h2>
     </div>
     <div
       class="bg-white p-3 rounded-md shadow-md selection:bg-[#CC6633] selection:text-white"

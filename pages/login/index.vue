@@ -17,12 +17,12 @@
           class="h-auto w-full"
         />
       </div>
-      <div class="text-center space-y-12 my-auto col-span-3 py-0 lg:py-5">
-        <h1 class="text-[#EAA825] text-4xl font-light font-judul">
+      <div class="text-center space-y-12 my-auto col-span-3 py-5 lg:py-5">
+        <h1 class="text-[#EAA825] text-2xl md:text-4xl font-light font-judul">
           ABSENSI | LOGIN
         </h1>
-        <div class="font-isi px-32 text-left">
-          <p class="font-medium">I'am is</p>
+        <div class="font-isi px-10 md:px-32 text-left">
+          <p class="font-medium">I'am a</p>
           <select
             id="role"
             v-model="role"
@@ -36,17 +36,20 @@
         </div>
         <div>
           <button
-            class="w-[364px] bg-[#CC6633] hover:bg-[#F7931E] text-white py-3 rounded"
+            class="w-72 md:w-[364px] bg-[#CC6633] hover:bg-[#F7931E] text-white py-3 rounded"
             @click="onToggle"
           >
             Login as {{ role }}
           </button>
           <modal v-if="isOpen" :onclose="onToggle">
-            <h3 class="mb-4 text-2xl font-bold">Login</h3>
-            <form class="px-12 text-left space-y-8" @submit="onLogin">
+            <h3 class="mb-4 text-xl md:text-2xl font-bold">Login</h3>
+            <form
+              class="px-0 md:px-12 text-left space-y-5 md:space-y-8"
+              @submit="onLogin"
+            >
               <div>
                 <fieldset class="w-full space-y-1 text-gray-800">
-                  <label for="email-address" class="block text-sm font-medium"
+                  <label for="email-address" class="block text-xs md:text-sm font-medium"
                     >Email Address</label
                   >
                   <div class="flex">
@@ -57,7 +60,7 @@
                       v-model="form.email"
                       autocomplete="off"
                       placeholder="Input your email address"
-                      class="flex flex-1 px-2 shadow border-2 border-r-0 border-gray-500 bg-white w-full py-2 rounded-l-md text-[#CC6633] leading-tight focus:outline-none focus:shadow-outline"
+                      class="flex flex-1 px-2 shadow border-2 border-r-0 border-gray-500 bg-white w-full py-2 rounded-l-md text-[#CC6633] text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline"
                     />
                     <span
                       class="flex items-center border-2 border-l-0 border-gray-500 bg-white px-3 sm:text-sm rounded-r-md"
@@ -68,7 +71,7 @@
               </div>
               <div>
                 <fieldset class="w-full space-y-1 text-gray-800">
-                  <label for="password" class="block text-sm font-medium"
+                  <label for="password" class="block text-xs md:text-sm font-medium"
                     >Password</label
                   >
                   <div class="flex">
@@ -79,7 +82,7 @@
                       name="password"
                       v-model="form.password"
                       placeholder="Input your password"
-                      class="flex flex-1 px-2 shadow border-2 border-r-0 border-gray-500 bg-white w-full py-2 rounded-l-md text-[#CC6633] leading-tight focus:outline-none focus:shadow-outline"
+                      class="flex flex-1 px-2 shadow border-2 border-r-0 border-gray-500 bg-white w-full py-2 rounded-l-md text-[#CC6633] text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline"
                     />
                     <span
                       class="flex items-center cursor-pointer px-3 sm:text-sm rounded-r-md border-2 border-l-0 border-gray-500 bg-white"
@@ -142,6 +145,7 @@ export default {
       this.isOpen = !this.isOpen;
     },
     async onLogin(e) {
+      if (!this.form.email && !this.form.password) return;
       e.preventDefault();
       this.showLoading();
       try {
@@ -155,12 +159,12 @@ export default {
             }
           })
         );
-        this.setCredential(resData.data)
+        this.setCredential(resData.data);
         this.connect();
         if (!getFirstAccess() && resData.data.user.roleId.id === 1) {
-          this.$router.push('/student/dashboard');  
+          this.$router.push('/student/dashboard');
         } else {
-          this.$router.push('/');  
+          this.$router.push('/');
         }
         this.$toast.show(`Welcome ${resData.data.user?.firstName}`, {
           position: 'top-center',

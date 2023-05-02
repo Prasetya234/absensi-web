@@ -80,12 +80,12 @@
             <p class="text-green-400 font-bold">
               Class Start Time :
               <span class="text-left">
-                {{ moment(operationalClass.entryTime) }}</span
+                {{ momentFormat(operationalClass.entryTime) }}</span
               >
             </p>
             <p class="text-red-400 font-bold">
               Class End Time :
-              <span>{{ moment(operationalClass.dismissalTime) }}</span>
+              <span>{{ momentFormat(operationalClass.dismissalTime) }}</span>
             </p>
           </div>
         </div>
@@ -97,8 +97,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import * as faceapi from 'face-api.js';
-import { createConfig, responseManager } from '~/service/api-manager';
 import moment from 'moment';
+import { createConfig, responseManager } from '~/service/api-manager';
 
 export default {
   name: 'Absen',
@@ -107,6 +107,9 @@ export default {
     isNotNotDetected: false,
     readyAbasen: false,
     isProcess: true,
+    isSchoolDay: false,
+    weekDays: [],
+    today: '',
     detectorScores: [],
     absenceModel: {
       dateSubmit: '',
@@ -123,7 +126,9 @@ export default {
     custom: {
       videoHeight: 400,
       videoWidth: 550
-    }
+    },
+    absenLimit: '',
+    timeNow: ''
   }),
   computed: {
     ...mapGetters('auth', ['getUsername', 'getUserId'])
@@ -272,6 +277,31 @@ export default {
           })
         );
         this.operationalClass = data.data;
+        const days = [
+          'Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday'
+        ];
+        const day = days[new Date().getDay()];
+        this.today = day;
+        const baseDate = new Date(Date.UTC(1, 0, 0));
+        for (let i = 0; i < this.operationalClass.admissionDay; i++) {
+          this.weekDays.push(
+            baseDate.toLocaleDateString('en-us', { weekday: 'long' })
+          );
+          baseDate.setDate(baseDate.getDate() + 1);
+        }
+
+        if (this.weekDays.includes(this.today)) {
+          this.isSchoolDay = true;
+        } else {
+          this.isSchoolDay = false;
+        }
+        return this.weekDays;
       } catch {}
     },
     async fetchFace() {
@@ -338,8 +368,28 @@ export default {
         this.getLocation();
       } catch {}
     },
-    moment(time) {
+    momentFormat(time) {
       return moment(time, 'HH').format('HH:mm');
+    },
+    fetchLimitAbsen() {
+      const entry = moment(this.operationalClass.entryTime, 'HH')
+        .add(30, 'minutes')
+        .format('HH:mm');
+      this.absenLimit = entry;
+    },
+    fetchTimeNow() {
+      const time = moment(new Date().getTime()).format('HH:mm');
+      this.timeNow = time;
+    },
+    checkAccess() {
+      if (!this.isSchoolDay) {
+        this.$router.push('/');
+        this.errorMessage("It's Holiday");
+      }
+      if (this.timeNow > this.absenLimit) {
+        this.$router.push('/');
+        this.errorMessage('Access Closed');
+      }
     },
     errorMessage(msg) {
       this.$toasted.show(msg, {
@@ -358,6 +408,9 @@ export default {
     await this.fetchOperationalClass();
     await this.fetchFace();
     this.hideLoading();
+    this.fetchTimeNow();
+    this.fetchLimitAbsen();
+    this.checkAccess();
   }
 };
 </script>
