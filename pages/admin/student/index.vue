@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col gap-5">
     <div class="flex justify-start">
-      <h2 class="font-bold text-3xl">List Students</h2>
+      <h2 class="font-bold text-2xl md:text-3xl">List Students</h2>
     </div>
     <div
-      class="bg-white rounded-md shadow-md flex flex-col gap-5 text-center p-3 overflow-x-auto"
+      class="bg-white rounded-md shadow-md flex flex-col gap-5 text-center p-3 w-full overflow-x-auto"
     >
-      <div class="flex flex-row gap-4 pt-3 pb-0 px-2">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 pt-3 pb-0 px-2">
         <div class="flex flex-col gap-1.5">
           <label for="searchByName" class="text-left text-xs text-[#58595B]"
             >Search By Name</label
@@ -58,7 +58,7 @@
             <select
               name="sort-by-update"
               id="sortByUpdate"
-              class="text-sm text-[#333333] focus:outline-none focus:ring-0 cursor-pointer"
+              class="text-sm text-[#333333] w-full focus:outline-none focus:ring-0 cursor-pointer"
               v-model="direction"
             >
               <option value="">Default</option>
@@ -69,7 +69,7 @@
         </div>
         <div class="flex items-end">
           <button
-            class="bg-[#CC6633] py-2 px-5 rounded-md w-fit h-fit text-white text-bold duration-300 hover:duration-300 hover:bg-[#F7931E]"
+            class="bg-[#CC6633] py-2 px-5 rounded-md w-full h-fit md:w-fit md:h-fit text-white text-bold duration-300 hover:duration-300 hover:bg-[#F7931E]"
             @click="filter(currentPage, perPage, keyword, direction)"
           >
             Filter
@@ -103,9 +103,9 @@
             <td>{{ data.gender }}</td>
             <td>{{ data.favorite }}</td>
             <td class="w-56">
-              <div class="flex flex-row justify-center gap-5">
+              <div class="flex justify-center gap-2 mx-5 md:mx-0 md:gap-5">
                 <button
-                  class="bg-[#CC6633] p-2.5 rounded-lg"
+                  class="bg-[#CC6633] p-1.5 rounded-md flex justify-center md:p-2.5 md:rounded-lg w-fit"
                   title="Add Face Data"
                   @click="toDetil(false, data.id)"
                 >
@@ -114,7 +114,7 @@
                   </span>
                 </button>
                 <button
-                  class="bg-[#21759B] p-2.5 rounded-lg"
+                  class="bg-[#21759B] p-1.5 rounded-md flex justify-center md:p-2.5 md:rounded-lg w-fit"
                   title="User Information"
                   @click="toInfo(data.id)"
                 >
@@ -123,12 +123,12 @@
                   </span>
                 </button>
                 <button
-                  class="bg-[#DA8C2A] p-2.5 rounded-lg"
+                  class="bg-[#DA8C2A] p-1.5 rounded-md flex justify-center md:p-2.5 md:rounded-lg w-fit"
                   title="Edit User"
                   @click="toEdit(data.id)"
                 >
                   <span>
-                    <icons-edit :size="17" />
+                    <icons-edit />
                   </span>
                 </button>
               </div>
@@ -138,9 +138,9 @@
       </table>
       <div class="pagination flex flex-row justify-center gap-2 text-sm my-3">
         <button
-          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 ${
+          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 fill-[#FFFFFF] ${
             currentPage === 0
-              ? 'cursor-not-allowed text-gray-500 bg-gray-100 border-0'
+              ? 'cursor-not-allowed text-gray-500 bg-gray-100 border-0 fill-black'
               : 'cursor-pointer hover:bg-[#F7931E] hover:duration-300 hover:border-transparent'
           }`"
           title="Previous Page"
@@ -167,9 +167,9 @@
           {{ page + 1 }}
         </button>
         <button
-          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 ${
+          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 fill-[#FFFFFF] ${
             currentPage === totalPages.length - 1
-              ? 'cursor-not-allowed text-gray-500 bg-gray-100 border-0'
+              ? 'cursor-not-allowed text-gray-500 bg-gray-100 border-0 fill-black'
               : 'cursor-pointer hover:bg-[#F7931E] hover:duration-300 hover:border-transparent'
           }`"
           title="Next Page"
@@ -418,12 +418,15 @@ export default {
     box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: auto;
-    width: 120px;
     font-size: 13px;
     text-overflow: ellipsis;
   }
+  .fl-table tbody td {
+    width: 100px;
+  }
   .fl-table thead th {
-    text-align: left;
+    text-align: center;
+    width: 87px;
     border-bottom: 1px solid #f7f7f9;
   }
   .fl-table tbody tr {

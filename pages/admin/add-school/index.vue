@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-5">
     <div class="flex justify-start">
-      <h2 class="text-3xl font-bold">Add School</h2>
+      <h2 class="text-2xl md:text-3xl font-bold">Add School</h2>
     </div>
     <div
       class="bg-white p-3 rounded-md shadow-md selection:bg-[#CC6633] selection:text-white"
@@ -10,15 +10,15 @@
         class="bg-white rounded-md p-2 flex flex-col gap-5"
         @submit="createSchool"
       >
-        <div class="flex flex-row gap-10 items-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div class="left-side flex flex-col gap-5 w-full">
             <div
               class="school-data w-[50%] border-b-[3px] border-b-[#CC6633] mb-3 py-2"
             >
-              <h3 class="text-xl font-semibold">School Data</h3>
+              <h3 class="text-base md:text-xl font-semibold">School Data</h3>
             </div>
             <div class="flex flex-col gap-3">
-              <div class="flex flex-row justify-between gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 justify-between gap-4">
                 <div class="school-name flex flex-col gap-1 w-full">
                   <label class="text-sm font-semibold" for="school-name"
                     >School Name</label
@@ -46,7 +46,7 @@
                   />
                 </div>
               </div>
-              <div class="flex flex-row justify-between gap-4 w-full">
+              <div class="grid grid-cols-1 md:grid-cols-2 justify-between gap-4 w-full">
                 <div class="address w-full flex flex-col gap-1">
                   <label class="text-sm font-semibold" for="address"
                     >Address</label
@@ -93,10 +93,10 @@
             <div
               class="operational-class w-[50%] border-b-[3px] border-b-[#CC6633] mb-3 py-2"
             >
-              <h3 class="text-xl font-semibold">Operational Class</h3>
+              <h3 class="text-base md:text-xl font-semibold">Operational Class</h3>
             </div>
             <div class="flex flex-col gap-3">
-              <div class="flex flex-row justify-between gap-4 w-full">
+              <div class="grid grid-cols-1 md:grid-cols-2 justify-between gap-4 w-full">
                 <div class="entry-time w-full flex flex-col gap-1">
                   <label class="text-sm font-semibold" for="entry-time"
                     >Entry Time</label
@@ -124,7 +124,7 @@
                   />
                 </div>
               </div>
-              <div class="flex flex-row justify-between gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 justify-between gap-4">
                 <div class="admission-day w-full flex flex-col gap-1">
                   <label class="text-sm font-semibold" for="admission-day"
                     >Admission Day</label
@@ -169,10 +169,10 @@
           </div>
         </div>
 
-        <div class="flex flex-row justify-end my-5">
+        <div class="flex justify-end my-3 md:my-5">
           <button
             @click="createSchool"
-            class="w-[30%] text-white py-2.5 rounded-md uppercase bg-[#CC6633]"
+            class="w-full md:w-[30%] text-white py-2.5 rounded-md uppercase bg-[#CC6633]"
             type="submit"
           >
             Create

@@ -85,10 +85,10 @@
             v-model="textchat"
             @keyup.enter="sendMessage"
             placeholder="Type your message"
-            class="border focus:outline-none focus:ring-0"
+            class="border focus:ring-0"
           />
           <button
-            class="cursor-pointer border border-transparent rounded-lg bg-[#f7931e] text-white transition duration-300 hover:bg-transparent hover:text-[#f7931e] hover:border-[#f7931e] hover:transition hover:duration-300"
+            :class="`border border-transparent rounded-lg text-white transition duration-300 hover:transition hover:duration-300 focus:outline-none focus:border-[#CC6633] ${!textchat ? 'bg-[#CC6633]/75 cursor-not-allowed' : 'bg-[#CC6633] cursor-pointer'}`"
             @click="sendMessage"
           >
             Send

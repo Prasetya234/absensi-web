@@ -12,7 +12,7 @@
     :width="size"
     :height="size"
     class="rounded-full"
-    fill="currentColor"
+    fill="inherit"
     viewBox="0 0 24 24"
     :style="`transform: ${rotate(
       direction

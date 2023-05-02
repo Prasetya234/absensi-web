@@ -1,10 +1,8 @@
 <template>
   <svg
+    class="w-4 h-4 md:w-6 md:h-6"
     xmlns="http://www.w3.org/2000/svg"
-    :width="size"
-    :height="size"
     fill="#FFFFFF"
-    class="bi bi-envelope-paper"
     viewBox="0 0 16 16"
   >
     <path
@@ -14,12 +12,6 @@
 </template>
 <script>
 export default {
-  name: 'EnvelopIcon',
-  props: {
-    size: {
-      type: Number,
-      default: 24
-    }
-  }
+  name: 'EnvelopIcon'
 };
 </script>

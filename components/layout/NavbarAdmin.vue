@@ -3,45 +3,50 @@
     <div class="mx-[5%] flex justify-between items-center h-full">
       <div class="app-name flex items-center">
         <p
-          class="text-[#F7931E] text-[30px] leading-[41px] font-extrabold uppercase nunito"
+          class="text-[#F7931E] text-base leading-snug md:text-[30px] md:leading-[41px] font-extrabold uppercase nunito"
         >
           Absensi X Insctructor
         </p>
       </div>
       <div class="nav-item flex alata">
         <div class="flex gap-x-2">
-          <ProfileAdmin/>
+          <icons-profile/>
           <span class="text-white">Profile</span>
         </div>
-        <span class="text-white mx-4">|</span>
+        <span class="text-white mx-2 md:mx-4">|</span>
         <span class="text-red-500 cursor-pointer" @click="logout">LogOut</span>
       </div>
+      <!-- <button class="block md:hidden">
+        <span v-if="onShow">close</span><span v-else>open</span>
+      </button> -->
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import ProfileAdmin from '../icons/profileadmin.vue';
 import { removeAllStorage } from '~/utils/auth';
 export default {
-    name: "NavbarAdmin",
-    computed: {
-        ...mapGetters("auth", ["getUsername"])
-    },
-    methods: {
-        logout() {
-            this.$toast.show(`Good bye ${this.getUsername}`, {
-                position: "top-center",
-                type: "error",
-                duration: 5000,
-                theme: "bubble",
-                singleton: true
-            });
-            removeAllStorage();
-            this.$router.push("/login");
-        }
-    },
-    components: { ProfileAdmin }
+  name: 'NavbarAdmin',
+  data: () => {
+    return {
+    };
+  },
+  computed: {
+    ...mapGetters('auth', ['getUsername'])
+  },
+  methods: {
+    logout() {
+      this.$toast.show(`Good bye ${this.getUsername}`, {
+        position: 'top-center',
+        type: 'error',
+        duration: 5000,
+        theme: 'bubble',
+        singleton: true
+      });
+      removeAllStorage();
+      this.$router.push('/login');
+    }
+  },
 };
 </script>
 

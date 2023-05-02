@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-5">
     <div class="flex justify-start">
-      <h2 class="text-3xl font-bold">Add User</h2>
+      <h2 class="text-2xl md:text-3xl font-bold">Add User</h2>
     </div>
     <div
       class="bg-white p-3 rounded-md shadow-md selection:bg-[#CC6633] selection:text-white"
@@ -24,10 +24,10 @@
               placeholder="Avatar Url"
             />
           </div>
-          <div class="flex flex-row gap-5">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div class="left-side w-full flex flex-col gap-3">
-              <div class="flex flex-row justify-between gap-5 w-full">
-                <div class="first-name w-1/3 flex flex-col gap-1">
+              <div class="grid grid-cols-1 md:grid-cols-3 justify-between gap-5 w-full">
+                <div class="first-name w-full flex flex-col gap-1">
                   <label class="text-sm font-semibold" for="firstname"
                     >First Name</label
                   >
@@ -40,7 +40,7 @@
                     placeholder="Firstname"
                   />
                 </div>
-                <div class="last-name w-1/3 flex flex-col gap-1">
+                <div class="last-name w-full flex flex-col gap-1">
                   <label class="text-sm font-semibold" for="lastname"
                     >Last Name</label
                   >
@@ -53,7 +53,7 @@
                     placeholder="Lastname"
                   />
                 </div>
-                <div class="birth-date w-1/3 flex flex-col gap-1">
+                <div class="birth-date w-full flex flex-col gap-1">
                   <label class="text-sm font-semibold" for="birthdate"
                     >Date of Birth</label
                   >
@@ -66,7 +66,7 @@
                   />
                 </div>
               </div>
-              <div class="flex flex-row justify-between gap-5">
+              <div class="grid grid-cols-1 md:grid-cols-2 justify-between gap-5">
                 <div class="email flex flex-col gap-1 w-full">
                   <label class="text-sm font-semibold" for="email">Email</label>
                   <input
@@ -105,7 +105,7 @@
                 <label for="genders" class="text-sm font-semibold"
                   >Gender</label
                 >
-                <div class="genders flex flex-row justify-between gap-5">
+                <div class="genders grid grid-cols-1 md:grid-cols-2 justify-between gap-5">
                   <div class="male w-full">
                     <input
                       type="radio"
@@ -140,7 +140,7 @@
               </div>
             </div>
             <div class="right-side w-full flex flex-col gap-3">
-              <div class="flex flex-row justify-between gap-5 w-full">
+              <div class="grid grid-cols-1 md:grid-cols-2 justify-between gap-5 w-full">
                 <div class="no-siswa w-full flex flex-col gap-1">
                   <label class="text-sm font-semibold" for="nosiswa"
                     >No Student</label
@@ -166,7 +166,7 @@
                   />
                 </div>
               </div>
-              <div class="flex flex-row justify-between gap-5">
+              <div class="grid grid-cols-1 md:grid-cols-2 justify-between gap-5">
                 <div class="school-class flex flex-col gap-1 w-full">
                   <label class="text-sm font-semibold" for="school-class"
                     >School Class</label
@@ -205,7 +205,7 @@
                 <label class="text-sm font-semibold" for="favorites"
                   >Favorite</label
                 >
-                <div class="favorites flex flex-row justify-between gap-5">
+                <div class="favorites grid grid-cols-1 md:grid-cols-2 justify-between gap-5">
                   <div class="fav w-full">
                     <input
                       type="radio"
@@ -254,10 +254,10 @@
             ></textarea>
           </div>
         </div>
-        <div class="flex flex-row justify-end my-5">
+        <div class="flex justify-end my-3 md:my-5">
           <button
             @click="addUser"
-            class="w-[30%] text-white py-2.5 rounded-md uppercase bg-[#CC6633]"
+            class="w-full md:w-[30%] text-white py-2.5 rounded-md uppercase bg-[#CC6633]"
             type="submit"
           >
             Submit

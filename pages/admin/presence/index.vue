@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col gap-5">
     <div class="flex justify-start">
-      <h2 class="text-3xl font-bold">Attendance List</h2>
+      <h2 class="text-2xl md:text-2xl md:text-3xl font-bold">Attendance List</h2>
     </div>
     <div
       class="bg-white rounded-md shadow-md flex flex-col gap-5 text-center p-3 overflow-x-auto"
     >
-      <div class="flex flex-row gap-4 pt-3 pb-0 px-2">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-4 pt-3 pb-0 px-2">
         <div class="flex flex-col gap-1.5">
           <label for="searchByName" class="text-left text-xs text-[#58595B]"
             >Search By Name</label
@@ -37,7 +37,7 @@
             <select
               name="sort"
               id="sort"
-              class="text-sm text-[#333333] focus:outline-none focus:ring-0 cursor-pointer"
+              class="text-sm text-[#333333] w-full focus:outline-none focus:ring-0 cursor-pointer"
               v-model="isLate"
             >
               <option value="" selected>All</option>
@@ -77,7 +77,7 @@
             <select
               name="sort-by-update"
               id="sortByUpdate"
-              class="text-sm text-[#333333] focus:outline-none focus:ring-0 cursor-pointer"
+              class="text-sm text-[#333333] w-full focus:outline-none focus:ring-0 cursor-pointer"
               v-model="direction"
             >
               <option value="">Default Update</option>
@@ -88,88 +88,90 @@
         </div>
         <div class="flex items-end">
           <button
-            class="bg-[#CC6633] py-2 px-5 rounded-md w-fit h-fit text-white text-bold duration-300 hover:duration-300 hover:bg-[#F7931E]"
+            class="bg-[#CC6633] py-2 px-5 rounded-md w-full h-fit md:w-fit text-white text-bold duration-300 hover:duration-300 hover:bg-[#F7931E]"
             @click="filter(isLate, keyword, direction, currentPage, perPage)"
           >
             Filter
           </button>
         </div>
       </div>
-      <table class="table-fixed">
-        <thead class="bg-[#e8e8e8] text-sm">
-          <tr>
-            <th>No</th>
-            <th>Full Name</th>
-            <th>Serial Number</th>
-            <th>School Class</th>
-            <th>Gender</th>
-            <th>Date Submit</th>
-            <th>Late</th>
-            <th>Permission Attend</th>
-            <th>Reason</th>
-            <th>Note</th>
-          </tr>
-        </thead>
-        <tbody class="text-xs">
-          <tr
-            v-for="(data, idx) in presensies.slice(
-              pageStart,
-              pageStart + perPage
-            )"
-            :key="idx"
-          >
-            <td>
-              <p>{{ currentPage * perPage + idx + 1 }}</p>
-            </td>
-            <td>
-              <p>{{ data.userId.firstName + ' ' + data.userId.lastName }}</p>
-            </td>
-            <td>
-              <p>{{ data.userId.noSiswa }}</p>
-            </td>
-            <td>
-              <p>{{ data.userId.schoolClass }}</p>
-            </td>
-            <td>
-              <p
-                :class="
-                  data.userId.gender === 'FEMALE'
-                    ? 'bg-pink-200 rounded-full p-1'
-                    : 'bg-blue-200 rounded-full p-1'
-                "
-              >
-                {{ data.userId.gender }}
-              </p>
-            </td>
-            <td>
-              <p>{{ data.dateSubmit }}</p>
-            </td>
-            <td>
-              <p>
-                {{ data.isLate === null ? '-' : data.isLate ? 'LATE' : '-' }}
-              </p>
-            </td>
-            <td>
-              <p>
-                {{
-                  data.permissionAttend === null ||
-                  data.permissionAttend === false
-                    ? '-'
-                    : data.permissionAttend
-                }}
-              </p>
-            </td>
-            <td>
-              <p>
-                {{ data.reasonId === null ? '-' : data.reasonId.name }}
-              </p>
-            </td>
-            <td>
-              <p>{{ data.note === null ? '-' : data.note }}</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="w-full overflow-x-auto border border-red-500">
+        <table class="table-auto md:table-fixed w-full">
+          <thead class="bg-[#e8e8e8] text-sm">
+            <tr>
+              <th>No</th>
+              <th>Full Name</th>
+              <th>Serial Number</th>
+              <th>School Class</th>
+              <th>Gender</th>
+              <th>Date Submit</th>
+              <th>Late</th>
+              <th>Permission Attend</th>
+              <th>Reason</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody class="text-xs">
+            <tr
+              v-for="(data, idx) in presensies.slice(
+                pageStart,
+                pageStart + perPage
+              )"
+              :key="idx"
+            >
+              <td>
+                <p>{{ currentPage * perPage + idx + 1 }}</p>
+              </td>
+              <td>
+                <p>{{ data.userId.firstName + ' ' + data.userId.lastName }}</p>
+              </td>
+              <td>
+                <p>{{ data.userId.noSiswa }}</p>
+              </td>
+              <td>
+                <p>{{ data.userId.schoolClass }}</p>
+              </td>
+              <td>
+                <p
+                  :class="
+                    data.userId.gender === 'FEMALE'
+                      ? 'bg-pink-200 rounded-full p-1'
+                      : 'bg-blue-200 rounded-full p-1'
+                  "
+                >
+                  {{ data.userId.gender }}
+                </p>
+              </td>
+              <td>
+                <p>{{ data.dateSubmit }}</p>
+              </td>
+              <td>
+                <p>
+                  {{ data.isLate === null ? '-' : data.isLate ? 'LATE' : '-' }}
+                </p>
+              </td>
+              <td>
+                <p>
+                  {{
+                    data.permissionAttend === null ||
+                    data.permissionAttend === false
+                      ? '-'
+                      : data.permissionAttend
+                  }}
+                </p>
+              </td>
+              <td>
+                <p>
+                  {{ data.reasonId === null ? '-' : data.reasonId.name }}
+                </p>
+              </td>
+              <td>
+                <p>{{ data.note === null ? '-' : data.note }}</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="pagination flex flex-row justify-center gap-2 text-sm my-3">
         <button
           :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 ${
@@ -341,7 +343,6 @@ export default {
 table {
   border-radius: 5px;
   border-collapse: collapse;
-  width: 100%;
   background-color: white;
 }
 
