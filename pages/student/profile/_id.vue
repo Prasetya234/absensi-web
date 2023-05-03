@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-50 md:py-[7.83%] py-32">
+  <div id="html-to-pdf" class="bg-gray-50 md:py-[7.83%] py-32">
     <modal v-if="modalActive" :onclose="onToggle">
       <h3 class="mb-4 text-2xl font-bold">Alert</h3>
       <p>Sorry, this feature is not available yet</p>
@@ -59,12 +59,16 @@
                 />
                 <div class="absolute bottom-0 w-full bg-[#CC6666E5]/90">
                   <div class="flex justify-center">
-                    <button class="h-7 px-7 pb-0.5 flex items-center gap-1"  v-if="isChange" @click="modalActive = true">
+                    <button
+                      class="h-7 px-7 pb-0.5 flex items-center gap-1"
+                      v-if="isChange"
+                      @click="modalActive = true"
+                    >
                       <p class="alata text-white text-[10px] font-normal">
                         Change Photo
                       </p>
                       <span class="">
-                        <Edit :size="10"/>
+                        <Edit :size="10" />
                       </span>
                     </button>
                   </div>
@@ -90,8 +94,9 @@
               </button>
               <button
                 class="py-2 px-6 rounded-lg text-sm text-[#F7931E] font-bold bg-[#FDE9D2]"
-                @click="modalActive = true"
-              >
+                @click="printPDF"
+                >
+                <!-- @click="modalActive = true" -->
                 <p>Download Pdf</p>
               </button>
             </div>
@@ -406,6 +411,7 @@
   </div>
 </template>
 <script>
+import html2pdf from 'html2pdf.js';
 import Edit from '~/components/icons/edit.vue';
 import { createConfig, responseManager } from '~/service/api-manager';
 export default {
@@ -501,6 +507,16 @@ export default {
           singleton: true
         });
       }
+    },
+    async printPDF(e) {
+      e.preventDefault();
+      try {
+        const target = document.getElementById('html-to-pdf');
+        html2pdf(target);
+
+        const worker = html2pdf().from(target).save();
+        return await worker;
+      } catch {}
     }
   }
 };
