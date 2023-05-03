@@ -118,12 +118,14 @@
             <button
               :class="`absolute top-1 right-0 cursor-pointer bg-[#F7931E] text-white inline-flex truncate px-3 p-2.5 rounded-md md:rounded-l-full duration-300 ${
                 lastAbsent === 'Not' &&
-                now < formatMoment(operationalClass.entryTime) && isSchoolDay
+                now < formatMoment(operationalClass.entryTime) &&
+                isSchoolDay
                   ? 'w-36 gap-3'
                   : 'w-11 gap-5 hover:duration-300 hover:w-36 hover:gap-3'
               }`"
-              @click="$router.push('/student/absen')"
+              @click="absenNow"
             >
+              <!-- @click="$router.push('/student/absen')" -->
               <span class="flex justify-center items-center mt-0.5"
                 ><icons-in
               /></span>
@@ -373,7 +375,10 @@ export default {
       },
       bgImg: bgHome,
       lastAbsent: '',
-      reason: []
+      reason: [],
+      absenModel: {
+        isLate: false
+      }
     };
   },
   computed: {
@@ -387,12 +392,16 @@ export default {
     this.fetchReason();
     this.fetchOperationalClass();
     this.fetchTimeNow();
-    // this.fetchDay();
-    // this.operationalDay();
     this.$emit('no-footer');
   },
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
+    isLate() {
+      if (new Date().getHours() > Number(this.operationalClass.entryTime)) {
+        return true;
+      }
+      return false;
+    },
     formatMoment(time) {
       return moment(time, 'HH').add(30, 'minutes').format('HH:mm');
     },
@@ -409,7 +418,8 @@ export default {
         this.errorMessage("It's Holiday");
       } else if (
         this.lastAbsent === 'Not' &&
-        this.now < this.formatMoment(this.operationalClass.entryTime) && this.isSchoolDay
+        this.now < this.formatMoment(this.operationalClass.entryTime) &&
+        this.isSchoolDay
       ) {
         this.modalPermit = !this.modalPermit;
       } else if (
@@ -572,6 +582,56 @@ export default {
         }
         return this.weekDays;
       } catch {}
+    },
+    async absenNow(e) {
+      e.preventDefault();
+      this.absenModel.dateSubmit = new Date().toISOString().split('T')[0];
+      this.absenModel.isLate = this.isLate();
+      this.showLoading();
+      if (
+        this.isSchoolDay &&
+        this.now < this.formatMoment(this.operationalClass.entryTime)
+      ) {
+        try {
+          const { data: res } = await this.$axios(
+            // eslint-disable-next-line new-cap
+            new createConfig().postData({
+              url: 'presensi/absen',
+              data: this.absenModel
+            })
+          );
+          this.absenModel = res.data;
+          this.$toast.show(`Absence Success`, {
+            position: 'top-center',
+            type: 'success',
+            duration: 5000,
+            theme: 'bubble',
+            singleton: true
+          });
+          this.fetchAbsent();
+        } catch (err) {
+          // eslint-disable-next-line new-cap
+          const error = new responseManager().manageError(err);
+          this.$toast.show(error?.error || error.message, {
+            position: 'top-center',
+            type: 'error',
+            duration: 5000,
+            theme: 'bubble',
+            singleton: true
+          });
+        } finally {
+          this.hideLoading();
+        }
+      } else if (this.lastAbsent === 'Already done') {
+        this.errorMessage("You've been Absent");
+      } else if (
+        this.isSchoolDay &&
+        this.now > this.formatMoment(this.operationalClass.entryTime)
+      ) {
+        this.errorMessage('Access Closed');
+      } else if (!this.isSchoolDay) {
+        this.errorMessage("It's Holiday");
+      }
     }
   }
 };
