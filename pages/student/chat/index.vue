@@ -10,7 +10,7 @@
           <div class="box-input flex gap-x-3 border rounded-lg px-2 py-1">
             <input type="text" placeholder="Search" class="" />
             <span class="flex items-center">
-              <Magnifier/>
+              <Magnifier />
             </span>
           </div>
         </header>
@@ -88,7 +88,11 @@
             class="border focus:ring-0"
           />
           <button
-            :class="`border border-transparent rounded-lg text-white transition duration-300 hover:transition hover:duration-300 focus:outline-none focus:border-[#CC6633] ${!textchat ? 'bg-[#CC6633]/75 cursor-not-allowed' : 'bg-[#CC6633] cursor-pointer'}`"
+            :class="`border border-transparent rounded-lg text-white transition duration-300 hover:transition hover:duration-300 focus:outline-none focus:border-[#CC6633] ${
+              !textchat
+                ? 'bg-[#CC6633]/75 cursor-not-allowed'
+                : 'bg-[#CC6633] cursor-pointer'
+            }`"
             @click="sendMessage"
           >
             Send
@@ -101,7 +105,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { createConfig } from '~/service/api-manager';
+import { createConfig, responseManager } from '~/service/api-manager';
 import emptyImage from '~/assets/img/empty-profile.png';
 import Magnifier from '~/components/icons/magnifier.vue';
 
@@ -168,8 +172,16 @@ export default {
             me: item.senderName === this.getUsername
           }))
         );
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        // eslint-disable-next-line new-cap
+        const error = new responseManager().manageError(err);
+        this.$toast.show(error?.error || error.message, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
       }
     },
     scrollDown() {
@@ -197,8 +209,16 @@ export default {
             data: chatMessage
           })
         );
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        // eslint-disable-next-line new-cap
+        const error = new responseManager().manageError(err);
+        this.$toast.show(error?.error || error.message, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
       }
     },
     async fetchSchool() {
@@ -215,8 +235,16 @@ export default {
           active: true
         });
         this.activechat = this.getContactList[1];
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        // eslint-disable-next-line new-cap
+        const error = new responseManager().manageError(err);
+        this.$toast.show(error?.error || error.message, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
       }
     }
   },
@@ -226,7 +254,7 @@ export default {
     await this.fetchSchool();
     this.scrollDown();
     this.hideLoading();
-    this.$emit('no-footer')
+    this.$emit('no-footer');
   }
 };
 </script>
