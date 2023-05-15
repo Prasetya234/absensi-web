@@ -1,13 +1,13 @@
 <template>
-  <div id="html-to-pdf" class="bg-gray-50 md:py-[7.83%] py-32">
+  <div id="html-to-pdf" class="bg-gray-50 md:py-[7.83%] pb-32 pt-40">
     <modal v-if="modalActive" :onclose="onToggle">
       <h3 class="mb-4 text-2xl font-bold">Alert</h3>
       <p>Sorry, this feature is not available yet</p>
     </modal>
     <div
-      class="box-profile grid md:grid-cols-3 grid-cols-1 md:gap-x-[3.25%] md:space-y-0 space-y-5 md:mx-[5%]"
+      class="box-profile md:gap-x-[3.25%] md:space-y-0 space-y-5 md:mx-[5%]"
     >
-      <div class="detail-profile md:col-span-2 w-full space-y-6">
+      <div class="detail-profile w-full space-y-6">
         <div
           class="box-overview w-full bg-white rounded-lg p-[2.3%] grid grid-cols-3 roboto text-center"
         >
@@ -94,8 +94,8 @@
               </button>
               <button
                 class="py-2 px-6 rounded-lg text-sm text-[#F7931E] font-bold bg-[#FDE9D2]"
-                @click="printPDF"
-                >
+              >
+                <!-- @click="printPDF" -->
                 <!-- @click="modalActive = true" -->
                 <p>Download Pdf</p>
               </button>
@@ -288,135 +288,17 @@
           </div>
         </div>
       </div>
-      <div
-        class="application-progress md:col-span-1 box-border border rounded-lg bg-white py-3.5 px-5 space-y-3"
-      >
-        <h2
-          class="alata text-center text-[#333333] text-lg font-normal leading-4"
-        >
-          Application Progress
-        </h2>
-        <div class="h-7">
-          <p
-            class="float-left roboto text-[#616161] text-base font-normal leading-6"
-          >
-            Total Task : 0
-          </p>
-          <p
-            class="float-right roboto text-[#616161] text-base font-normal leading-6"
-          >
-            On Progress : 0
-          </p>
-        </div>
-        <div class="border rounded-lg p-6 space-y-3">
-          <!-- <div class="border rounded-lg py-2.5 px-6 space-y-3">
-            <p class="roboto text-base font-medium">Back End Developer</p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              PT Jaya Bersama
-            </p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              Applied on 14 Aug 2021
-            </p>
-            <p class="roboto text-[#CC6633] text-base font-medium">
-              Lulus Tahap 2 (Interview)
-            </p>
-          </div>
-          <div class="border rounded-lg py-2.5 px-6 space-y-3">
-            <p class="roboto text-base font-medium">Back End Developer</p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              PT Jaya Bersama
-            </p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              Applied on 14 Aug 2021
-            </p>
-            <p class="roboto text-[#CC6633] text-base font-medium">Lihat</p>
-          </div>
-          <div class="pagination flex justify-center gap-3">
-            <div class="w-3 h-3 border rounded-full bg-[#F7931E]"></div>
-            <div class="w-3 h-3 border rounded-full"></div>
-            <div class="w-3 h-3 border rounded-full"></div>
-          </div>
-        </div>
-        <div class="border rounded-lg p-6 space-y-3">
-          <h4
-            class="alata text-[#333333] text-[18px] font-normal leading-4 -mt-3.5"
-          >
-            Interview : 4
-          </h4>
-          <div class="border rounded-lg py-2.5 px-6 space-y-3">
-            <p class="roboto text-base font-medium">Back End Developer</p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              PT Jaya Bersama
-            </p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              Applied on 14 Aug 2021
-            </p>
-            <p class="roboto text-[#CC6633] text-base font-medium">Lihat</p>
-          </div>
-          <div class="border rounded-lg py-2.5 px-6 space-y-3">
-            <p class="roboto text-base font-medium">Back End Developer</p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              PT Jaya Bersama
-            </p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              Applied on 14 Aug 2021
-            </p>
-            <p class="roboto text-[#CC6633] text-base font-medium">Lihat</p>
-          </div>-->
-          <div class="pagination flex justify-center gap-3">
-            <div class="w-3 h-3 border rounded-full bg-[#F7931E]"></div>
-            <div class="w-3 h-3 border rounded-full"></div>
-            <div class="w-3 h-3 border rounded-full"></div>
-          </div>
-        </div>
-        <div class="border rounded-lg p-6 space-y-3">
-          <h4
-            class="alata text-[#333333] text-[18px] font-normal leading-4 -mt-3.5"
-          >
-            Over : 0
-          </h4>
-          <!-- <div class="border rounded-lg py-2.5 px-6 space-y-3">
-            <p class="roboto text-base font-medium">Back End Developer</p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              PT Jaya Bersama
-            </p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              Applied on 14 Aug 2021
-            </p>
-            <p class="roboto text-[#CC6633] text-base font-medium">Lihat</p>
-          </div>
-          <div class="border rounded-lg py-2.5 px-6 space-y-3">
-            <p class="roboto text-base font-medium">Back End Developer</p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              PT Jaya Bersama
-            </p>
-            <p class="roboto text-[#616161] text-base font-normal">
-              Applied on 14 Aug 2021
-            </p>
-            <p class="roboto text-[#CC6633] text-base font-medium">Lihat</p>
-          </div> -->
-          <div class="pagination flex justify-center gap-3">
-            <div class="w-3 h-3 border rounded-full bg-[#F7931E]"></div>
-            <div class="w-3 h-3 border rounded-full"></div>
-            <div class="w-3 h-3 border rounded-full"></div>
-          </div>
-        </div>
-        <div class="border rounded-lg p-6 space-y-3">
-          <h4 class="alata text-[#333333] text-[18px] font-normal leading-4">
-            Favorite : 0
-          </h4>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 <script>
-import html2pdf from 'html2pdf.js';
+import moment from 'moment';
+// import html2pdf from 'html2pdf.js';
 import Edit from '~/components/icons/edit.vue';
-import { createConfig, responseManager } from '~/service/api-manager';
+import { createConfig } from '~/service/api-manager';
 export default {
-  components: { Edit },
   name: 'ProfileIdPage',
+  components: { Edit },
   data() {
     return {
       modalActive: false,
@@ -442,7 +324,7 @@ export default {
           backgroundProfile: ''
         }
       },
-      isChange: false
+      isChange: false,
     };
   },
   mounted() {
@@ -451,6 +333,18 @@ export default {
   methods: {
     onToggle() {
       this.modalActive = !this.modalActive;
+    },
+    momentFormat(date) {
+      return moment(date).format('YYYY-MM-DD');
+    },
+    errorMessage(msg) {
+      this.$toasted.show(msg, {
+        position: 'top-center',
+        type: 'error',
+        duration: 5000,
+        theme: 'bubble',
+        singleton: true
+      });
     },
     async getUserById() {
       try {
@@ -461,15 +355,8 @@ export default {
           })
         );
         this.userData = resData.data;
-      } catch (err) {
-        const error = new responseManager().manageError(err);
-        this.$toast.show(error?.error || error.message, {
-          position: 'top-center',
-          type: 'error',
-          duration: 5000,
-          theme: 'bubble',
-          singleton: true
-        });
+      } catch {
+        this.errorMessage('cannot get id this user');
       }
     },
     change() {
@@ -497,27 +384,20 @@ export default {
           })
         );
         this.userData = resData.data;
-      } catch (error) {
-        const err = new responseManager().manageError(error);
-        this.$toast.show(err?.error || error.message, {
-          position: 'top-center',
-          type: 'error',
-          duration: 5000,
-          theme: 'bubble',
-          singleton: true
-        });
+      } catch {
+        this.errorMessage('cannot get id this user');
       }
     },
-    async printPDF(e) {
-      e.preventDefault();
-      try {
-        const target = document.getElementById('html-to-pdf');
-        html2pdf(target);
+    // async printPDF(e) {
+    //   e.preventDefault();
+    //   try {
+    //     const target = document.getElementById('html-to-pdf');
+    //     html2pdf(target);
 
-        const worker = html2pdf().from(target).save();
-        return await worker;
-      } catch {}
-    }
+    //     const worker = html2pdf().from(target).save();
+    //     return await worker;
+    //   } catch {}
+    // }
   }
 };
 </script>

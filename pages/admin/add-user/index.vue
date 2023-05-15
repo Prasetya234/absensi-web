@@ -113,6 +113,7 @@
                       value="MALE"
                       id="male"
                       class="peer hidden"
+                      v-model="form.gender"
                     />
                     <label
                       for="male"
@@ -128,6 +129,7 @@
                       value="FEMALE"
                       id="female"
                       class="peer hidden"
+                      v-model="form.gender"
                     />
                     <label
                       for="female"

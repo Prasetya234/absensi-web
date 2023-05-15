@@ -64,11 +64,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import * as faceapi from 'face-api.js';
 import { createConfig, responseManager } from '~/service/api-manager';
-import { mapActions } from 'vuex';
 
-var interval;
+let interval;
 export default {
   name: 'DetailFace',
   data: () => ({
@@ -118,10 +118,12 @@ export default {
       navigator.getUserMedia(
         { video: {} },
         (stream) => (this.$refs.videoref.srcObject = stream),
-        (err) => {}
+        (err) => {
+          return err
+        }
       );
     },
-    async stopedInterval() {
+    stopedInterval() {
       clearInterval(interval);
       console.log('jalan 1');
       this.onAddface();
@@ -129,7 +131,8 @@ export default {
     async onAddface() {
       this.showLoading();
       try {
-        const res = await this.$axios(
+        await this.$axios(
+          // eslint-disable-next-line new-cap
           new createConfig().postData({
             url: 'face-user',
             data: {
@@ -151,7 +154,7 @@ export default {
           window.location.reload();
         }, 2000);
       } catch (e) {
-        console.log(e);
+          // eslint-disable-next-line new-cap
         const error = new responseManager().manageError(e);
         this.$toast.show(error?.error || error.message, {
           position: 'top-center',
@@ -211,14 +214,14 @@ export default {
       }, 2000);
     },
     findDuplicates(arr) {
-      let sorted_arr = arr.slice().sort(); // You can define the comparing function here.
+      const sortedArr = arr.slice().sort(); // You can define the comparing function here.
       // JS by default uses a crappy string compare.
       // (we use slice to clone the array so the
       // original array won't be modified)
-      let results = [];
-      for (let i = 0; i < sorted_arr.length - 1; i++) {
-        if (sorted_arr[i + 1] == sorted_arr[i]) {
-          results.push(sorted_arr[i]);
+      const results = [];
+      for (let i = 0; i < sortedArr.length - 1; i++) {
+        if (sortedArr[i + 1] === sortedArr[i]) {
+          results.push(sortedArr[i]);
         }
       }
       return results || [];

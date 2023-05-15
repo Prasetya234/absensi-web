@@ -9,7 +9,7 @@
         </p>
       </div>
       <div class="nav-item flex alata">
-        <div class="flex gap-x-2">
+        <div class="flex gap-x-2 fill-[#F7931E]">
           <icons-profile/>
           <span class="text-white">Profile</span>
         </div>

@@ -246,7 +246,6 @@ export default {
           singleton: true
         });
       } catch (err) {
-        console.log(err);
         const error = new responseManager().manageError(err);
         this.$toast.show(error?.error || error.message, {
           position: 'top-center',

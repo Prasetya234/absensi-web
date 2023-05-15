@@ -371,13 +371,16 @@ export default {
       modalPermit: false,
       formPermit: {
         reason: '',
-        note: ''
+        note: '',
+        isLate: false
       },
       bgImg: bgHome,
       lastAbsent: '',
       reason: [],
       absenModel: {
-        isLate: false
+        dateSubmit: '',
+        isLate: false,
+        note: null
       }
     };
   },
@@ -396,12 +399,6 @@ export default {
   },
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
-    isLate() {
-      if (new Date().getHours() > Number(this.operationalClass.entryTime)) {
-        return true;
-      }
-      return false;
-    },
     formatMoment(time) {
       return moment(time, 'HH').add(30, 'minutes').format('HH:mm');
     },
@@ -458,7 +455,6 @@ export default {
           this.lastAbsent = 'Already done';
         }
       } catch (error) {
-        console.log(error);
         // eslint-disable-next-line new-cap
         const err = new responseManager().manageError(error);
         this.$toast.show(err?.error || err.message, {
@@ -518,21 +514,34 @@ export default {
       e.preventDefault();
       this.showLoading();
       try {
+        const entryTime = moment(
+          this.operationalClass.entryTime,
+          'HH:mm'
+        ).format('HH:mm');
+        if (this.now > entryTime) {
+          this.formPermit.isLate = true;
+        } else {
+          this.formPermit.isLate = false;
+        }
         const { data: res } = await this.$axios(
           // eslint-disable-next-line new-cap
           new createConfig().postData({
             url: 'presensi/permit',
-            data: {
-              reason: this.formPermit.reason,
-              note: this.formPermit.note
-            }
+            data: this.formPermit
           })
         );
         this.formPermit = res.data;
         this.modalPermit = false;
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        this.fetchAbsent();
+        this.fetchTotalPresentLate();
+        this.fetchTotalPermit();
+        this.$toast.show(`Success Permit`, {
+            position: 'top-center',
+            type: 'success',
+            duration: 5000,
+            theme: 'bubble',
+            singleton: true
+          });
       } catch (err) {
         // eslint-disable-next-line new-cap
         const error = new responseManager().manageError(err);
@@ -585,8 +594,16 @@ export default {
     },
     async absenNow(e) {
       e.preventDefault();
+
+      const entryTime = moment(this.operationalClass.entryTime, 'HH:mm').format(
+        'HH:mm'
+      );
       this.absenModel.dateSubmit = new Date().toISOString().split('T')[0];
-      this.absenModel.isLate = this.isLate();
+      if (this.now > entryTime) {
+        this.absenModel.isLate = true;
+      } else {
+        this.absenModel.isLate = false;
+      }
       this.showLoading();
       if (
         this.isSchoolDay &&
@@ -609,6 +626,8 @@ export default {
             singleton: true
           });
           this.fetchAbsent();
+          this.fetchTotalPresentLate();
+          this.fetchTotalPresent();
         } catch (err) {
           // eslint-disable-next-line new-cap
           const error = new responseManager().manageError(err);

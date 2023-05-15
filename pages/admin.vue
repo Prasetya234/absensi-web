@@ -2,7 +2,9 @@
   <div>
     <layout-navbar-admin />
     <div class="flex pt-20">
-      <div class="w-[20%] md:w-1/6 h-[30.6rem] md:h-[36.05rem] bg-[#58595B] pt-2 font-medium alata">
+      <div
+        class="w-[20%] md:w-1/6 h-[30.6rem] md:h-[36.05rem] bg-[#58595B] pt-2 font-medium alata"
+      >
         <span
           :class="`text-white py-4 px-7 cursor-pointer truncate block transition duration-300 hover:bg-[#fde9d0]/50 hover:transition hover:duration-300 ${
             activeMenu === data.to ? 'bg-[#F7931E]' : ''
@@ -37,6 +39,11 @@ export default {
         name: 'Student',
         icon: 'mdi-account-group',
         to: '/admin/student'
+      },
+      {
+        name: 'Student Assignment',
+        icon: '',
+        to: '/admin/tasks'
       },
       {
         name: 'Absen',

@@ -95,7 +95,7 @@
           </button>
         </div>
       </div>
-      <div class="w-full overflow-x-auto border border-red-500">
+      <div class="w-full overflow-x-auto">
         <table class="table-auto md:table-fixed w-full">
           <thead class="bg-[#e8e8e8] text-sm">
             <tr>

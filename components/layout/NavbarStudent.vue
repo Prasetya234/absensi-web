@@ -39,7 +39,7 @@
               >Profile</span
             >
           </li>
-          <li
+          <!-- <li
             :class="`${activeMenu(
               '/student/calender',
               route
@@ -52,6 +52,21 @@
             <span
               class="text-inherit text-[14px] font-[400] leading-[20px] roboto"
               >Timetable</span
+            >
+          </li> -->
+          <li
+            :class="`${activeMenu(
+              '/student/tasks_todolist',
+              route
+            )} flex flex-col items-center py-2 w-[80px] space-y-2 cursor-pointer hover:text-[#CC6633] hover:fill-[#CC6633]`"
+            @click="$router.push('/student/tasks_todolist')"
+          >
+            <span class="relative">
+              <icons-listcheck :size="34"/>
+            </span>
+            <span
+              class="text-inherit text-[13px] text-center break-keep font-[400] leading-[20px] roboto"
+              >Todo & Tasks</span
             >
           </li>
           <li
@@ -103,46 +118,46 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import Profile from '../icons/profile.vue'
+import Profile from '../icons/profile.vue';
 import { removeAllStorage } from '~/utils/auth';
 
 export default {
-    name: "NavbarComponent",
-    computed: {
-        ...mapGetters("auth", ["getUsername", "getUserId"]),
-        route() {
-            return this.$route.path;
-        },
-        userId() {
-            return this.$route.params.id;
-        }
+  name: 'NavbarComponent',
+  components: { Profile },
+  computed: {
+    ...mapGetters('auth', ['getUsername', 'getUserId']),
+    route() {
+      return this.$route.path;
     },
-    methods: {
-        activeMenu(path, route) {
-            return path === route
-                ? "text-[#CC6633] fill-[#CC6633] border-b-2 border-b-[#CC6633]"
-                : "text-[#828282] fill-[#828282]";
-        },
-        logout() {
-            this.$toast.show(`Good bye ${this.getUsername}`, {
-                position: "top-center",
-                type: "error",
-                duration: 5000,
-                theme: "bubble",
-                singleton: true
-            });
-            removeAllStorage();
-            this.$router.push("/login");
-            setTimeout(() => {
-                window.location.reload();
-            }, 500);
-        },
-        profile() {
-            const userId = btoa(this.getUserId);
-            this.$router.push("/student/profile/" + userId);
-        },
+    userId() {
+      return this.$route.params.id;
+    }
+  },
+  methods: {
+    activeMenu(path, route) {
+      return path === route
+        ? 'text-[#CC6633] fill-[#CC6633] border-b-2 border-b-[#CC6633]'
+        : 'text-[#828282] fill-[#828282]';
     },
-    components: { Profile }
+    logout() {
+      this.$toast.show(`Good bye ${this.getUsername}`, {
+        position: 'top-center',
+        type: 'error',
+        duration: 5000,
+        theme: 'bubble',
+        singleton: true
+      });
+      removeAllStorage();
+      this.$router.push('/login');
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    },
+    profile() {
+      const userId = btoa(this.getUserId);
+      this.$router.push('/student/profile/' + userId);
+    }
+  }
 };
 </script>
 <style scoped>
