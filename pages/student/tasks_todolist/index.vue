@@ -407,6 +407,7 @@ export default {
           })
         );
         this.status = res.data.status;
+        this.fetchTodoList();
       } catch {
         this.errorMessage('Cannot change status this todo');
       }

@@ -604,11 +604,11 @@ export default {
       } else {
         this.absenModel.isLate = false;
       }
-      this.showLoading();
       if (
         this.isSchoolDay &&
         this.now < this.formatMoment(this.operationalClass.entryTime)
-      ) {
+        ) {
+        this.showLoading();
         try {
           const { data: res } = await this.$axios(
             // eslint-disable-next-line new-cap
