@@ -51,9 +51,8 @@ export default {
     hideFooter() {
       this.footer = false;
     },
-<<<<<<< HEAD
     onCloseSideBar() {
-      this.openSideBar = false
+      this.openSideBar = false;
     },
     onSideBar(title, data, maker) {
       this.openSideBar = true;
@@ -62,7 +61,7 @@ export default {
         content: data,
         maker
       };
-=======
+    },
     activeMenu(path, route) {
       return path === route
         ? 'text-[#CC6633] fill-[#CC6633] bg-[#F7931E]'
@@ -85,7 +84,6 @@ export default {
     profile() {
       const userId = btoa(this.getUserId);
       this.$router.push('/student/profile/' + userId);
->>>>>>> 06c5ccc103139ff78f17ce0b0c0e88747705036b
     }
   }
 };

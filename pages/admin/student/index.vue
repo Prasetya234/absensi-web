@@ -104,7 +104,7 @@
             <td>{{ data.favorite }}</td>
             <td>
               <div class="flex justify-center gap-2 mx-5 md:mx-0 md:gap-5">
-                <!-- <button
+                <button
                   class="bg-[#CC6633] p-1.5 rounded-md flex justify-center md:p-2.5 md:rounded-lg w-fit fill-[#FFFFFF]"
                   title="Add Face Data"
                   @click="toDetil(false, data.id)"
@@ -112,7 +112,7 @@
                   <span>
                     <icons-Plus />
                   </span>
-                </button> -->
+                </button>
                 <button
                   class="bg-[#21759B] p-1.5 rounded-md flex justify-center md:p-2.5 md:rounded-lg w-fit"
                   :title="`${data.firstName} Information`"
@@ -229,7 +229,8 @@
             }`"
             @click="todoPrev(studentId)"
           >
-            <IconsArrowcevron class="pt-[5px] pl-[4px]"
+            <IconsArrowcevron
+              class="pt-[5px] pl-[4px]"
               direction="left"
               :size="18"
             />
@@ -306,7 +307,11 @@ export default {
     },
     toggleClose() {
       this.isOpen = false;
-      this.fetchTodolist(this.studentId, this.todoCurrentPage, this.todoPerPage)
+      this.fetchTodolist(
+        this.studentId,
+        this.todoCurrentPage,
+        this.todoPerPage
+      );
     },
     async fetchStudent(keyword = '', sort = '') {
       try {
@@ -342,26 +347,26 @@ export default {
         });
       }
     },
-    // async toDetil(detail, userId) {
-    //   const faceReady = await this.detectFaceReady(userId);
-    //   if (faceReady) {
-    //     this.$toast.show('User Face Already Exist', {
-    //       position: 'top-center',
-    //       type: 'error',
-    //       duration: 5000,
-    //       theme: 'bubble',
-    //       singleton: true
-    //     });
-    //     return;
-    //   }
-    //   this.$router.push({
-    //     path: 'student/detail',
-    //     query: {
-    //       detail,
-    //       userId
-    //     }
-    //   });
-    // },
+    async toDetil(detail, userId) {
+      const faceReady = await this.detectFaceReady(userId);
+      if (faceReady) {
+        this.$toast.show('User Face Already Exist', {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+        return;
+      }
+      this.$router.push({
+        path: 'student/detail',
+        query: {
+          detail,
+          userId
+        }
+      });
+    },
     async detectFaceReady(userId) {
       this.showLoading();
       try {
