@@ -1,6 +1,6 @@
 <template>
     <div
-      class="all-presence pt-[90px] pb-[10px] flex justify-center items-center min-h-screen"
+      class="all-presence pt-[90px] pb-[10px] px-80 md:px-0 flex justify-center items-center min-h-screen"
     >
       <div class="bg-white rounded-md p-5">
         <div>
@@ -32,7 +32,7 @@
                 id="groupBy"
                 name="groupBy"
                 v-model="groupBy"
-                class="shadow border w-[200px] rounded-lg px-2 w-full py-2 leading-tight focus:outline-none focus:shadow-outline"
+                class="shadow border w-36 rounded-lg px-2 w-full py-2 leading-tight focus:outline-none focus:shadow-outline"
               >
                 <option value="year">Year</option>
                 <option value="month">Month</option>
@@ -42,7 +42,7 @@
           <client-only>
             <apexchart
               v-if="groupBy === 'year'"
-              class="max-w-screen lg:w-[60rem]"
+              class="max-w-screen w-[32rem] lg:w-[60rem]"
               type="bar"
               :options="optionsyear"
               :series="seriesyear"

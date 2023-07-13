@@ -1,12 +1,12 @@
 <template>
   <div class="flex flex-col gap-5">
     <div class="flex justify-start">
-      <h2 class="font-bold text-3xl">List Students</h2>
+      <h2 class="font-bold text-2xl md:text-3xl">List Students</h2>
     </div>
     <div
-      class="bg-white rounded-md shadow-md flex flex-col gap-5 text-center p-3 overflow-x-auto"
+      class="bg-white rounded-md shadow-md flex flex-col gap-5 text-center p-3 w-full overflow-x-auto"
     >
-      <div class="flex flex-row gap-4 pt-3 pb-0 px-2">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 pt-3 pb-0 px-2">
         <div class="flex flex-col gap-1.5">
           <label for="searchByName" class="text-left text-xs text-[#58595B]"
             >Search By Name</label
@@ -49,7 +49,7 @@
           </div>
         </div>
         <div class="flex flex-col gap-1.5">
-          <label for="sorByUpdate" class="text-left text-xs text-[#58595B]"
+          <label for="sortByIdStudent" class="text-left text-xs text-[#58595B]"
             >Sort By ID Student</label
           >
           <div
@@ -57,8 +57,8 @@
           >
             <select
               name="sort-by-update"
-              id="sortByUpdate"
-              class="text-sm text-[#333333] focus:outline-none focus:ring-0 cursor-pointer"
+              id="sortByIdStudent"
+              class="text-sm text-[#333333] w-full focus:outline-none focus:ring-0 cursor-pointer"
               v-model="direction"
             >
               <option value="">Default</option>
@@ -69,7 +69,7 @@
         </div>
         <div class="flex items-end">
           <button
-            class="bg-[#CC6633] py-2 px-5 rounded-md w-fit h-fit text-white text-bold duration-300 hover:duration-300 hover:bg-[#F7931E]"
+            class="bg-[#CC6633] py-2 px-5 rounded-md w-full h-fit md:w-fit md:h-fit text-white text-bold duration-300 hover:duration-300 hover:bg-[#F7931E]"
             @click="filter(currentPage, perPage, keyword, direction)"
           >
             Filter
@@ -102,20 +102,20 @@
             <td>{{ data.batch }}</td>
             <td>{{ data.gender }}</td>
             <td>{{ data.favorite }}</td>
-            <td class="w-56">
-              <div class="flex flex-row justify-center gap-5">
-                <button
-                  class="bg-[#CC6633] p-2.5 rounded-lg"
+            <td>
+              <div class="flex justify-center gap-2 mx-5 md:mx-0 md:gap-5">
+                <!-- <button
+                  class="bg-[#CC6633] p-1.5 rounded-md flex justify-center md:p-2.5 md:rounded-lg w-fit fill-[#FFFFFF]"
                   title="Add Face Data"
                   @click="toDetil(false, data.id)"
                 >
                   <span>
                     <icons-Plus />
                   </span>
-                </button>
+                </button> -->
                 <button
-                  class="bg-[#21759B] p-2.5 rounded-lg"
-                  title="User Information"
+                  class="bg-[#21759B] p-1.5 rounded-md flex justify-center md:p-2.5 md:rounded-lg w-fit"
+                  :title="`${data.firstName} Information`"
                   @click="toInfo(data.id)"
                 >
                   <span>
@@ -123,12 +123,21 @@
                   </span>
                 </button>
                 <button
-                  class="bg-[#DA8C2A] p-2.5 rounded-lg"
-                  title="Edit User"
+                  class="bg-[#15803D] p-1.5 rounded-md flex justify-center md:p-2.5 md:rounded-lg w-fit fill-[#FFFFFF]"
+                  :title="`Todolist ${data.firstName}`"
+                  @click="toggleOpen(data.id)"
+                >
+                  <span>
+                    <icons-listcheck />
+                  </span>
+                </button>
+                <button
+                  class="bg-[#DA8C2A] p-1.5 rounded-md flex justify-center md:p-2.5 md:rounded-lg w-fit"
+                  :title="`Edit ${data.firstName}`"
                   @click="toEdit(data.id)"
                 >
                   <span>
-                    <icons-edit :size="17" />
+                    <icons-edit />
                   </span>
                 </button>
               </div>
@@ -138,9 +147,9 @@
       </table>
       <div class="pagination flex flex-row justify-center gap-2 text-sm my-3">
         <button
-          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 ${
+          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 fill-[#FFFFFF] ${
             currentPage === 0
-              ? 'cursor-not-allowed text-gray-500 bg-gray-100 border-0'
+              ? 'cursor-not-allowed text-gray-500 bg-gray-100 border-0 fill-black'
               : 'cursor-pointer hover:bg-[#F7931E] hover:duration-300 hover:border-transparent'
           }`"
           title="Previous Page"
@@ -167,9 +176,9 @@
           {{ page + 1 }}
         </button>
         <button
-          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 ${
+          :class="`border border-[#CC6633] bg-[#CC6633] text-white rounded-full w-9 h-9 fill-[#FFFFFF] ${
             currentPage === totalPages.length - 1
-              ? 'cursor-not-allowed text-gray-500 bg-gray-100 border-0'
+              ? 'cursor-not-allowed text-gray-500 bg-gray-100 border-0 fill-black'
               : 'cursor-pointer hover:bg-[#F7931E] hover:duration-300 hover:border-transparent'
           }`"
           title="Next Page"
@@ -181,6 +190,81 @@
         </button>
       </div>
     </div>
+    <modal v-if="isOpen" :onclose="toggleClose">
+      <h4 class="text-xl mb-3">User's Todolist</h4>
+      <div v-if="todoAvailable">
+        <ul class="flex flex-col gap-3">
+          <li
+            v-for="(todo, index) in todolist"
+            :key="index"
+            class="flex flex-row justify-between items-center gap-x-4 border rounded-lg px-3"
+          >
+            <div class="w-3/4 my-2">
+              <label
+                id="todo-label"
+                for="todo"
+                :class="`text-sm leading-tight text-center ${
+                  todo.status ? 'line-through' : ''
+                }`"
+                >{{ todo.note }}</label
+              >
+            </div>
+            <input
+              id="todo"
+              type="checkbox"
+              :checked="todo.status"
+              class="w-4 h-5 accent-[#CC6633]"
+              disabled
+            />
+          </li>
+        </ul>
+        <div
+          class="todolist-pagination flex flex-row justify-center gap-2 mt-5 mb-2"
+        >
+          <button
+            :class="`rounded-full w-6 h-6 duration-300 flex justify-center items-center ${
+              todoCurrentPage <= 0
+                ? 'cursor-not-allowed border-gray-100 bg-gray-100 fill-gray-500 duration-300'
+                : 'cursor-pointer bg-[#CC6633] duration-300 hover:bg-[#F7931E] hover:text-white hover:duration-300 hover:border-[#F7931E] fill-[#FFFFFF]'
+            }`"
+            @click="todoPrev(studentId)"
+          >
+            <IconsArrowcevron class="pt-[5px] pl-[4px]"
+              direction="left"
+              :size="18"
+            />
+          </button>
+          <button
+            :class="`rounded-full w-6 h-6 text-sm flex justify-center items-center duration-300 hover:bg-[#F7931E] hover:text-white hover:border-transparent hover:duration-300 ${
+              todoCurrentPage === idx
+                ? 'bg-[#CC6633] text-white border border-[#CC6633]'
+                : 'bg-gray-100 border'
+            }`"
+            v-for="(page, idx) in todoTotalPages"
+            :key="idx"
+            @click="current(studentId, page)"
+          >
+            {{ page + 1 }}
+          </button>
+          <button
+            :class="`rounded-full w-6 h-6 duration-300 flex justify-center items-center ${
+              todoCurrentPage >= todoTotalPages.length - 1
+                ? 'cursor-not-allowed border-gray-100 bg-gray-100 fill-gray-500 duration-300'
+                : 'cursor-pointer bg-[#CC6633] duration-300 hover:bg-[#F7931E] hover:text-white hover:duration-300 hover:border-[#F7931E] fill-[#FFFFFF]'
+            }`"
+            @click="todoNext(studentId)"
+          >
+            <IconsArrowcevron class="pt-[5px] pl-[4px]" :size="18" />
+          </button>
+        </div>
+      </div>
+      <p class="text-lg text-center capitalize" v-else>the data is empty</p>
+    </modal>
+    <div
+      v-if="isOpen"
+      class="opacity-50 fixed inset-0 z-40 bg-black"
+      @click="toggleClose"
+    ></div>
   </div>
 </template>
 
@@ -195,7 +279,14 @@ export default {
     currentPage: 0,
     perPage: 10,
     keyword: '',
-    direction: ''
+    direction: '',
+    studentId: '',
+    todolist: [],
+    isOpen: false,
+    todoAvailable: false,
+    todoTotalPages: [],
+    todoPerPage: 5,
+    todoCurrentPage: 0
   }),
   computed: {
     pageStart() {
@@ -207,6 +298,16 @@ export default {
   },
   methods: {
     ...mapActions('loading', ['showLoading', 'hideLoading']),
+    toggleOpen(id) {
+      this.isOpen = true;
+      this.studentId = id;
+      this.checkTodolist(id);
+      this.fetchTodolist(id, this.todoCurrentPage, this.todoPerPage);
+    },
+    toggleClose() {
+      this.isOpen = false;
+      this.fetchTodolist(this.studentId, this.todoCurrentPage, this.todoPerPage)
+    },
     async fetchStudent(keyword = '', sort = '') {
       try {
         const { data: res } = await this.$axios(
@@ -241,26 +342,26 @@ export default {
         });
       }
     },
-    async toDetil(detail, userId) {
-      const faceReady = await this.detectFaceReady(userId);
-      if (faceReady) {
-        this.$toast.show('User Face Already Exist', {
-          position: 'top-center',
-          type: 'error',
-          duration: 5000,
-          theme: 'bubble',
-          singleton: true
-        });
-        return;
-      }
-      this.$router.push({
-        path: 'student/detail',
-        query: {
-          detail,
-          userId
-        }
-      });
-    },
+    // async toDetil(detail, userId) {
+    //   const faceReady = await this.detectFaceReady(userId);
+    //   if (faceReady) {
+    //     this.$toast.show('User Face Already Exist', {
+    //       position: 'top-center',
+    //       type: 'error',
+    //       duration: 5000,
+    //       theme: 'bubble',
+    //       singleton: true
+    //     });
+    //     return;
+    //   }
+    //   this.$router.push({
+    //     path: 'student/detail',
+    //     query: {
+    //       detail,
+    //       userId
+    //     }
+    //   });
+    // },
     async detectFaceReady(userId) {
       this.showLoading();
       try {
@@ -345,10 +446,81 @@ export default {
       this.direction = sort;
       this.setPage(page, size);
       return this.fetchStudent(search, sort);
+    },
+    async checkTodolist(id) {
+      try {
+        const { data: res } = await this.$axios(
+          // eslint-disable-next-line new-cap
+          new createConfig().getData({
+            url: `todo-list/check?userId=${id}`
+          })
+        );
+        this.todoAvailable = res.data;
+      } catch {}
+    },
+    async fetchTodolist(
+      id,
+      page = this.todoCurrentPage,
+      size = this.todoPerPage
+    ) {
+      try {
+        const { data: res } = await this.$axios(
+          // eslint-disable-next-line new-cap
+          new createConfig().getData({
+            url: `todo-list?userId=${id}&page=${page}&size=${size}`
+          })
+        );
+        this.todolist = res.data.content;
+        const pages = [];
+        for (let i = 0; i < res.data.totalPages; i++) {
+          pages.push(i);
+        }
+        this.todoTotalPages = pages;
+      } catch (err) {
+        // eslint-disable-next-line new-cap
+        const error = new responseManager().manageError(err);
+        this.$toast.show(error?.error || error.message, {
+          position: 'top-center',
+          type: 'error',
+          duration: 5000,
+          theme: 'bubble',
+          singleton: true
+        });
+      }
+    },
+    setPageTodo(page) {
+      if (page < 0 || page > this.todoTotalPages) {
+        return;
+      }
+      this.todoCurrentPage = page;
+    },
+    current(id, page) {
+      this.todoCurrentPage = page;
+      this.setPageTodo(page);
+      this.fetchTodolist(id, page);
+    },
+    todoPrev(id) {
+      if (this.todoCurrentPage <= 0) {
+        return;
+      }
+      const prevTodo = this.todoCurrentPage - 1;
+      this.setPageTodo(prevTodo);
+      this.fetchTodolist(id, prevTodo);
+    },
+    todoNext(id) {
+      const total = this.todoTotalPages.length - 1;
+      if (this.todoCurrentPage >= total) {
+        return;
+      }
+      const nextTodo = this.todoCurrentPage + 1;
+      this.setPageTodo(nextTodo);
+      this.fetchTodolist(id, nextTodo);
     }
   },
   mounted() {
     this.fetchStudent();
+    this.fetchTodolist();
+    this.checkTodolist();
   }
 };
 </script>
@@ -418,12 +590,15 @@ export default {
     box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: auto;
-    width: 120px;
     font-size: 13px;
     text-overflow: ellipsis;
   }
+  .fl-table tbody td {
+    width: 100px;
+  }
   .fl-table thead th {
-    text-align: left;
+    text-align: center;
+    width: 87px;
     border-bottom: 1px solid #f7f7f9;
   }
   .fl-table tbody tr {

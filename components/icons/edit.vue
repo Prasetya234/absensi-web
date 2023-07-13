@@ -1,7 +1,6 @@
 <template>
   <svg
-    :width="size"
-    :height="size"
+    class="w-5 h-5 md:w-6 md:h-6"
     viewBox="0 0 13 13"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -24,12 +23,6 @@
 </template>
 <script>
 export default {
-  name: 'EditIcon',
-  props: {
-    size: {
-      type: Number,
-      default: 24
-    }
-  }
+  name: 'EditIcon'
 };
 </script>

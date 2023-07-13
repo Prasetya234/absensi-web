@@ -46,7 +46,7 @@
     "fs": false,
     "path": false,
     "os": false
-  },  
+  },
   "resolutions": {
     "@nuxt/kit": "3.0.0-rc.13"
   }

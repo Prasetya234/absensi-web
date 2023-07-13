@@ -1,10 +1,8 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="70"
-    height="70"
     fill="#FFFFFF"
-    class="bi bi-people"
+    class="w-5 h-5 md:w-16 md:h-16"
     viewBox="0 0 16 16"
   >
     <path

@@ -7,7 +7,7 @@
       >
         <IconsArrow size="20" />
       </button>
-      <h2 class="text-3xl font-bold">{{ userData.firstName }}'s Info</h2>
+      <h2 class="text-2xl md:text-3xl font-bold">{{ userData.firstName }}'s Info</h2>
     </div>
     <div
       class="bg-white rounded-md shadow-md selection:bg-[#CC6633] selection:text-white"

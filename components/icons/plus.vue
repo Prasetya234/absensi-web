@@ -1,10 +1,8 @@
 <template>
   <svg
+    class="w-5 h-5 md:w-6 md:h-6"
     xmlns="http://www.w3.org/2000/svg"
-    width="17"
-    height="17"
-    fill="#FFFFFF"
-    class="bi bi-plus"
+    fill="inherit"
     viewBox="0 0 16 16"
   >
     <path
@@ -15,5 +13,5 @@
 <script>
 export default {
   name: 'PlusIcon'
-}
+};
 </script>
