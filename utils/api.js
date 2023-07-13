@@ -1,2 +1,2 @@
-export const API_PRODUCTION = "http://178.128.117.194:55555"
-export const API_WEB_SOCKET = "http://178.128.117.194:55555/ws"
+export const API_PRODUCTION = "https://absensi-server-production.up.railway.app"
+export const API_WEB_SOCKET = "https://absensi-server-production.up.railway.app/ws"

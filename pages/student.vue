@@ -1,7 +1,8 @@
 <template>
   <div style="min-height: 100vh; height: 100%">
     <layout-navbar-student v-if="nav" />
-    <nuxt-child @no-nav="hideNav" @no-footer="hideFooter" />
+    <side-bar v-if="openSideBar" :content="sideBarOption" @on-close="onCloseSideBar" />
+    <nuxt-child @no-nav="hideNav" @no-footer="hideFooter" @open-sidebar="onSideBar" />
     <layout-footer v-if="footer"  />
   </div>
 </template>
@@ -11,7 +12,13 @@ export default {
   name: 'Student',
   data: () => ({
     nav: true,
-    footer: true
+    openSideBar: false,
+    footer: true,
+    sideBarOption: {
+      title: '',
+      content: '',
+      maker: ''
+    }
   }),
    watch: {
     $route() {
@@ -24,6 +31,17 @@ export default {
     },
     hideFooter() {
       this.footer = false;
+    },
+    onCloseSideBar() {
+      this.openSideBar = false
+    },  
+    onSideBar(title, data, maker) {
+      this.openSideBar = true;
+      this.sideBarOption = {
+        title,
+        content: data,
+        maker
+      };
     }
   }
 };

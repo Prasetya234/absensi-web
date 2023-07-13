@@ -63,6 +63,7 @@
                 class="block p-2 bg-[#CC6633] text-white rounded-lg mt-2 cursor-pointer truncate w-32"
                 style="max-width: max-content"
                 v-if="data2.noteplus"
+                @click="onClickCalender(data2.id)"
                 >{{ data2.noteplus.name }}</span
               >
             </td>
@@ -146,6 +147,17 @@ export default {
         })
       }
     },
+    async onClickCalender(id) {
+      try {
+        const { data: resp } = await this.$axios(
+          // eslint-disable-next-line new-cap
+          new createConfig().getData({
+            url: 'calender/' + id
+          })
+        );
+        this.$emit('open-sidebar', resp.data.name, resp.data.isHoliday, resp.data.maker)
+      } catch {}
+    },
     selectCalender(e) {
       this.offset = 0;
       this.date = new Date(e.target.value);
@@ -181,6 +193,7 @@ export default {
                 new Date(e.date).getFullYear() === items.date._d.getFullYear()
               ) {
                 items.noteplus = e;
+                items.id = e.id;
               }
             });
           });
