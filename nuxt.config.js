@@ -56,16 +56,16 @@ export default {
     },
   },
   server: {
-    port: 8080
+    port: 55554
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [
       'defu'
     ],
-    extend(config, {}) {
+    extend(config, { }) {
       config.node = {
-          fs: 'empty'
+        fs: 'empty'
       }
     }
   },
